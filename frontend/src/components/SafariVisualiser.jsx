@@ -85,23 +85,27 @@ const SafariVisualiser = ({ audioRef, isPlaying, colors }) => {
           const dataIndex = i % dataArrayRef.current.length;
           const frequencyValue = dataArrayRef.current[dataIndex];
           
-          // Boost sensitivity for last 8 bars (treble frequencies)
-          const isHighFrequencyBar = i >= numBars - 8;
-          const sensitivityMultiplier = isHighFrequencyBar ? 1.35 : 1.0;
+          // Progressive sensitivity boost for high frequency bars (right side)
+          let sensitivityMultiplier = 1.0;
+          if (i >= numBars - 12) {
+            // Last 12 bars: progressive increase from 1.5x to 2.0x
+            const highFreqIndex = i - (numBars - 12);
+            sensitivityMultiplier = 1.5 + (highFreqIndex / 12) * 0.5;
+          }
           
-          // Convert byte value (0-255) to height percentage (10-95%)
-          const baseHeight = ((frequencyValue / 255) * 70 * sensitivityMultiplier) + 15;
+          // Convert byte value (0-255) to height percentage (5-100%)
+          const baseHeight = ((frequencyValue / 255) * 85 * sensitivityMultiplier) + 10;
           
           // Add small wave for smooth motion even with low audio
-          const wave = Math.sin(time * 2 + i * 0.3) * 8;
-          const targetHeight = baseHeight + wave + Math.random() * 5;
+          const wave = Math.sin(time * 2 + i * 0.3) * 5;
+          const targetHeight = baseHeight + wave + Math.random() * 3;
           
           // Smooth interpolation
-          const currentHeight = bar.height + (targetHeight - bar.height) * 0.25;
+          const currentHeight = bar.height + (targetHeight - bar.height) * 0.3;
           
           return {
             ...bar,
-            height: Math.max(10, Math.min(95, currentHeight)),
+            height: Math.max(5, Math.min(100, currentHeight)),
             targetHeight
           };
         });
