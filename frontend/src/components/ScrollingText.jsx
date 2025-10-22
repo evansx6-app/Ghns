@@ -36,9 +36,11 @@ const ScrollingText = ({
           
           // Set CSS custom property for scroll distance based on direction
           if (direction === 'rtl') {
-            textRef.current.style.setProperty('--scroll-start', `${scrollDistance}px`);
-            textRef.current.style.setProperty('--scroll-end', '0px');
+            // RTL: Start at right (0), scroll to left (negative)
+            textRef.current.style.setProperty('--scroll-start', '0px');
+            textRef.current.style.setProperty('--scroll-end', `-${scrollDistance}px`);
           } else {
+            // LTR: Start at left (0), scroll to left (negative)
             textRef.current.style.setProperty('--scroll-start', '0px');
             textRef.current.style.setProperty('--scroll-end', `-${scrollDistance}px`);
           }
