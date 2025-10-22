@@ -581,26 +581,22 @@ const ModernAudioPlayer = () => {
                         <span className="text-[10px] sm:text-xs font-semibold text-copper-300 uppercase tracking-wide">Now Playing</span>
                       </div>
                       
-                      {/* Scrolling Track Title */}
+                      {/* Scrolling Track Title - RTL when too long */}
                       <div className="w-full">
                         <ScrollingText 
                           text={currentTrack?.title || 'Loading...'}
                           className="text-2xl sm:text-3xl lg:text-4xl xl:text-5xl font-bold text-white leading-tight tracking-tight"
                           speed={40}
                           pauseDuration={1500}
-                          alwaysScroll={true}
+                          direction="rtl"
                         />
                       </div>
                       
-                      {/* Scrolling Artist Name */}
+                      {/* Artist Name - No Scrolling */}
                       <div className="w-full">
-                        <ScrollingText 
-                          text={currentTrack?.artist || 'Loading...'}
-                          className="text-lg sm:text-xl lg:text-2xl text-white/70 font-medium"
-                          speed={35}
-                          pauseDuration={1500}
-                          alwaysScroll={true}
-                        />
+                        <p className="text-lg sm:text-xl lg:text-2xl text-white/70 font-medium truncate">
+                          {currentTrack?.artist || 'Loading...'}
+                        </p>
                       </div>
                       
                       {currentTrack?.album && (
