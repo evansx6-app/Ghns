@@ -25,8 +25,8 @@ const ScrollingText = ({
         const containerWidth = containerRect.width;
         const textWidth = textRef.current.scrollWidth;
         
-        // More aggressive detection for mobile - lower threshold
-        const threshold = window.innerWidth < 768 ? 2 : 5;
+        // Very aggressive detection - if text is even slightly wider, scroll it
+        const threshold = 1;
         
         // If alwaysScroll is true, force scrolling regardless of overflow
         if (alwaysScroll || textWidth > containerWidth + threshold) {
