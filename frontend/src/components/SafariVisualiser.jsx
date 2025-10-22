@@ -52,14 +52,6 @@ const SafariVisualiser = ({ audioRef, isPlaying, colors }) => {
   }, [audioContext, source, isReady]);
 
   useEffect(() => {
-    if (!isPlaying) {
-      if (animationFrameRef.current) {
-        cancelAnimationFrame(animationFrameRef.current);
-      }
-      setLevels({ left: 0, right: 0, leftPeak: 0, rightPeak: 0 });
-      return;
-    }
-
     let time = 0;
     
     const animate = () => {
@@ -68,33 +60,39 @@ const SafariVisualiser = ({ audioRef, isPlaying, colors }) => {
       let leftLevel = 0;
       let rightLevel = 0;
       
-      // If audio analysis is available, use real frequency data
-      if (analyserRef.current && dataArrayRef.current) {
-        analyserRef.current.getByteFrequencyData(dataArrayRef.current);
-        
-        // Calculate overall audio level for both channels
-        let totalSum = 0;
-        let maxVal = 0;
-        
-        for (let i = 0; i < dataArrayRef.current.length; i++) {
-          totalSum += dataArrayRef.current[i];
-          maxVal = Math.max(maxVal, dataArrayRef.current[i]);
+      if (isPlaying) {
+        // If audio analysis is available, use real frequency data
+        if (analyserRef.current && dataArrayRef.current) {
+          analyserRef.current.getByteFrequencyData(dataArrayRef.current);
+          
+          // Calculate overall audio level for both channels
+          let totalSum = 0;
+          let maxVal = 0;
+          
+          for (let i = 0; i < dataArrayRef.current.length; i++) {
+            totalSum += dataArrayRef.current[i];
+            maxVal = Math.max(maxVal, dataArrayRef.current[i]);
+          }
+          
+          const averageLevel = totalSum / dataArrayRef.current.length;
+          
+          // Both channels get similar levels with slight variation for realism
+          // Add some random variation and use max for peaks
+          const baseLevel = (averageLevel / 255) * 100 * 1.4; // 40% boost for visibility
+          const peakInfluence = (maxVal / 255) * 100 * 0.3; // 30% influence from peaks
+          
+          leftLevel = baseLevel + peakInfluence + (Math.sin(time * 3) * 5);
+          rightLevel = baseLevel + peakInfluence + (Math.cos(time * 3.5) * 5);
+          
+        } else {
+          // Fallback: wave animation
+          leftLevel = (Math.sin(time * 2) * 0.3 + 0.5) * 60 + Math.random() * 10;
+          rightLevel = (Math.cos(time * 2.3) * 0.3 + 0.5) * 60 + Math.random() * 10;
         }
-        
-        const averageLevel = totalSum / dataArrayRef.current.length;
-        
-        // Both channels get similar levels with slight variation for realism
-        // Add some random variation and use max for peaks
-        const baseLevel = (averageLevel / 255) * 100 * 1.4; // 40% boost for visibility
-        const peakInfluence = (maxVal / 255) * 100 * 0.3; // 30% influence from peaks
-        
-        leftLevel = baseLevel + peakInfluence + (Math.sin(time * 3) * 5);
-        rightLevel = baseLevel + peakInfluence + (Math.cos(time * 3.5) * 5);
-        
       } else {
-        // Fallback: wave animation
-        leftLevel = (Math.sin(time * 2) * 0.3 + 0.5) * 60 + Math.random() * 10;
-        rightLevel = (Math.cos(time * 2.3) * 0.3 + 0.5) * 60 + Math.random() * 10;
+        // When stopped, animate levels down to zero
+        leftLevel = Math.max(0, levels.left - 3);
+        rightLevel = Math.max(0, levels.right - 3);
       }
       
       // Clamp levels
@@ -103,7 +101,7 @@ const SafariVisualiser = ({ audioRef, isPlaying, colors }) => {
       
       // Peak level logic for left channel
       let leftPeak = peaksRef.current.left;
-      if (leftLevel > leftPeak.height) {
+      if (isPlaying && leftLevel > leftPeak.height) {
         leftPeak = { height: leftLevel, holdTime: 20 }; // Hold for 20 frames
       } else if (leftPeak.holdTime > 0) {
         leftPeak.holdTime--;
@@ -114,7 +112,7 @@ const SafariVisualiser = ({ audioRef, isPlaying, colors }) => {
       
       // Peak level logic for right channel
       let rightPeak = peaksRef.current.right;
-      if (rightLevel > rightPeak.height) {
+      if (isPlaying && rightLevel > rightPeak.height) {
         rightPeak = { height: rightLevel, holdTime: 20 };
       } else if (rightPeak.holdTime > 0) {
         rightPeak.holdTime--;
@@ -140,7 +138,7 @@ const SafariVisualiser = ({ audioRef, isPlaying, colors }) => {
         cancelAnimationFrame(animationFrameRef.current);
       }
     };
-  }, [isPlaying]);
+  }, [isPlaying, levels.left, levels.right]);
 
   // Render horizontal LED strip for a channel
   const renderLEDStrip = (level, peakLevel, label) => {
