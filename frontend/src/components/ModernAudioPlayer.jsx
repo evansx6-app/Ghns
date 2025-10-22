@@ -21,7 +21,6 @@ import InstallButton from './InstallButton';
 import ConnectionStatus from './ConnectionStatus';
 import TShirtShop from './TShirtShop';
 import ScrollingText from './ScrollingText';
-import Spotlights from './Spotlights';
 
 const ModernAudioPlayer = () => {
   const [isPlaying, setIsPlaying] = useState(false);
