@@ -5,7 +5,8 @@ const ScrollingText = ({
   className = '', 
   speed = 30, // pixels per second
   pauseDuration = 2000, // pause at start/end in ms
-  alwaysScroll = false, // new prop to force scrolling
+  alwaysScroll = false, // prop to force scrolling
+  direction = 'ltr', // 'ltr' (left-to-right) or 'rtl' (right-to-left)
   children 
 }) => {
   const containerRef = useRef(null);
@@ -33,8 +34,14 @@ const ScrollingText = ({
           const duration = (scrollDistance / speed) * 1000; // convert to ms
           setAnimationDuration(duration + pauseDuration * 2);
           
-          // Set CSS custom property for scroll distance
-          textRef.current.style.setProperty('--scroll-distance', `-${scrollDistance}px`);
+          // Set CSS custom property for scroll distance based on direction
+          if (direction === 'rtl') {
+            textRef.current.style.setProperty('--scroll-start', `${scrollDistance}px`);
+            textRef.current.style.setProperty('--scroll-end', '0px');
+          } else {
+            textRef.current.style.setProperty('--scroll-start', '0px');
+            textRef.current.style.setProperty('--scroll-end', `-${scrollDistance}px`);
+          }
         } else {
           setShouldScroll(false);
         }
@@ -59,7 +66,7 @@ const ScrollingText = ({
       window.removeEventListener('resize', checkOverflow);
       window.removeEventListener('orientationchange', checkOverflow);
     };
-  }, [text, speed, pauseDuration, alwaysScroll]);
+  }, [text, speed, pauseDuration, alwaysScroll, direction]);
 
   if (!text) return null;
 
@@ -73,7 +80,7 @@ const ScrollingText = ({
         ref={textRef}
         className="inline-block"
         style={shouldScroll ? {
-          animation: `scroll-text ${animationDuration}ms linear infinite`,
+          animation: `scroll-text-custom ${animationDuration}ms linear infinite`,
           animationDelay: `${pauseDuration}ms`,
           willChange: 'transform'
         } : {}}
