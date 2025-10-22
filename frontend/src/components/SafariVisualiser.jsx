@@ -72,24 +72,24 @@ const SafariVisualiser = ({ audioRef, isPlaying, colors }) => {
       if (analyserRef.current && dataArrayRef.current) {
         analyserRef.current.getByteFrequencyData(dataArrayRef.current);
         
-        // Calculate average levels (simulating stereo by splitting frequency range)
-        // Lower frequencies = left channel, higher = right channel (for visual variety)
-        const mid = Math.floor(dataArrayRef.current.length / 2);
+        // Calculate overall audio level for both channels
+        let totalSum = 0;
+        let maxVal = 0;
         
-        let leftSum = 0;
-        let rightSum = 0;
-        
-        // Left channel: lower frequencies with boost
-        for (let i = 0; i < mid; i++) {
-          leftSum += dataArrayRef.current[i];
+        for (let i = 0; i < dataArrayRef.current.length; i++) {
+          totalSum += dataArrayRef.current[i];
+          maxVal = Math.max(maxVal, dataArrayRef.current[i]);
         }
-        leftLevel = (leftSum / mid / 255) * 100 * 1.3; // 30% boost for visibility
         
-        // Right channel: higher frequencies with boost
-        for (let i = mid; i < dataArrayRef.current.length; i++) {
-          rightSum += dataArrayRef.current[i];
-        }
-        rightLevel = (rightSum / (dataArrayRef.current.length - mid) / 255) * 100 * 1.5; // 50% boost for highs
+        const averageLevel = totalSum / dataArrayRef.current.length;
+        
+        // Both channels get similar levels with slight variation for realism
+        // Add some random variation and use max for peaks
+        const baseLevel = (averageLevel / 255) * 100 * 1.4; // 40% boost for visibility
+        const peakInfluence = (maxVal / 255) * 100 * 0.3; // 30% influence from peaks
+        
+        leftLevel = baseLevel + peakInfluence + (Math.sin(time * 3) * 5);
+        rightLevel = baseLevel + peakInfluence + (Math.cos(time * 3.5) * 5);
         
       } else {
         // Fallback: wave animation
