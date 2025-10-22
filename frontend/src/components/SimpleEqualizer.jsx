@@ -27,8 +27,10 @@ const SimpleEqualizer = ({ audioRef, isPlaying, colors }) => {
   const [showFallback, setShowFallback] = useState(false);
   const numBars = 16; // Reduced from 24 - removed last 8 bars, remaining bars will auto-widen
   
-  // Safari detection
+  // Safari/iOS detection - more comprehensive
   const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
+  const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
+  const isMobileSafari = isSafari || isIOS;
 
   useEffect(() => {
     if (!audioContext || !source || !isReady) {
