@@ -16,12 +16,18 @@ const OptimizedImage = ({
   const imgRef = useRef(null);
 
   useEffect(() => {
-    if (!src) return;
+    if (!src) {
+      setImageSrc(fallbackSrc);
+      return;
+    }
+
+    // Reset states when src changes
+    setIsLoaded(false);
+    setHasError(false);
 
     // Priority images update immediately
     if (priority) {
       setImageSrc(src);
-      setIsLoaded(false); // Reset loaded state for new image
       return;
     }
 
@@ -35,6 +41,7 @@ const OptimizedImage = ({
     };
     
     img.onerror = () => {
+      console.warn('Image failed to load:', src);
       setHasError(true);
       setImageSrc(fallbackSrc);
     };
