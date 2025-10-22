@@ -588,6 +588,7 @@ const ModernAudioPlayer = () => {
                           className="text-2xl sm:text-3xl lg:text-4xl xl:text-5xl font-bold text-white leading-tight tracking-tight"
                           speed={40}
                           pauseDuration={1500}
+                          alwaysScroll={true}
                         />
                       </div>
                       
@@ -598,6 +599,7 @@ const ModernAudioPlayer = () => {
                           className="text-lg sm:text-xl lg:text-2xl text-white/70 font-medium"
                           speed={35}
                           pauseDuration={1500}
+                          alwaysScroll={true}
                         />
                       </div>
                       
@@ -608,6 +610,7 @@ const ModernAudioPlayer = () => {
                             className="text-sm sm:text-base lg:text-lg text-white/50"
                             speed={30}
                             pauseDuration={1500}
+                            alwaysScroll={true}
                           />
                         </div>
                       )}
