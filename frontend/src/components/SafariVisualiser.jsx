@@ -122,11 +122,29 @@ const SafariVisualiser = ({ audioRef, isPlaying, colors }) => {
           
           // Smooth interpolation
           const currentHeight = bar.height + (targetHeight - bar.height) * 0.35;
+          const finalHeight = Math.max(5, Math.min(100, currentHeight));
+          
+          // Peak level logic
+          let peak = peaksRef.current[i] || { height: 0, holdTime: 0 };
+          
+          if (finalHeight > peak.height) {
+            // New peak reached
+            peak = { height: finalHeight, holdTime: 30 }; // Hold for 30 frames (~0.5s)
+          } else if (peak.holdTime > 0) {
+            // Hold peak at current position
+            peak.holdTime--;
+          } else {
+            // Slowly decay peak
+            peak.height = Math.max(0, peak.height - 1.5);
+          }
+          
+          peaksRef.current[i] = peak;
           
           return {
             ...bar,
-            height: Math.max(5, Math.min(100, currentHeight)),
-            targetHeight
+            height: finalHeight,
+            targetHeight,
+            peak: peak.height
           };
         });
       } else {
