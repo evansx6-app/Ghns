@@ -147,36 +147,30 @@ const RecentTracks = ({ carMode = false }) => {
                     <OptimizedImage
                       src={track.artwork_url}
                       alt={`${track.artist} - ${track.title}`}
-                      className="absolute inset-0 w-full h-full object-cover z-20 scroll-artwork-stable"
+                      className="absolute inset-0 w-full h-full object-cover z-20"
                       priority={false}
                       crossOrigin="anonymous"
                       referrerPolicy="no-referrer"
                       style={{
-                        willChange: 'auto',
+                        transform: 'translateZ(0)',
                         backfaceVisibility: 'hidden',
-                        transform: 'translate3d(0, 0, 0)',
-                        imageRendering: 'auto',
+                        WebkitBackfaceVisibility: 'hidden',
+                        imageRendering: '-webkit-optimize-contrast',
                         objectFit: 'cover',
                         objectPosition: 'center',
-                        minWidth: '100%',
-                        minHeight: '100%',
+                        width: '100%',
+                        height: '100%',
                         position: 'absolute',
                         top: 0,
                         left: 0,
-                        right: 0,
-                        bottom: 0,
-                        zIndex: 20
+                        zIndex: 20,
+                        pointerEvents: 'none'
                       }}
                       onError={(e) => {
                         console.log(`Recent track artwork failed to load: ${track.title}`);
-                        setTimeout(() => {
-                          enforceArtworkVisibility?.();
-                        }, 100);
                       }}
                       onLoad={(e) => {
-                        requestAnimationFrame(() => {
-                          enforceArtworkVisibility?.();
-                        });
+                        e.target.style.opacity = '1';
                       }}
                     />
                   )}
