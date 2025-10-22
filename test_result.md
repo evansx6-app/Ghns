@@ -131,7 +131,7 @@ frontend:
     status_history:
       - working: true
         agent: "main"
-        comment: "Top banner has text shadows applied (lines 471-472). Removed backdrop-blur and bg-gradient classes. Text shadows working: '0 2px 10px rgba(0,0,0,0.8), 0 0 20px rgba(0,0,0,0.6)' for title and '0 1px 6px rgba(0,0,0,0.8), 0 0 10px rgba(0,0,0,0.6)' for subtitle."
+        comment: "Enhanced top banner prominence with multiple shadow layers. Logo: 3 layers of drop-shadow filters. Title: 5 layers of text shadow (from solid black to wide glow). Subtitle: 5 layers of text shadow. Makes logo and text much more prominent and visible against background."
   
   - task: "Page Loading and Rendering"
     implemented: true
