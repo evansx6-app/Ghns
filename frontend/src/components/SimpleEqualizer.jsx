@@ -212,6 +212,26 @@ const SimpleEqualizer = ({ audioRef, isPlaying, colors }) => {
     );
   }
 
+  // Show fallback if Safari and visualizer isn't ready
+  if (showFallback || (isSafari && !isReady && isPlaying)) {
+    return (
+      <div className="premium-container w-full h-24 sm:h-32 md:h-40 rounded-xl overflow-hidden flex items-center justify-center gap-2">
+        {/* Animated bars fallback for Safari */}
+        {[...Array(16)].map((_, i) => (
+          <div
+            key={i}
+            className="w-2 bg-gradient-to-t from-copper-500 to-copper-300 rounded-full animate-pulse"
+            style={{
+              height: `${30 + Math.sin(i * 0.5) * 20}%`,
+              animationDelay: `${i * 0.1}s`,
+              animationDuration: `${0.8 + Math.random() * 0.4}s`
+            }}
+          />
+        ))}
+      </div>
+    );
+  }
+
   return (
     <div className="premium-container w-full h-24 sm:h-32 md:h-40 rounded-xl overflow-hidden">
       <canvas
