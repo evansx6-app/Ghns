@@ -167,7 +167,7 @@ frontend:
     status_history:
       - working: true
         agent: "main"
-        comment: "Classic equaliser with even bar response: 32 bars with 20 segments each. Improved frequency mapping (evenly distributed across spectrum). Adaptive scaling: quieter frequencies get 1.3x boost for even response. Bass boost (first 8 bars: 1.2x), treble boost (last 12 bars: 1.5x-2.0x progressive). Color coding: Green 1-10, Yellow 11-16, Red 17-20. Faster interpolation (35%) for responsive movement. Music-responsive via Web Audio API, hybrid fallback for Safari/iOS."
+        comment: "Retro equaliser with peak level indicators: 32 bars (14px width) with 20 rounded segments each. Peak hold: 30 frames (~0.5s) then 1.5px/frame decay. Vintage styling: dark gradient background (#1a1a1a to #0a0a0a), bezel effect, inset shadows, glass reflection. Enhanced segments: rounded corners, inset highlights, stronger glow. Green/Gold/Red color zones. Even frequency distribution, adaptive scaling, bass/treble boost. Music-responsive via Web Audio API, Safari/iOS fallback."
   
   - task: "Page Loading and Rendering"
     implemented: true
