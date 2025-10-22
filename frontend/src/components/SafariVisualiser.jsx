@@ -81,22 +81,22 @@ const SafariVisualiser = ({ audioRef, isPlaying, colors }) => {
           const baseLevel = (averageLevel / 255) * 100 * 1.4; // 40% boost for visibility
           const peakInfluence = (maxVal / 255) * 100 * 0.3; // 30% influence from peaks
           
-          // Smooth variation without jitter - use slower sine waves
-          leftLevel = baseLevel + peakInfluence + (Math.sin(time * 1.5) * 3);
-          rightLevel = baseLevel + peakInfluence + (Math.cos(time * 1.8) * 3);
+          // Very subtle variation - slower and smaller amplitude
+          leftLevel = baseLevel + peakInfluence + (Math.sin(time * 1) * 2);
+          rightLevel = baseLevel + peakInfluence + (Math.cos(time * 1.2) * 2);
           
-          // Apply smoothing to reduce jitter
-          leftLevel = levelsRef.current.left * 0.7 + leftLevel * 0.3;
-          rightLevel = levelsRef.current.right * 0.7 + rightLevel * 0.3;
+          // Apply heavy smoothing to eliminate jitter (85/15 blend)
+          leftLevel = levelsRef.current.left * 0.85 + leftLevel * 0.15;
+          rightLevel = levelsRef.current.right * 0.85 + rightLevel * 0.15;
           
         } else {
-          // Fallback: wave animation - smooth without random jitter
+          // Fallback: wave animation - smooth without jitter
           leftLevel = (Math.sin(time * 2) * 0.3 + 0.5) * 60;
           rightLevel = (Math.cos(time * 2.3) * 0.3 + 0.5) * 60;
           
-          // Apply smoothing
-          leftLevel = levelsRef.current.left * 0.7 + leftLevel * 0.3;
-          rightLevel = levelsRef.current.right * 0.7 + rightLevel * 0.3;
+          // Apply heavy smoothing
+          leftLevel = levelsRef.current.left * 0.85 + leftLevel * 0.15;
+          rightLevel = levelsRef.current.right * 0.85 + rightLevel * 0.15;
         }
       } else {
         // When stopped, animate levels down to zero
