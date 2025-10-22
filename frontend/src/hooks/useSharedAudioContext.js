@@ -52,10 +52,25 @@ export const useSharedAudioContext = (audioRef, isPlaying) => {
               console.log('Safari detected - waiting for user interaction');
             }
 
-            globalSource = globalAudioContext.createMediaElementSource(audioRef.current);
-            globalSource.connect(globalAudioContext.destination);
-            isGlobalSetup = true;
-            setupAttempted.current = true;
+            // Safari CORS workaround: Try creating source, if it fails, disable visualizer
+            try {
+              globalSource = globalAudioContext.createMediaElementSource(audioRef.current);
+              globalSource.connect(globalAudioContext.destination);
+              isGlobalSetup = true;
+              setupAttempted.current = true;
+              console.log('Global audio context setup complete');
+            } catch (sourceError) {
+              if (sourceError.name === 'SecurityError' || sourceError.message.includes('tainted')) {
+                console.warn('Safari CORS restriction: Audio stream does not allow Web Audio API access.');
+                console.warn('Visualizer will be disabled. Audio playback will continue normally.');
+                // Mark as attempted but not ready for visualizer
+                setupAttempted.current = true;
+                isGlobalSetup = false;
+                setIsReady(false);
+                return;
+              }
+              throw sourceError;
+            }
             
             // iOS-specific: Ensure context is running after user interaction
             if (isSafari && globalAudioContext.state !== 'running') {
@@ -63,16 +78,14 @@ export const useSharedAudioContext = (audioRef, isPlaying) => {
                 console.log('iOS: Audio context resumed after user interaction');
               });
             }
-            
-            console.log('Global audio context setup complete');
           } catch (error) {
             if (error.name === 'InvalidStateError') {
               console.warn('Audio element already connected. Using existing setup.');
               isGlobalSetup = true;
               setupAttempted.current = true;
             } else if (error.name === 'NotSupportedError' || error.message.includes('CORS')) {
-              console.warn('CORS or cross-origin audio issue detected. Visualizer may not work with this stream.');
-              // Don't set as ready if we can't connect due to CORS
+              console.warn('CORS or cross-origin audio issue detected. Visualizer disabled.');
+              setupAttempted.current = true;
               setIsReady(false);
               return;
             } else {
