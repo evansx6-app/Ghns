@@ -5,6 +5,7 @@ const ScrollingText = ({
   className = '', 
   speed = 30, // pixels per second
   pauseDuration = 2000, // pause at start/end in ms
+  alwaysScroll = false, // new prop to force scrolling
   children 
 }) => {
   const containerRef = useRef(null);
@@ -22,11 +23,13 @@ const ScrollingText = ({
         const containerWidth = containerRef.current.offsetWidth;
         const textWidth = textRef.current.scrollWidth;
         
-        // More aggressive detection - scroll even with small overflow
-        if (textWidth > containerWidth + 5) { // Reduced buffer for mobile
+        // If alwaysScroll is true, force scrolling regardless of overflow
+        if (alwaysScroll || textWidth > containerWidth + 5) {
           setShouldScroll(true);
           // Calculate scroll distance and animation duration
-          const scrollDistance = textWidth - containerWidth + 20; // padding
+          const scrollDistance = alwaysScroll 
+            ? Math.max(textWidth, containerWidth * 0.5) // Ensure minimum scroll distance
+            : textWidth - containerWidth + 20;
           const duration = (scrollDistance / speed) * 1000; // convert to ms
           setAnimationDuration(duration + pauseDuration * 2);
           
@@ -56,7 +59,7 @@ const ScrollingText = ({
       window.removeEventListener('resize', checkOverflow);
       window.removeEventListener('orientationchange', checkOverflow);
     };
-  }, [text, speed, pauseDuration]);
+  }, [text, speed, pauseDuration, alwaysScroll]);
 
   if (!text) return null;
 
