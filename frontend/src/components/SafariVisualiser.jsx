@@ -25,6 +25,36 @@ const SafariVisualiser = ({ audioRef, isPlaying, colors }) => {
     setBars(initialBars);
     barsRef.current = initialBars;
   }, []);
+  
+  // Setup audio analyser if available
+  useEffect(() => {
+    if (!audioContext || !source || !isReady) {
+      return;
+    }
+    
+    try {
+      if (!analyserRef.current) {
+        analyserRef.current = audioContext.createAnalyser();
+        analyserRef.current.fftSize = 64; // Lower fftSize = 32 frequency bins (perfect for 32 bars)
+        analyserRef.current.smoothingTimeConstant = 0.8;
+        source.connect(analyserRef.current);
+        
+        const bufferLength = analyserRef.current.frequencyBinCount;
+        dataArrayRef.current = new Uint8Array(bufferLength);
+        console.log('✅ Music-responsive visualiser enabled');
+      }
+    } catch (error) {
+      console.log('Using fallback animation (no audio analysis)');
+    }
+    
+    return () => {
+      if (analyserRef.current && source) {
+        try {
+          analyserRef.current.disconnect();
+        } catch (e) {}
+      }
+    };
+  }, [audioContext, source, isReady]);
 
   useEffect(() => {
     if (!isPlaying) {
