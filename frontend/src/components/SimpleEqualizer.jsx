@@ -35,13 +35,10 @@ const SimpleEqualizer = ({ audioRef, isPlaying, colors }) => {
   useEffect(() => {
     if (!audioContext || !source || !isReady) {
       console.log('Equalizer waiting...', { audioContext: !!audioContext, source: !!source, isReady });
-      // If Safari and waiting for too long, show fallback
-      if (isSafari && isPlaying) {
-        const timer = setTimeout(() => {
-          console.log('Safari: Showing fallback visualizer');
-          setShowFallback(true);
-        }, 2000);
-        return () => clearTimeout(timer);
+      // If mobile Safari/iOS and playing, show fallback immediately
+      if (isMobileSafari && isPlaying) {
+        console.log('Mobile Safari/iOS: Showing fallback visualizer immediately');
+        setShowFallback(true);
       }
       return;
     }
