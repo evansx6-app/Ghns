@@ -210,10 +210,17 @@ apiClient.interceptors.response.use(
 export { connectionManager };
 
 export const streamAPI = {
-  // Enhanced getCurrentTrack with fallback data
+  // Enhanced getCurrentTrack with caching and fallback data
   getCurrentTrack: async () => {
+    const cacheKey = 'current-track';
+    const cached = getCachedData(cacheKey);
+    if (cached) {
+      return cached;
+    }
+
     try {
       const response = await apiClient.get('/current-track');
+      setCachedData(cacheKey, response.data);
       return response.data;
     } catch (error) {
       // Return fallback data when API is unreachable
