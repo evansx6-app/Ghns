@@ -137,20 +137,15 @@ const RecentTracks = ({ carMode = false }) => {
                     />
                   </div>
                   
-                  {/* Scroll-Stable artwork overlay with enhanced protection */}
+                  {/* Optimized artwork overlay */}
                   {track.artwork_url && track.artwork_url !== 'vinyl-fallback-placeholder' && (
-                    <img
+                    <OptimizedImage
                       src={track.artwork_url}
                       alt={`${track.artist} - ${track.title}`}
                       className="absolute inset-0 w-full h-full object-cover z-20 scroll-artwork-stable"
-                      loading="lazy"
-                      decoding="async"
-                      draggable="false"
-                      fetchpriority="low"
+                      priority={false}
                       crossOrigin="anonymous"
                       referrerPolicy="no-referrer"
-                      data-track-id={`recent-${index}`}
-                      data-artwork-protected="true"
                       style={{
                         willChange: 'auto',
                         backfaceVisibility: 'hidden',
@@ -160,7 +155,6 @@ const RecentTracks = ({ carMode = false }) => {
                         objectPosition: 'center',
                         minWidth: '100%',
                         minHeight: '100%',
-                        // Enhanced scroll stability
                         position: 'absolute',
                         top: 0,
                         left: 0,
@@ -170,23 +164,12 @@ const RecentTracks = ({ carMode = false }) => {
                       }}
                       onError={(e) => {
                         console.log(`Recent track artwork failed to load: ${track.title}`);
-                        // Graceful fallback - hide artwork, show fallback
-                        e.target.style.setProperty('opacity', '0', 'important');
-                        e.target.style.setProperty('visibility', 'hidden', 'important');
-                        
-                        // Trigger stability enforcement after error
                         setTimeout(() => {
                           enforceArtworkVisibility?.();
                         }, 100);
                       }}
                       onLoad={(e) => {
-                        // Ensure visibility on successful load with high priority
                         requestAnimationFrame(() => {
-                          e.target.style.setProperty('opacity', '1', 'important');
-                          e.target.style.setProperty('visibility', 'visible', 'important');
-                          e.target.style.setProperty('display', 'block', 'important');
-                          
-                          // Trigger stability check
                           enforceArtworkVisibility?.();
                         });
                       }}
