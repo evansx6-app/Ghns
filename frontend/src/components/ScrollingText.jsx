@@ -39,17 +39,10 @@ const ScrollingText = ({
           setAnimationDuration(duration + pauseDuration * 2);
           
           // Set CSS custom property for scroll distance based on direction
-          if (direction === 'rtl') {
-            // RTL: Start at right (positive offset), scroll to left (0)
-            // The container will be flex-end, so we offset the text to show the end first
-            const startOffset = Math.min(scrollDistance, containerWidth);
-            textRef.current.style.setProperty('--scroll-start', `${startOffset}px`);
-            textRef.current.style.setProperty('--scroll-end', `-${scrollDistance - startOffset}px`);
-          } else {
-            // LTR: Start at left (0), scroll to left (negative)
-            textRef.current.style.setProperty('--scroll-start', '0px');
-            textRef.current.style.setProperty('--scroll-end', `-${scrollDistance}px`);
-          }
+          // For RTL: text aligned right, scrolls left (shows beginning)
+          // For LTR: text aligned left, scrolls left (shows end)
+          textRef.current.style.setProperty('--scroll-start', '0px');
+          textRef.current.style.setProperty('--scroll-end', `-${scrollDistance}px`);
         } else {
           setShouldScroll(false);
         }
