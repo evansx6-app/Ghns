@@ -624,6 +624,7 @@ const ModernAudioPlayer = () => {
                           speed={40}
                           pauseDuration={1500}
                           direction="rtl"
+                          align="center"
                         />
                       </div>
                       
