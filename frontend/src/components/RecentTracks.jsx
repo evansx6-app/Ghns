@@ -1,10 +1,11 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, memo } from 'react';
 import { Clock, Music, RefreshCw } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from './ui/card';
 import { Button } from './ui/button';
 import { Separator } from './ui/separator';
 import { streamAPI } from '../services/api';
 import ScrollingText from './ScrollingText';
+import OptimizedImage from './OptimizedImage';
 import useScrollContainerArtworkStability from '../hooks/useScrollContainerArtworkStability';
 
 const RecentTracks = ({ carMode = false }) => {
