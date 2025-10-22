@@ -68,11 +68,14 @@ const OptimizedImage = ({
       ref={imgRef}
       src={imageSrc}
       alt={alt}
-      className={`${className} ${isLoaded ? 'opacity-100' : 'opacity-0'} transition-opacity duration-300`}
+      className={`${className} transition-opacity duration-300`}
+      style={{ opacity: isLoaded || priority ? 1 : 0 }}
       loading={priority ? 'eager' : 'lazy'}
       decoding="async"
       onLoad={handleLoad}
       onError={handleError}
+      crossOrigin="anonymous"
+      referrerPolicy="no-referrer"
       {...props}
     />
   );
