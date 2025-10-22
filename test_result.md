@@ -167,7 +167,7 @@ frontend:
     status_history:
       - working: true
         agent: "main"
-        comment: "Cassette deck LED level meters: Dual vertical strips (L/R channels) with 20 LED segments each. Green (0-60%), Yellow (60-85%), Red (85-100%). Peak hold: 20 frames with 2px/frame decay. Features: L/R labels, percentage readout, dB scale markings (0 to -20dB), monospace typography. Vintage cassette deck styling: dark gradient background, bezel effect, glass reflection. Music-responsive via Web Audio API (left=lower freqs, right=higher freqs), wave animation fallback for Safari/iOS."
+        comment: "Cassette deck horizontal LED level meters: Dual horizontal strips (L/R channels) with 20 LED segments each. Green (0-60%), Yellow (60-85%), Red (85-100%). Peak hold: 20 frames with 2px/frame decay. Features: L/R labels on left, percentage readout on right, horizontal dB scale at bottom (-20 to 0dB). LED segments: 4px min-width, 4-5px height, responsive. Both channels use full audio spectrum with slight sin/cos variation for realistic stereo effect. Vintage cassette deck styling with bezel, glass reflection. Music-responsive via Web Audio API, wave animation fallback for Safari/iOS."
   
   - task: "Page Loading and Rendering"
     implemented: true
