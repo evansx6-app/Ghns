@@ -5,7 +5,7 @@ const OptimizedImage = ({
   src, 
   alt, 
   className = '',
-  fallbackSrc = 'https://customer-assets.emergentagent.com/job_ghns-project/artifacts/5tmxnbvh_unnamed.png',
+  fallbackSrc = 'https://customer-assets.emergentagent.com/job_sleep-timer-stream/artifacts/qcvmvlox_cropped-radio.png',
   priority = false,
   onLoad,
   onError,
