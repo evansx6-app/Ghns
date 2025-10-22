@@ -84,57 +84,34 @@ function App() {
       window.addEventListener('load', initializeMusicApp);
     }
 
-    // Enhanced branding removal
+    // Simple branding removal
     const removeBranding = () => {
       try {
-        // Remove elements containing branding text
-        const elements = document.querySelectorAll('*');
-        elements.forEach(element => {
-          const text = (element.textContent || element.innerText || '').toLowerCase();
-          if (text.includes('made with emergent') || 
-              text.includes('powered by emergent') ||
-              text.includes('emergent agent') ||
-              text.includes('built with emergent')) {
-            element.style.setProperty('display', 'none', 'important');
-            element.style.setProperty('visibility', 'hidden', 'important');
-            element.style.setProperty('opacity', '0', 'important');
-          }
-        });
-
-        // Remove by attribute patterns
-        document.querySelectorAll('[class*="emergent"], [id*="emergent"], [data-emergent]').forEach(el => {
-          if (!el.className.includes('emergency')) {
-            el.style.setProperty('display', 'none', 'important');
-            el.style.setProperty('visibility', 'hidden', 'important');
-          }
-        });
-
-        // Remove fixed position elements in bottom right that might be branding
-        document.querySelectorAll('div[style*="position: fixed"]').forEach(el => {
-          const style = el.getAttribute('style') || '';
-          if (style.includes('bottom') && style.includes('right')) {
+        // Only target specific selectors, not all elements
+        const selectors = [
+          '[class*="emergent-branding"]',
+          '[id*="emergent-watermark"]',
+          '[data-emergent]',
+          'div[style*="position: fixed"][style*="bottom"][style*="right"]'
+        ];
+        
+        selectors.forEach(selector => {
+          document.querySelectorAll(selector).forEach(el => {
             const text = (el.textContent || '').toLowerCase();
-            if (text.includes('made') || text.includes('powered') || text.includes('emergent')) {
+            // Only hide if it contains branding text
+            if (text.includes('emergent') || text.includes('made with') || text.includes('powered by')) {
               el.style.setProperty('display', 'none', 'important');
             }
-          }
+          });
         });
       } catch (e) {
-        // Ignore errors
+        console.error('Branding removal error:', e);
       }
     };
 
-    // Run branding removal multiple times
-    setTimeout(removeBranding, 500);
-    setTimeout(removeBranding, 1000);
+    // Run branding removal a few times
     setTimeout(removeBranding, 2000);
     setTimeout(removeBranding, 5000);
-    
-    // Observe DOM changes
-    const observer = new MutationObserver(removeBranding);
-    observer.observe(document.body, { childList: true, subtree: true });
-    
-    return () => observer.disconnect();
   }, []);
 
   return (
