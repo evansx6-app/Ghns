@@ -493,11 +493,13 @@ const ModernAudioPlayer = () => {
               >
                 <CardContent className="p-6 md:p-8 lg:p-10">
                   
-                  {/* Audio Element */}
+                  {/* Audio Element - iOS Compatible */}
                   <audio
                     ref={audioRef}
                     src={STREAM_URLS[currentStreamIndex]}
-                    preload="auto"
+                    preload="metadata"
+                    playsInline
+                    webkit-playsinline="true"
                     onPlay={() => {
                       console.log('Audio playing');
                       setIsPlaying(true);
@@ -522,6 +524,12 @@ const ModernAudioPlayer = () => {
                       if (isCasting && audioRef.current && !audioRef.current.paused) {
                         audioRef.current.pause();
                       }
+                    }}
+                    onLoadedMetadata={() => {
+                      console.log('iOS: Audio metadata loaded');
+                    }}
+                    onCanPlay={() => {
+                      console.log('iOS: Audio can play');
                     }}
                     crossOrigin="anonymous"
                   />
