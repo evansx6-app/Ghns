@@ -470,16 +470,26 @@ const ModernAudioPlayer = () => {
                     filter: 'drop-shadow(0 2px 6px rgba(0,0,0,0.6)) drop-shadow(0 4px 12px rgba(0,0,0,0.4))'
                   }}
                 />
-                <div>
+                <div className="min-w-0 flex-1">
                   <h1 className="text-base sm:text-xl md:text-2xl font-bold text-white leading-tight" style={{ 
                     fontFamily: '"Righteous", cursive',
                     letterSpacing: '0.05em',
                     textShadow: '0 1px 0 #ccc, 0 2px 0 #c9c9c9, 0 3px 0 #bbb, 0 4px 0 #b9b9b9, 0 5px 0 #aaa, 0 6px 1px rgba(0,0,0,.1), 0 0 5px rgba(0,0,0,.1), 0 1px 3px rgba(0,0,0,.3), 0 3px 5px rgba(0,0,0,.2), 0 5px 10px rgba(0,0,0,.25), 0 10px 10px rgba(0,0,0,.2), 0 20px 20px rgba(0,0,0,.15)',
                     transform: 'translateZ(0)'
                   }}>Greatest Hits Non-Stop</h1>
-                  <p className="text-[10px] sm:text-xs md:text-sm text-copper-400 font-medium" style={{ 
-                    textShadow: '0 2px 6px rgba(0,0,0,1), 0 3px 12px rgba(0,0,0,0.9), 0 4px 18px rgba(0,0,0,0.8), 0 0 30px rgba(0,0,0,0.6)'
-                  }}>Legendary Radio from Scotland</p>
+                  <ScrollingText 
+                    text="Legendary Radio from Scotland"
+                    className="text-[10px] sm:text-xs md:text-sm text-copper-400 font-medium"
+                    speed={20}
+                    pauseDuration={1000}
+                    alwaysScroll={true}
+                    direction="ltr"
+                    align="left"
+                  >
+                    <span style={{ 
+                      textShadow: '0 2px 6px rgba(0,0,0,1), 0 3px 12px rgba(0,0,0,0.9), 0 4px 18px rgba(0,0,0,0.8), 0 0 30px rgba(0,0,0,0.6)'
+                    }}>Legendary Radio from Scotland</span>
+                  </ScrollingText>
                 </div>
               </div>
 
