@@ -167,7 +167,19 @@ frontend:
     status_history:
       - working: true
         agent: "main"
-        comment: "Cassette deck horizontal LED meters: Always visible, animate to zero on stop (3px/frame decay). Dual horizontal strips (L/R) with 20 LED segments each. Green (0-60%), Yellow (60-85%), Red (85-100%). Peak hold: 20 frames, 2px/frame decay. Features: L/R labels, percentage readout, horizontal dB scale (-20 to 0dB). LED segments: 4px min-width, 4-5px height, responsive. Both channels use full audio spectrum with sin/cos variation. Vintage cassette deck styling. Music-responsive via Web Audio API, wave fallback for Safari/iOS."
+        comment: "Smooth cassette deck LED meters: Fixed jitter with 70/30 smoothing, slower sine waves (1.5/1.8Hz instead of 3/3.5Hz), removed random noise. Always visible, animate to zero on stop (3px/frame). Dual horizontal strips (L/R) with 20 LED segments. Green (0-60%), Yellow (60-85%), Red (85-100%). Peak hold: 20 frames, 2px/frame decay. Features: L/R labels, percentage readout, dB scale. Both channels use full spectrum with smooth variation. Vintage cassette deck styling. Music-responsive via Web Audio API."
+  
+  - task: "Title Text Scrolling"
+    implemented: true
+    working: true
+    file: "/app/frontend/src/components/ScrollingText.jsx, /app/frontend/src/components/ModernAudioPlayer.jsx"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+      - working: true
+        agent: "main"
+        comment: "Fixed long title scrolling: Reduced overflow detection threshold to 1px for aggressive detection. Added proper container padding. Scrolls RTL when text width exceeds container. Multiple timed checks (100ms, 300ms, 600ms, 1000ms, 1500ms) ensure accurate measurement on all devices."
   
   - task: "Page Loading and Rendering"
     implemented: true
