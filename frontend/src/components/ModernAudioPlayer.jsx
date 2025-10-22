@@ -366,18 +366,44 @@ const ModernAudioPlayer = () => {
     }
   }, [volume]);
 
-  const togglePlayPause = () => {
+  const togglePlayPause = async () => {
     if (audioRef.current) {
       if (isPlaying) {
         audioRef.current.pause();
       } else {
-        audioRef.current.play().catch((error) => {
+        // iOS: Ensure audio is loaded before playing
+        try {
+          // Load metadata if not loaded
+          if (audioRef.current.readyState < 1) {
+            console.log('iOS: Loading audio metadata...');
+            audioRef.current.load();
+            // Wait for metadata
+            await new Promise((resolve) => {
+              const onCanPlay = () => {
+                audioRef.current.removeEventListener('canplay', onCanPlay);
+                resolve();
+              };
+              audioRef.current.addEventListener('canplay', onCanPlay);
+              setTimeout(resolve, 3000); // Timeout after 3s
+            });
+          }
+
+          await audioRef.current.play();
+          console.log('iOS: Playback started successfully');
+          setTimeout(() => fetchCurrentTrack(), 500);
+        } catch (error) {
           console.error('Audio play error:', error);
           
           if (error.name === 'NotAllowedError') {
             toast({
               title: "Permission Required",
-              description: "Please interact with the page first to enable audio playback.",
+              description: "Please tap the play button to enable audio playback.",
+              variant: "destructive",
+            });
+          } else if (error.name === 'NotSupportedError') {
+            toast({
+              title: "Format Not Supported",
+              description: "Your device doesn't support this audio format.",
               variant: "destructive",
             });
           } else {
@@ -402,8 +428,7 @@ const ModernAudioPlayer = () => {
               }
             }, 2000);
           }
-        });
-        setTimeout(() => fetchCurrentTrack(), 500);
+        }
       }
     }
   };
