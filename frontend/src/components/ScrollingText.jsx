@@ -29,9 +29,6 @@ const ScrollingText = ({
         const containerWidth = containerRect.width;
         const textWidth = textRef.current.scrollWidth;
         
-        // Debug logging
-        console.log('ScrollingText check:', { text, containerWidth, textWidth, shouldScroll: textWidth > containerWidth });
-        
         // Very aggressive detection - if text is even slightly wider, scroll it
         const threshold = 1;
         
