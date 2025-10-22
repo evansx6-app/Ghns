@@ -708,6 +708,7 @@ const ModernAudioPlayer = () => {
                   {/* Safari Visualiser */}
                   <div className="mb-6">
                     <SafariVisualiser 
+                      audioRef={audioRef}
                       isPlaying={isPlaying}
                       colors={colors}
                     />
