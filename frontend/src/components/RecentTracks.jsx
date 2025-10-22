@@ -106,9 +106,11 @@ const RecentTracks = ({ carMode = false }) => {
         ref={scrollContainerRef}
         className="space-y-2.5 sm:space-y-3 md:space-y-4 max-h-80 sm:max-h-96 md:max-h-[32rem] lg:max-h-[40rem] overflow-y-auto scroll-container-artwork-stable px-4 sm:px-6 md:px-8 lg:px-10 pb-4 sm:pb-6 md:pb-8"
         style={{
-          isolation: 'isolate',
-          contain: 'layout style paint',
-          scrollBehavior: 'smooth'
+          WebkitOverflowScrolling: 'touch',
+          overscrollBehavior: 'contain',
+          willChange: 'scroll-position',
+          transform: 'translateZ(0)',
+          backfaceVisibility: 'hidden'
         }}
       >
         {recentTracks.length === 0 ? (
