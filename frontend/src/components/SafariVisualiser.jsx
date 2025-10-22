@@ -30,13 +30,13 @@ const SafariVisualiser = ({ audioRef, isPlaying, colors }) => {
     try {
       if (!analyserRef.current) {
         analyserRef.current = audioContext.createAnalyser();
-        analyserRef.current.fftSize = 64; // Lower fftSize = 32 frequency bins (perfect for 32 bars)
-        analyserRef.current.smoothingTimeConstant = 0.8;
+        analyserRef.current.fftSize = 256; // Decent resolution for level detection
+        analyserRef.current.smoothingTimeConstant = 0.7;
         source.connect(analyserRef.current);
         
         const bufferLength = analyserRef.current.frequencyBinCount;
         dataArrayRef.current = new Uint8Array(bufferLength);
-        console.log('✅ Music-responsive visualiser enabled');
+        console.log('✅ Cassette deck level meters enabled');
       }
     } catch (error) {
       console.log('Using fallback animation (no audio analysis)');
