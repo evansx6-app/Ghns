@@ -467,32 +467,13 @@ div[style*="position: fixed"][style*="bottom"][style*="right"]:contains("Powered
   display: none !important;
 }
 
-/* Ambilight LED Effect */
-.ambilight-container {
-  overflow: visible;
-}
-
-/* Individual LED pulsing animation */
-@keyframes ledPulse {
+/* Colorful Edge Glow Effect */
+@keyframes colorfulGlowPulse {
   0%, 100% {
-    opacity: 0.8;
-    transform: scale(1);
+    filter: brightness(1) saturate(1);
   }
   50% {
-    opacity: 1;
-    transform: scale(1.2);
-  }
-}
-
-/* Ambient background glow from all LEDs */
-@keyframes ambiBackglow {
-  0%, 100% {
-    opacity: 0.3;
-    filter: blur(50px) brightness(1);
-  }
-  50% {
-    opacity: 0.5;
-    filter: blur(55px) brightness(1.1);
+    filter: brightness(1.1) saturate(1.2);
   }
 }
 
