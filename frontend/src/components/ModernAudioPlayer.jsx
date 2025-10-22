@@ -471,15 +471,12 @@ const ModernAudioPlayer = () => {
                   }}
                 />
                 <div className="min-w-0 flex-1">
-                  <h1 className="text-base sm:text-xl md:text-2xl font-bold text-white leading-tight" style={{ 
-                    fontFamily: '"Righteous", cursive',
-                    letterSpacing: '0.05em',
-                    textShadow: '0 1px 0 #ccc, 0 2px 0 #c9c9c9, 0 3px 0 #bbb, 0 4px 0 #b9b9b9, 0 5px 0 #aaa, 0 6px 1px rgba(0,0,0,.1), 0 0 5px rgba(0,0,0,.1), 0 1px 3px rgba(0,0,0,.3), 0 3px 5px rgba(0,0,0,.2), 0 5px 10px rgba(0,0,0,.25), 0 10px 10px rgba(0,0,0,.2), 0 20px 20px rgba(0,0,0,.15)',
-                    transform: 'translateZ(0)'
+                  <h1 className="text-base sm:text-xl md:text-2xl font-black text-white leading-tight" style={{ 
+                    textShadow: '0 2px 4px rgba(0,0,0,0.8)'
                   }}>Greatest Hits Non-Stop</h1>
                   <ScrollingText 
                     text="Legendary Radio from Scotland"
-                    className="text-[10px] sm:text-xs md:text-sm text-copper-400 font-medium"
+                    className="text-[10px] sm:text-xs md:text-sm text-copper-400 font-semibold"
                     speed={20}
                     pauseDuration={1000}
                     alwaysScroll={true}
@@ -487,7 +484,7 @@ const ModernAudioPlayer = () => {
                     align="left"
                   >
                     <span style={{ 
-                      textShadow: '0 2px 6px rgba(0,0,0,1), 0 3px 12px rgba(0,0,0,0.9), 0 4px 18px rgba(0,0,0,0.8), 0 0 30px rgba(0,0,0,0.6)'
+                      textShadow: '0 1px 2px rgba(0,0,0,0.8)'
                     }}>Legendary Radio from Scotland</span>
                   </ScrollingText>
                 </div>
