@@ -474,9 +474,91 @@ const ModernAudioPlayer = () => {
             {/* Main Player - Full Width */}
             <div className="space-y-6">
               
-              {/* Hero Player Card */}
-              <Card className="premium-container-strong rounded-3xl shadow-2xl overflow-hidden">
-                <CardContent className="p-6 md:p-8 lg:p-10">
+              {/* Hero Player Card with Ambilight */}
+              <div className="relative">
+                {/* Ambilight LED Effect */}
+                <div 
+                  className="absolute -inset-4 rounded-[2.5rem] opacity-0 transition-opacity duration-1000"
+                  style={{
+                    opacity: isPlaying ? 0.6 : 0,
+                    background: `
+                      radial-gradient(circle at 0% 0%, ${colors.primary} 0%, transparent 50%),
+                      radial-gradient(circle at 100% 0%, ${colors.secondary} 0%, transparent 50%),
+                      radial-gradient(circle at 100% 100%, ${colors.accent} 0%, transparent 50%),
+                      radial-gradient(circle at 0% 100%, ${colors.primary} 0%, transparent 50%)
+                    `,
+                    filter: 'blur(40px)',
+                    animation: isPlaying ? 'ambiPulse 4s ease-in-out infinite' : 'none'
+                  }}
+                />
+                
+                {/* LED Strips Effect */}
+                {isPlaying && (
+                  <>
+                    {/* Top LED strip */}
+                    <div 
+                      className="absolute -top-2 left-0 right-0 h-1 rounded-full opacity-80"
+                      style={{
+                        background: `linear-gradient(90deg, 
+                          ${colors.primary} 0%, 
+                          ${colors.secondary} 25%, 
+                          ${colors.accent} 50%, 
+                          ${colors.secondary} 75%, 
+                          ${colors.primary} 100%)`,
+                        boxShadow: `0 0 20px ${colors.primary}, 0 0 40px ${colors.secondary}`,
+                        animation: 'ledFlow 3s linear infinite'
+                      }}
+                    />
+                    
+                    {/* Bottom LED strip */}
+                    <div 
+                      className="absolute -bottom-2 left-0 right-0 h-1 rounded-full opacity-80"
+                      style={{
+                        background: `linear-gradient(90deg, 
+                          ${colors.primary} 0%, 
+                          ${colors.secondary} 25%, 
+                          ${colors.accent} 50%, 
+                          ${colors.secondary} 75%, 
+                          ${colors.primary} 100%)`,
+                        boxShadow: `0 0 20px ${colors.primary}, 0 0 40px ${colors.secondary}`,
+                        animation: 'ledFlow 3s linear infinite reverse'
+                      }}
+                    />
+                    
+                    {/* Left LED strip */}
+                    <div 
+                      className="absolute -left-2 top-0 bottom-0 w-1 rounded-full opacity-80"
+                      style={{
+                        background: `linear-gradient(180deg, 
+                          ${colors.primary} 0%, 
+                          ${colors.accent} 25%, 
+                          ${colors.secondary} 50%, 
+                          ${colors.accent} 75%, 
+                          ${colors.primary} 100%)`,
+                        boxShadow: `0 0 20px ${colors.primary}, 0 0 40px ${colors.accent}`,
+                        animation: 'ledFlow 3s linear infinite'
+                      }}
+                    />
+                    
+                    {/* Right LED strip */}
+                    <div 
+                      className="absolute -right-2 top-0 bottom-0 w-1 rounded-full opacity-80"
+                      style={{
+                        background: `linear-gradient(180deg, 
+                          ${colors.primary} 0%, 
+                          ${colors.accent} 25%, 
+                          ${colors.secondary} 50%, 
+                          ${colors.accent} 75%, 
+                          ${colors.primary} 100%)`,
+                        boxShadow: `0 0 20px ${colors.primary}, 0 0 40px ${colors.accent}`,
+                        animation: 'ledFlow 3s linear infinite reverse'
+                      }}
+                    />
+                  </>
+                )}
+                
+                <Card className="premium-container-strong rounded-3xl shadow-2xl overflow-hidden relative z-10">
+                  <CardContent className="p-6 md:p-8 lg:p-10">
                   
                   {/* Audio Element */}
                   <audio
