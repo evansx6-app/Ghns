@@ -201,19 +201,6 @@ const SafariVisualiser = ({ audioRef, isPlaying, colors }) => {
     );
   };
 
-  if (!isPlaying) {
-    return (
-      <div className="w-full h-24 sm:h-32 md:h-40 rounded-lg overflow-hidden relative" style={{
-        background: 'linear-gradient(180deg, #1a1a1a 0%, #0a0a0a 100%)',
-        boxShadow: 'inset 0 2px 8px rgba(0,0,0,0.8)'
-      }}>
-        <div className="absolute inset-0 flex items-center justify-center">
-          <p className="text-white/50 text-sm font-mono">PLAY TO MONITOR LEVELS</p>
-        </div>
-      </div>
-    );
-  }
-
   return (
     <div className="w-full h-24 sm:h-32 md:h-40 rounded-lg overflow-hidden relative" style={{
       background: 'linear-gradient(180deg, #1a1a1a 0%, #0a0a0a 100%)',
