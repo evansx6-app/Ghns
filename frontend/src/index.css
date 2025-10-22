@@ -466,3 +466,39 @@ div[style*="position: fixed"][style*="bottom"][style*="right"]:contains("Made wi
 div[style*="position: fixed"][style*="bottom"][style*="right"]:contains("Powered by") {
   display: none !important;
 }
+
+/* Spotlight Animations */
+@keyframes spotlightSway {
+  0%, 100% {
+    transform: translateX(-50%) rotate(0deg);
+    opacity: 1;
+  }
+  25% {
+    transform: translateX(-50%) rotate(2deg);
+    opacity: 0.8;
+  }
+  50% {
+    transform: translateX(-50%) rotate(0deg);
+    opacity: 1;
+  }
+  75% {
+    transform: translateX(-50%) rotate(-2deg);
+    opacity: 0.8;
+  }
+}
+
+@keyframes atmosphericPulse {
+  0%, 100% {
+    opacity: 0.1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.15;
+    transform: scale(1.05);
+  }
+}
+
+/* Smooth transition utilities */
+.duration-3000 {
+  transition-duration: 3000ms;
+}
