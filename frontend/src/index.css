@@ -568,6 +568,22 @@ span[id*="watermark" i] {
     transform: translateZ(0);
     -webkit-transform: translateZ(0);
     will-change: auto;
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+  }
+
+  /* Fix audio element on iOS */
+  audio {
+    -webkit-transform: translateZ(0);
+    transform: translateZ(0);
+  }
+
+  /* Fix image rendering on iOS */
+  img {
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+    -webkit-transform: translateZ(0);
+    transform: translateZ(0);
   }
 }
 
