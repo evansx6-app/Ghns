@@ -505,10 +505,10 @@ const ModernAudioPlayer = () => {
                 className="premium-container-strong rounded-3xl overflow-hidden relative transition-all duration-1000"
                 style={{
                   boxShadow: isPlaying 
-                    ? `0 0 15px ${colors.primary}, 0 0 30px ${colors.primary}, 0 0 45px ${colors.secondary}, 0 0 60px ${colors.accent}, 0 15px 50px rgba(0, 0, 0, 0.6)`
+                    ? `0 0 10px ${colors.primary}, 0 0 20px ${colors.primary}, 0 0 30px ${colors.secondary}, 0 15px 50px rgba(0, 0, 0, 0.6)`
                     : '0 15px 50px rgba(0, 0, 0, 0.6)',
                   WebkitBoxShadow: isPlaying 
-                    ? `0 0 15px ${colors.primary}, 0 0 30px ${colors.primary}, 0 0 45px ${colors.secondary}, 0 0 60px ${colors.accent}, 0 15px 50px rgba(0, 0, 0, 0.6)`
+                    ? `0 0 10px ${colors.primary}, 0 0 20px ${colors.primary}, 0 0 30px ${colors.secondary}, 0 15px 50px rgba(0, 0, 0, 0.6)`
                     : '0 15px 50px rgba(0, 0, 0, 0.6)',
                   animation: isPlaying ? 'colorfulGlowPulse 4s ease-in-out infinite' : 'none',
                   WebkitAnimation: isPlaying ? 'colorfulGlowPulse 4s ease-in-out infinite' : 'none',
