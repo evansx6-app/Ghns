@@ -192,15 +192,17 @@ const SafariVisualiser = ({ audioRef, isPlaying, colors }) => {
     );
   }
 
-  // Classic equaliser: render segmented bars
+  // Classic equaliser: render segmented bars with peak indicators
   const renderSegmentedBar = (bar) => {
     const segments = 20; // Number of segments per bar
     const filledSegments = Math.floor((bar.height / 100) * segments);
+    const peakSegment = Math.floor((bar.peak / 100) * segments);
     
     return (
-      <div key={bar.id} className="flex-1 flex flex-col-reverse gap-[2px] max-w-[12px]">
+      <div key={bar.id} className="flex-1 flex flex-col-reverse gap-[3px] max-w-[14px]">
         {Array.from({ length: segments }).map((_, segIndex) => {
           const isFilled = segIndex < filledSegments;
+          const isPeak = segIndex === peakSegment - 1 && peakSegment > filledSegments;
           const segmentNumber = segIndex + 1;
           
           // Classic equaliser colors based on segment position
@@ -211,21 +213,26 @@ const SafariVisualiser = ({ audioRef, isPlaying, colors }) => {
           if (segmentNumber <= 10) {
             segmentColor = '#00FF00'; // Green
           } else if (segmentNumber <= 16) {
-            segmentColor = '#FFDD00'; // Yellow (brighter)
+            segmentColor = '#FFD700'; // Gold/Yellow
           } else {
             segmentColor = '#FF0000'; // Red
           }
           
+          // Peak indicator always shows in corresponding color zone
+          const showSegment = isFilled || isPeak;
+          
           return (
             <div
               key={segIndex}
-              className="w-full h-full transition-all duration-75"
+              className="w-full rounded-sm transition-all duration-75"
               style={{
-                backgroundColor: isFilled ? segmentColor : 'rgba(255,255,255,0.08)',
-                boxShadow: isFilled ? `0 0 10px ${segmentColor}cc, 0 0 4px ${segmentColor}` : 'none',
-                border: '1px solid rgba(0,0,0,0.4)',
-                minHeight: '2px',
-                opacity: isFilled ? 1 : 0.3
+                backgroundColor: showSegment ? segmentColor : 'rgba(40,40,40,0.6)',
+                boxShadow: showSegment ? `0 0 12px ${segmentColor}dd, 0 0 6px ${segmentColor}, inset 0 1px 0 rgba(255,255,255,0.3)` : 'inset 0 1px 0 rgba(255,255,255,0.05)',
+                border: `1px solid ${showSegment ? 'rgba(0,0,0,0.6)' : 'rgba(0,0,0,0.8)'}`,
+                minHeight: '3px',
+                height: '100%',
+                opacity: showSegment ? 1 : 0.4,
+                filter: isPeak ? 'brightness(1.3)' : 'none'
               }}
             />
           );
