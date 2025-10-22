@@ -163,14 +163,17 @@ const SafariVisualiser = ({ audioRef, isPlaying, colors }) => {
       <div key={bar.id} className="flex-1 flex flex-col-reverse gap-[2px] max-w-[12px]">
         {Array.from({ length: segments }).map((_, segIndex) => {
           const isFilled = segIndex < filledSegments;
-          const segmentPercent = ((segIndex + 1) / segments) * 100;
+          const segmentNumber = segIndex + 1;
           
-          // Classic equaliser colors: green (bottom), yellow (middle), red (top)
+          // Classic equaliser colors based on segment position
+          // Green: segments 1-10 (0-50%)
+          // Yellow: segments 11-16 (50-80%)
+          // Red: segments 17-20 (80-100%)
           let segmentColor;
-          if (segmentPercent <= 50) {
+          if (segmentNumber <= 10) {
             segmentColor = '#00FF00'; // Green
-          } else if (segmentPercent <= 80) {
-            segmentColor = '#FFFF00'; // Yellow
+          } else if (segmentNumber <= 16) {
+            segmentColor = '#FFDD00'; // Yellow (brighter)
           } else {
             segmentColor = '#FF0000'; // Red
           }
@@ -181,9 +184,10 @@ const SafariVisualiser = ({ audioRef, isPlaying, colors }) => {
               className="w-full h-full transition-all duration-75"
               style={{
                 backgroundColor: isFilled ? segmentColor : 'rgba(255,255,255,0.08)',
-                boxShadow: isFilled ? `0 0 8px ${segmentColor}80` : 'none',
-                border: '1px solid rgba(0,0,0,0.3)',
-                minHeight: '2px'
+                boxShadow: isFilled ? `0 0 10px ${segmentColor}cc, 0 0 4px ${segmentColor}` : 'none',
+                border: '1px solid rgba(0,0,0,0.4)',
+                minHeight: '2px',
+                opacity: isFilled ? 1 : 0.3
               }}
             />
           );
