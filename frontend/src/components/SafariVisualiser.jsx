@@ -226,8 +226,8 @@ const SafariVisualiser = ({ audioRef, isPlaying, colors }) => {
         boxShadow: 'inset 0 1px 1px rgba(255,255,255,0.1)'
       }} />
       
-      {/* Level meters */}
-      <div className="absolute inset-0 flex items-center justify-center gap-8 sm:gap-12 px-4">
+      {/* Horizontal Level meters */}
+      <div className="absolute inset-0 flex flex-col items-center justify-center gap-4 px-6 sm:px-8">
         {renderLEDStrip(levels.left, levels.leftPeak, 'L')}
         {renderLEDStrip(levels.right, levels.rightPeak, 'R')}
       </div>
@@ -237,13 +237,13 @@ const SafariVisualiser = ({ audioRef, isPlaying, colors }) => {
         background: 'linear-gradient(165deg, rgba(255,255,255,0.02) 0%, transparent 40%)'
       }} />
       
-      {/* Level scale markings */}
-      <div className="absolute left-0 top-0 bottom-0 flex flex-col justify-between py-12 px-1 text-[8px] text-white/30 font-mono pointer-events-none">
-        <div>0</div>
-        <div>-3</div>
-        <div>-6</div>
-        <div>-12</div>
+      {/* Level scale markings - horizontal */}
+      <div className="absolute bottom-2 left-0 right-0 flex justify-between px-12 text-[8px] text-white/30 font-mono pointer-events-none">
         <div>-20</div>
+        <div>-12</div>
+        <div>-6</div>
+        <div>-3</div>
+        <div>0</div>
       </div>
     </div>
   );
