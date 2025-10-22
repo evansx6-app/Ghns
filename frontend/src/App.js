@@ -84,15 +84,39 @@ function App() {
       window.addEventListener('load', initializeMusicApp);
     }
 
-    // Simple branding removal
+    // Enhanced branding removal
     const removeBranding = () => {
       try {
         // Remove elements containing branding text
-        const elements = document.querySelectorAll('div, span, p');
+        const elements = document.querySelectorAll('*');
         elements.forEach(element => {
-          const text = element.textContent || element.innerText || '';
-          if (text.toLowerCase().includes('made with emergent')) {
-            element.style.display = 'none';
+          const text = (element.textContent || element.innerText || '').toLowerCase();
+          if (text.includes('made with emergent') || 
+              text.includes('powered by emergent') ||
+              text.includes('emergent agent') ||
+              text.includes('built with emergent')) {
+            element.style.setProperty('display', 'none', 'important');
+            element.style.setProperty('visibility', 'hidden', 'important');
+            element.style.setProperty('opacity', '0', 'important');
+          }
+        });
+
+        // Remove by attribute patterns
+        document.querySelectorAll('[class*="emergent"], [id*="emergent"], [data-emergent]').forEach(el => {
+          if (!el.className.includes('emergency')) {
+            el.style.setProperty('display', 'none', 'important');
+            el.style.setProperty('visibility', 'hidden', 'important');
+          }
+        });
+
+        // Remove fixed position elements in bottom right that might be branding
+        document.querySelectorAll('div[style*="position: fixed"]').forEach(el => {
+          const style = el.getAttribute('style') || '';
+          if (style.includes('bottom') && style.includes('right')) {
+            const text = (el.textContent || '').toLowerCase();
+            if (text.includes('made') || text.includes('powered') || text.includes('emergent')) {
+              el.style.setProperty('display', 'none', 'important');
+            }
           }
         });
       } catch (e) {
@@ -100,9 +124,17 @@ function App() {
       }
     };
 
-    // Run branding removal occasionally
+    // Run branding removal multiple times
+    setTimeout(removeBranding, 500);
+    setTimeout(removeBranding, 1000);
     setTimeout(removeBranding, 2000);
     setTimeout(removeBranding, 5000);
+    
+    // Observe DOM changes
+    const observer = new MutationObserver(removeBranding);
+    observer.observe(document.body, { childList: true, subtree: true });
+    
+    return () => observer.disconnect();
   }, []);
 
   return (
