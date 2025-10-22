@@ -76,7 +76,11 @@ const ScrollingText = ({
     <div 
       ref={containerRef}
       className={`overflow-hidden whitespace-nowrap w-full max-w-full ${className}`}
-      style={{ position: 'relative', display: 'block' }}
+      style={{ 
+        position: 'relative', 
+        display: 'block',
+        textAlign: direction === 'rtl' && !shouldScroll ? 'right' : 'left'
+      }}
     >
       <div
         ref={textRef}
@@ -84,7 +88,8 @@ const ScrollingText = ({
         style={shouldScroll ? {
           animation: `scroll-text-custom ${animationDuration}ms linear infinite`,
           animationDelay: `${pauseDuration}ms`,
-          willChange: 'transform'
+          willChange: 'transform',
+          float: direction === 'rtl' ? 'right' : 'none'
         } : {}}
       >
         {children || text}
