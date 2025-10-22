@@ -21,10 +21,13 @@ const SafariVisualiser = ({ audioRef, isPlaying, colors }) => {
       targetHeight: 20 + Math.random() * 80,
       speed: 0.5 + Math.random() * 1.5,
       phase: Math.random() * Math.PI * 2,
-      frequency: 0.02 + Math.random() * 0.03
+      frequency: 0.02 + Math.random() * 0.03,
+      peak: 0,
+      peakHoldTime: 0
     }));
     setBars(initialBars);
     barsRef.current = initialBars;
+    peaksRef.current = initialBars.map(() => ({ height: 0, holdTime: 0 }));
   }, []);
   
   // Setup audio analyser if available
