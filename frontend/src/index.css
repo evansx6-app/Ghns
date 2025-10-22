@@ -491,3 +491,39 @@ div[style*="position: fixed"][style*="bottom"][style*="right"]:contains("Powered
 .duration-3000 {
   transition-duration: 3000ms;
 }
+
+/* Fix graphic glitches during scroll on mobile */
+.scroll-container-artwork-stable {
+  -webkit-overflow-scrolling: touch;
+  overflow-scrolling: touch;
+  transform: translateZ(0);
+  -webkit-transform: translateZ(0);
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  perspective: 1000px;
+  -webkit-perspective: 1000px;
+}
+
+.scroll-container-artwork-stable * {
+  transform: translateZ(0);
+  -webkit-transform: translateZ(0);
+}
+
+/* Prevent artwork flickering during scroll */
+.scroll-artwork-stable {
+  transform: translateZ(0) !important;
+  -webkit-transform: translateZ(0) !important;
+  backface-visibility: hidden !important;
+  -webkit-backface-visibility: hidden !important;
+  will-change: auto !important;
+  image-rendering: -webkit-optimize-contrast;
+  image-rendering: crisp-edges;
+}
+
+/* GPU acceleration for smooth scrolling */
+@media (max-width: 768px) {
+  .scroll-container-artwork-stable {
+    will-change: scroll-position;
+    contain: layout style paint;
+  }
+}
