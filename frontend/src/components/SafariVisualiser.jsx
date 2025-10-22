@@ -5,6 +5,7 @@ const SafariVisualiser = ({ audioRef, isPlaying, colors }) => {
   const [bars, setBars] = useState([]);
   const animationFrameRef = useRef(null);
   const barsRef = useRef([]);
+  const peaksRef = useRef([]); // Track peak levels for each bar
   const analyserRef = useRef(null);
   const dataArrayRef = useRef(null);
   const numBars = 32;
