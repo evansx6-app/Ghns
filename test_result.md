@@ -131,7 +131,7 @@ frontend:
     status_history:
       - working: true
         agent: "main"
-        comment: "Final styling: Logo shadow reduced to 2 subtle layers (0.6, 0.4 opacity). Changed font to Playfair Display (elegant serif) with letter spacing for title-like appearance. Title and subtitle both use sophisticated serif typography with refined shadows. Professional, classic radio station look achieved."
+        comment: "Final styling: Logo has 2 subtle shadow layers. Title 'Greatest Hits Non-Stop' uses Playfair Display serif with 3D lettering effect (12 layers of shadows creating depth/extrusion). Subtitle 'Legendary Radio from Scotland' uses original sans-serif font with simple shadows. Creates elegant contrast and dimensional title effect."
   
   - task: "Page Loading and Rendering"
     implemented: true
