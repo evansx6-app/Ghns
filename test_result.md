@@ -167,7 +167,7 @@ frontend:
     status_history:
       - working: true
         agent: "main"
-        comment: "Retro equaliser with peak level indicators: 32 bars (14px width) with 20 rounded segments each. Peak hold: 30 frames (~0.5s) then 1.5px/frame decay. Vintage styling: dark gradient background (#1a1a1a to #0a0a0a), bezel effect, inset shadows, glass reflection. Enhanced segments: rounded corners, inset highlights, stronger glow. Green/Gold/Red color zones. Even frequency distribution, adaptive scaling, bass/treble boost. Music-responsive via Web Audio API, Safari/iOS fallback."
+        comment: "Cassette deck LED level meters: Dual vertical strips (L/R channels) with 20 LED segments each. Green (0-60%), Yellow (60-85%), Red (85-100%). Peak hold: 20 frames with 2px/frame decay. Features: L/R labels, percentage readout, dB scale markings (0 to -20dB), monospace typography. Vintage cassette deck styling: dark gradient background, bezel effect, glass reflection. Music-responsive via Web Audio API (left=lower freqs, right=higher freqs), wave animation fallback for Safari/iOS."
   
   - task: "Page Loading and Rendering"
     implemented: true
