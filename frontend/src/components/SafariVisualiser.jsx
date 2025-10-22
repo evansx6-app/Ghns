@@ -130,6 +130,10 @@ const SafariVisualiser = ({ audioRef, isPlaying, colors }) => {
       }
       peaksRef.current.right = rightPeak;
       
+      // Update ref for next frame
+      levelsRef.current = { left: leftLevel, right: rightLevel };
+      
+      // Update state for rendering
       setLevels({
         left: leftLevel,
         right: rightLevel,
