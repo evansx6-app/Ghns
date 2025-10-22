@@ -24,7 +24,11 @@ const SimpleEqualizer = ({ audioRef, isPlaying, colors }) => {
   const { audioContext, source, isReady } = useSharedAudioContext(audioRef, isPlaying);
   
   const [dataArray, setDataArray] = useState(null);
+  const [showFallback, setShowFallback] = useState(false);
   const numBars = 16; // Reduced from 24 - removed last 8 bars, remaining bars will auto-widen
+  
+  // Safari detection
+  const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
 
   useEffect(() => {
     if (!audioContext || !source || !isReady) {
