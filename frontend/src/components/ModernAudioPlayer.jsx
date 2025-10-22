@@ -474,137 +474,21 @@ const ModernAudioPlayer = () => {
             {/* Main Player - Full Width */}
             <div className="space-y-6">
               
-              {/* Hero Player Card with Ambilight LEDs */}
-              <div className="relative ambilight-container">
-                {/* Ambilight Effect - Individual LED lights */}
-                {isPlaying && (
-                  <>
-                    {/* Top Edge LEDs */}
-                    {Array.from({ length: 40 }).map((_, i) => {
-                      const position = (i / 39) * 100;
-                      const colorIndex = Math.floor((i / 40) * 3);
-                      const ledColor = colorIndex === 0 ? colors.primary : colorIndex === 1 ? colors.secondary : colors.accent;
-                      return (
-                        <div
-                          key={`top-${i}`}
-                          className="absolute -top-4 w-1.5 h-1.5 rounded-full pointer-events-none"
-                          style={{
-                            left: `${position}%`,
-                            background: ledColor,
-                            boxShadow: `
-                              0 0 3px ${ledColor},
-                              0 0 6px ${ledColor},
-                              0 0 10px ${ledColor}95,
-                              0 0 15px ${ledColor}70,
-                              0 0 20px ${ledColor}40
-                            `,
-                            animation: `ledPulse 2s ease-in-out infinite`,
-                            animationDelay: `${i * 0.05}s`,
-                            filter: 'blur(0.5px)'
-                          }}
-                        />
-                      );
-                    })}
-
-                    {/* Bottom Edge LEDs */}
-                    {Array.from({ length: 40 }).map((_, i) => {
-                      const position = (i / 39) * 100;
-                      const colorIndex = Math.floor((i / 40) * 3);
-                      const ledColor = colorIndex === 0 ? colors.accent : colorIndex === 1 ? colors.primary : colors.secondary;
-                      return (
-                        <div
-                          key={`bottom-${i}`}
-                          className="absolute -bottom-4 w-1.5 h-1.5 rounded-full pointer-events-none"
-                          style={{
-                            left: `${position}%`,
-                            background: ledColor,
-                            boxShadow: `
-                              0 0 3px ${ledColor},
-                              0 0 6px ${ledColor},
-                              0 0 10px ${ledColor}95,
-                              0 0 15px ${ledColor}70,
-                              0 0 20px ${ledColor}40
-                            `,
-                            animation: `ledPulse 2s ease-in-out infinite`,
-                            animationDelay: `${i * 0.05 + 1}s`,
-                            filter: 'blur(0.5px)'
-                          }}
-                        />
-                      );
-                    })}
-
-                    {/* Left Edge LEDs */}
-                    {Array.from({ length: 40 }).map((_, i) => {
-                      const position = (i / 39) * 100;
-                      const colorIndex = Math.floor((i / 40) * 3);
-                      const ledColor = colorIndex === 0 ? colors.secondary : colorIndex === 1 ? colors.accent : colors.primary;
-                      return (
-                        <div
-                          key={`left-${i}`}
-                          className="absolute -left-4 w-1.5 h-1.5 rounded-full pointer-events-none"
-                          style={{
-                            top: `${position}%`,
-                            background: ledColor,
-                            boxShadow: `
-                              0 0 3px ${ledColor},
-                              0 0 6px ${ledColor},
-                              0 0 10px ${ledColor}95,
-                              0 0 15px ${ledColor}70,
-                              0 0 20px ${ledColor}40
-                            `,
-                            animation: `ledPulse 2s ease-in-out infinite`,
-                            animationDelay: `${i * 0.05}s`,
-                            filter: 'blur(0.5px)'
-                          }}
-                        />
-                      );
-                    })}
-
-                    {/* Right Edge LEDs */}
-                    {Array.from({ length: 40 }).map((_, i) => {
-                      const position = (i / 39) * 100;
-                      const colorIndex = Math.floor((i / 40) * 3);
-                      const ledColor = colorIndex === 0 ? colors.primary : colorIndex === 1 ? colors.secondary : colors.accent;
-                      return (
-                        <div
-                          key={`right-${i}`}
-                          className="absolute -right-4 w-1.5 h-1.5 rounded-full pointer-events-none"
-                          style={{
-                            top: `${position}%`,
-                            background: ledColor,
-                            boxShadow: `
-                              0 0 3px ${ledColor},
-                              0 0 6px ${ledColor},
-                              0 0 10px ${ledColor}95,
-                              0 0 15px ${ledColor}70,
-                              0 0 20px ${ledColor}40
-                            `,
-                            animation: `ledPulse 2s ease-in-out infinite`,
-                            animationDelay: `${i * 0.05 + 0.5}s`,
-                            filter: 'blur(0.5px)'
-                          }}
-                        />
-                      );
-                    })}
-
-                    {/* Ambient background glow from LEDs */}
-                    <div 
-                      className="absolute -inset-8 pointer-events-none"
-                      style={{
-                        background: `
-                          radial-gradient(ellipse at top, ${colors.primary}15 0%, transparent 50%),
-                          radial-gradient(ellipse at bottom, ${colors.accent}15 0%, transparent 50%),
-                          radial-gradient(ellipse at left, ${colors.secondary}15 0%, transparent 50%),
-                          radial-gradient(ellipse at right, ${colors.primary}15 0%, transparent 50%)
-                        `,
-                        filter: 'blur(50px)',
-                        animation: 'ambiBackglow 6s ease-in-out infinite'
-                      }}
-                    />
-                  </>
-                )}
-                
-                <Card className="premium-container-strong rounded-3xl shadow-2xl overflow-hidden relative z-10">
+              {/* Hero Player Card with Colorful Glow */}
+              <Card 
+                className="premium-container-strong rounded-3xl overflow-hidden relative transition-all duration-1000"
+                style={{
+                  boxShadow: isPlaying 
+                    ? `
+                      0 0 30px ${colors.primary}60,
+                      0 0 60px ${colors.primary}40,
+                      0 0 90px ${colors.secondary}30,
+                      0 0 120px ${colors.accent}20,
+                      0 15px 50px rgba(0, 0, 0, 0.6)
+                    `
+                    : '0 15px 50px rgba(0, 0, 0, 0.6)',
+                  animation: isPlaying ? 'colorfulGlowPulse 4s ease-in-out infinite' : 'none'
+                }}
                   <CardContent className="p-6 md:p-8 lg:p-10">
                   
                   {/* Audio Element */}
