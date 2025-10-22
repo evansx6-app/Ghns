@@ -2,13 +2,12 @@ import React, { useEffect, useState, useRef } from 'react';
 import useSharedAudioContext from '../hooks/useSharedAudioContext';
 
 const SafariVisualiser = ({ audioRef, isPlaying, colors }) => {
-  const [bars, setBars] = useState([]);
+  const [levels, setLevels] = useState({ left: 0, right: 0, leftPeak: 0, rightPeak: 0 });
   const animationFrameRef = useRef(null);
-  const barsRef = useRef([]);
-  const peaksRef = useRef([]); // Track peak levels for each bar
+  const peaksRef = useRef({ left: { height: 0, holdTime: 0 }, right: { height: 0, holdTime: 0 } });
   const analyserRef = useRef(null);
   const dataArrayRef = useRef(null);
-  const numBars = 32;
+  const segments = 20; // Number of LED segments per channel
   
   // Try to get audio context for real-time analysis
   const { audioContext, source, isReady } = useSharedAudioContext(audioRef, isPlaying);
