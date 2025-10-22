@@ -3,6 +3,27 @@ import axios from 'axios';
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 const API = `${BACKEND_URL}/api`;
 
+// Simple cache for API responses
+const cache = new Map();
+const CACHE_DURATION = 5000; // 5 seconds cache for track data
+
+const getCachedData = (key) => {
+  const cached = cache.get(key);
+  if (cached && Date.now() - cached.timestamp < CACHE_DURATION) {
+    return cached.data;
+  }
+  return null;
+};
+
+const setCachedData = (key, data) => {
+  cache.set(key, { data, timestamp: Date.now() });
+  // Clear old cache entries
+  if (cache.size > 50) {
+    const firstKey = cache.keys().next().value;
+    cache.delete(firstKey);
+  }
+};
+
 // Connection state management
 class ConnectionManager {
   constructor() {
