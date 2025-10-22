@@ -474,106 +474,123 @@ const ModernAudioPlayer = () => {
             {/* Main Player - Full Width */}
             <div className="space-y-6">
               
-              {/* Hero Player Card with Ambilight */}
+              {/* Hero Player Card with Ambilight LEDs */}
               <div className="relative ambilight-container">
-                {/* Ambilight Effect - Light bleeding from under edges */}
+                {/* Ambilight Effect - Individual LED lights */}
                 {isPlaying && (
                   <>
-                    {/* Top Edge Light Bleed */}
+                    {/* Top Edge LEDs */}
+                    {Array.from({ length: 20 }).map((_, i) => {
+                      const position = (i / 19) * 100;
+                      const colorIndex = Math.floor((i / 20) * 3);
+                      const ledColor = colorIndex === 0 ? colors.primary : colorIndex === 1 ? colors.secondary : colors.accent;
+                      return (
+                        <div
+                          key={`top-${i}`}
+                          className="absolute -top-3 w-3 h-3 rounded-full pointer-events-none"
+                          style={{
+                            left: `${position}%`,
+                            background: ledColor,
+                            boxShadow: `
+                              0 0 8px ${ledColor},
+                              0 0 16px ${ledColor},
+                              0 0 24px ${ledColor}80
+                            `,
+                            animation: `ledPulse 2s ease-in-out infinite`,
+                            animationDelay: `${i * 0.1}s`,
+                            filter: 'blur(1px)'
+                          }}
+                        />
+                      );
+                    })}
+
+                    {/* Bottom Edge LEDs */}
+                    {Array.from({ length: 20 }).map((_, i) => {
+                      const position = (i / 19) * 100;
+                      const colorIndex = Math.floor((i / 20) * 3);
+                      const ledColor = colorIndex === 0 ? colors.accent : colorIndex === 1 ? colors.primary : colors.secondary;
+                      return (
+                        <div
+                          key={`bottom-${i}`}
+                          className="absolute -bottom-3 w-3 h-3 rounded-full pointer-events-none"
+                          style={{
+                            left: `${position}%`,
+                            background: ledColor,
+                            boxShadow: `
+                              0 0 8px ${ledColor},
+                              0 0 16px ${ledColor},
+                              0 0 24px ${ledColor}80
+                            `,
+                            animation: `ledPulse 2s ease-in-out infinite`,
+                            animationDelay: `${i * 0.1 + 1}s`,
+                            filter: 'blur(1px)'
+                          }}
+                        />
+                      );
+                    })}
+
+                    {/* Left Edge LEDs */}
+                    {Array.from({ length: 15 }).map((_, i) => {
+                      const position = (i / 14) * 100;
+                      const colorIndex = Math.floor((i / 15) * 3);
+                      const ledColor = colorIndex === 0 ? colors.secondary : colorIndex === 1 ? colors.accent : colors.primary;
+                      return (
+                        <div
+                          key={`left-${i}`}
+                          className="absolute -left-3 w-3 h-3 rounded-full pointer-events-none"
+                          style={{
+                            top: `${position}%`,
+                            background: ledColor,
+                            boxShadow: `
+                              0 0 8px ${ledColor},
+                              0 0 16px ${ledColor},
+                              0 0 24px ${ledColor}80
+                            `,
+                            animation: `ledPulse 2s ease-in-out infinite`,
+                            animationDelay: `${i * 0.13}s`,
+                            filter: 'blur(1px)'
+                          }}
+                        />
+                      );
+                    })}
+
+                    {/* Right Edge LEDs */}
+                    {Array.from({ length: 15 }).map((_, i) => {
+                      const position = (i / 14) * 100;
+                      const colorIndex = Math.floor((i / 15) * 3);
+                      const ledColor = colorIndex === 0 ? colors.primary : colorIndex === 1 ? colors.secondary : colors.accent;
+                      return (
+                        <div
+                          key={`right-${i}`}
+                          className="absolute -right-3 w-3 h-3 rounded-full pointer-events-none"
+                          style={{
+                            top: `${position}%`,
+                            background: ledColor,
+                            boxShadow: `
+                              0 0 8px ${ledColor},
+                              0 0 16px ${ledColor},
+                              0 0 24px ${ledColor}80
+                            `,
+                            animation: `ledPulse 2s ease-in-out infinite`,
+                            animationDelay: `${i * 0.13 + 0.5}s`,
+                            filter: 'blur(1px)'
+                          }}
+                        />
+                      );
+                    })}
+
+                    {/* Ambient background glow from LEDs */}
                     <div 
-                      className="absolute -top-1 left-0 right-0 h-32 pointer-events-none overflow-visible"
+                      className="absolute -inset-8 pointer-events-none"
                       style={{
-                        background: `linear-gradient(to bottom, 
-                          ${colors.primary}40 0%,
-                          ${colors.secondary}30 30%, 
-                          transparent 100%)`,
-                        filter: 'blur(30px)',
-                        transform: 'translateY(-20px)',
-                        animation: 'ambiGradientTop 8s ease-in-out infinite',
-                        opacity: 0.7
-                      }}
-                    />
-                    
-                    {/* Bottom Edge Light Bleed */}
-                    <div 
-                      className="absolute -bottom-1 left-0 right-0 h-32 pointer-events-none overflow-visible"
-                      style={{
-                        background: `linear-gradient(to top, 
-                          ${colors.accent}40 0%,
-                          ${colors.primary}30 30%, 
-                          transparent 100%)`,
-                        filter: 'blur(30px)',
-                        transform: 'translateY(20px)',
-                        animation: 'ambiGradientBottom 8s ease-in-out infinite',
-                        opacity: 0.7
-                      }}
-                    />
-                    
-                    {/* Left Edge Light Bleed */}
-                    <div 
-                      className="absolute -left-1 top-0 bottom-0 w-32 pointer-events-none overflow-visible"
-                      style={{
-                        background: `linear-gradient(to right, 
-                          ${colors.secondary}40 0%,
-                          ${colors.accent}30 30%, 
-                          transparent 100%)`,
-                        filter: 'blur(30px)',
-                        transform: 'translateX(-20px)',
-                        animation: 'ambiGradientLeft 8s ease-in-out infinite',
-                        opacity: 0.7
-                      }}
-                    />
-                    
-                    {/* Right Edge Light Bleed */}
-                    <div 
-                      className="absolute -right-1 top-0 bottom-0 w-32 pointer-events-none overflow-visible"
-                      style={{
-                        background: `linear-gradient(to left, 
-                          ${colors.primary}40 0%,
-                          ${colors.secondary}30 30%, 
-                          transparent 100%)`,
-                        filter: 'blur(30px)',
-                        transform: 'translateX(20px)',
-                        animation: 'ambiGradientRight 8s ease-in-out infinite',
-                        opacity: 0.7
-                      }}
-                    />
-                    
-                    {/* Corner Accent Glows - Animated */}
-                    <div 
-                      className="absolute -top-6 -left-6 w-48 h-48 rounded-full pointer-events-none"
-                      style={{
-                        background: `radial-gradient(circle, ${colors.primary}60 0%, transparent 70%)`,
-                        filter: 'blur(40px)',
-                        animation: 'ambiCornerPulse 6s ease-in-out infinite',
-                        animationDelay: '0s'
-                      }}
-                    />
-                    <div 
-                      className="absolute -top-6 -right-6 w-48 h-48 rounded-full pointer-events-none"
-                      style={{
-                        background: `radial-gradient(circle, ${colors.secondary}60 0%, transparent 70%)`,
-                        filter: 'blur(40px)',
-                        animation: 'ambiCornerPulse 6s ease-in-out infinite',
-                        animationDelay: '1.5s'
-                      }}
-                    />
-                    <div 
-                      className="absolute -bottom-6 -right-6 w-48 h-48 rounded-full pointer-events-none"
-                      style={{
-                        background: `radial-gradient(circle, ${colors.accent}60 0%, transparent 70%)`,
-                        filter: 'blur(40px)',
-                        animation: 'ambiCornerPulse 6s ease-in-out infinite',
-                        animationDelay: '3s'
-                      }}
-                    />
-                    <div 
-                      className="absolute -bottom-6 -left-6 w-48 h-48 rounded-full pointer-events-none"
-                      style={{
-                        background: `radial-gradient(circle, ${colors.primary}60 0%, transparent 70%)`,
-                        filter: 'blur(40px)',
-                        animation: 'ambiCornerPulse 6s ease-in-out infinite',
-                        animationDelay: '4.5s'
+                        background: `
+                          radial-gradient(ellipse at top, ${colors.primary}15 0%, transparent 50%),
+                          radial-gradient(ellipse at bottom, ${colors.accent}15 0%, transparent 50%),
+                          radial-gradient(ellipse at left, ${colors.secondary}15 0%, transparent 50%),
+                          radial-gradient(ellipse at right, ${colors.primary}15 0%, transparent 50%)
+                        `,
+                        filter: 'blur(50px)',
+                        animation: 'ambiBackglow 6s ease-in-out infinite'
                       }}
                     />
                   </>
