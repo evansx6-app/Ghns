@@ -460,21 +460,49 @@ img[data-artwork-protected="true"] {
   }
 }
 
-/* Hide Emergent branding - more specific selectors */
+/* Hide Emergent branding - comprehensive selectors */
 .emergent-branding,
 #emergent-watermark,
 [data-emergent],
 [class*="emergent"]:not([class*="emergency"]),
-[id*="emergent"]:not([id*="emergency"]) {
+[id*="emergent"]:not([id*="emergency"]),
+[class*="Emergent"],
+[id*="Emergent"] {
+  display: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+  height: 0 !important;
+  width: 0 !important;
+  overflow: hidden !important;
+  position: absolute !important;
+  left: -9999px !important;
+}
+
+/* Hide fixed position elements in bottom right corner */
+div[style*="position: fixed"][style*="bottom"][style*="right"],
+div[style*="position:fixed"][style*="bottom"][style*="right"] {
   display: none !important;
   visibility: hidden !important;
   opacity: 0 !important;
 }
 
-/* Target specific branding patterns only */
-div[style*="position: fixed"][style*="bottom"][style*="right"]:contains("Made with"),
-div[style*="position: fixed"][style*="bottom"][style*="right"]:contains("Powered by") {
+/* Additional branding patterns */
+[aria-label*="emergent" i],
+[aria-label*="made with" i],
+[aria-label*="powered by" i] {
   display: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+}
+
+/* Watermark removal */
+div[class*="watermark" i],
+div[id*="watermark" i],
+span[class*="watermark" i],
+span[id*="watermark" i] {
+  display: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
 }
 
 /* Colorful Edge Glow Effect */
