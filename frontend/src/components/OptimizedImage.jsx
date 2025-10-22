@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { getImageUrl } from '../utils/imageProxy';
 
 const OptimizedImage = ({ 
   src, 
