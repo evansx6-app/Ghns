@@ -12,21 +12,13 @@ const SafariVisualiser = ({ audioRef, isPlaying, colors }) => {
   // Try to get audio context for real-time analysis
   const { audioContext, source, isReady } = useSharedAudioContext(audioRef, isPlaying);
 
-  // Initialize bars with random properties
+  // Initialize levels
   useEffect(() => {
-    const initialBars = Array.from({ length: numBars }, (_, i) => ({
-      id: i,
-      height: 20 + Math.random() * 30,
-      targetHeight: 20 + Math.random() * 80,
-      speed: 0.5 + Math.random() * 1.5,
-      phase: Math.random() * Math.PI * 2,
-      frequency: 0.02 + Math.random() * 0.03,
-      peak: 0,
-      peakHoldTime: 0
-    }));
-    setBars(initialBars);
-    barsRef.current = initialBars;
-    peaksRef.current = initialBars.map(() => ({ height: 0, holdTime: 0 }));
+    setLevels({ left: 0, right: 0, leftPeak: 0, rightPeak: 0 });
+    peaksRef.current = { 
+      left: { height: 0, holdTime: 0 }, 
+      right: { height: 0, holdTime: 0 } 
+    };
   }, []);
   
   // Setup audio analyser if available
