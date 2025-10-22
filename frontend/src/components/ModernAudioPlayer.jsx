@@ -695,10 +695,9 @@ const ModernAudioPlayer = () => {
                     </div>
                   </div>
 
-                  {/* Simple Equalizer */}
+                  {/* Safari Visualiser */}
                   <div className="mb-6">
-                    <SimpleEqualizer 
-                      audioRef={audioRef}
+                    <SafariVisualiser 
                       isPlaying={isPlaying}
                       colors={colors}
                     />
