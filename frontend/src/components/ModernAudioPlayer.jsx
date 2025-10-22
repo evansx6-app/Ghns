@@ -558,11 +558,11 @@ const ModernAudioPlayer = () => {
                             referrerPolicy="no-referrer"
                           />
                         ) : (
-                          <div className="w-full h-full flex items-center justify-center p-8 bg-gradient-to-br from-slate-800 to-slate-900">
+                          <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-slate-800 to-slate-900">
                             <img
-                              src="https://customer-assets.emergentagent.com/job_ghns-tracker/artifacts/gkqz48mn_unnamed.png"
+                              src="https://customer-assets.emergentagent.com/job_graphnet-suite/artifacts/m9tzgak6_unnamed.png"
                               alt="Greatest Hits Non-Stop"
-                              className="w-full h-full object-contain"
+                              className="w-full h-full object-cover"
                             />
                           </div>
                         )}
