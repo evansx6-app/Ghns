@@ -1,10 +1,16 @@
 import React, { useEffect, useState, useRef } from 'react';
+import useSharedAudioContext from '../hooks/useSharedAudioContext';
 
-const SafariVisualiser = ({ isPlaying, colors }) => {
+const SafariVisualiser = ({ audioRef, isPlaying, colors }) => {
   const [bars, setBars] = useState([]);
   const animationFrameRef = useRef(null);
   const barsRef = useRef([]);
+  const analyserRef = useRef(null);
+  const dataArrayRef = useRef(null);
   const numBars = 32;
+  
+  // Try to get audio context for real-time analysis
+  const { audioContext, source, isReady } = useSharedAudioContext(audioRef, isPlaying);
 
   // Initialize bars with random properties
   useEffect(() => {
