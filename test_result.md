@@ -131,7 +131,7 @@ frontend:
     status_history:
       - working: true
         agent: "main"
-        comment: "Enhanced top banner prominence with multiple shadow layers. Logo: 3 layers of drop-shadow filters. Title: 5 layers of text shadow (from solid black to wide glow). Subtitle: 5 layers of text shadow. Makes logo and text much more prominent and visible against background."
+        comment: "Final styling: Logo shadow reduced to 2 subtle layers (0.6, 0.4 opacity). Changed font to Playfair Display (elegant serif) with letter spacing for title-like appearance. Title and subtitle both use sophisticated serif typography with refined shadows. Professional, classic radio station look achieved."
   
   - task: "Page Loading and Rendering"
     implemented: true
