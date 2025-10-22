@@ -242,21 +242,37 @@ const SafariVisualiser = ({ audioRef, isPlaying, colors }) => {
   };
 
   return (
-    <div className="premium-container w-full h-24 sm:h-32 md:h-40 rounded-xl overflow-hidden relative bg-black/50">
-      <div className="absolute inset-0 flex items-stretch justify-center gap-1 px-2 py-2">
+    <div className="w-full h-24 sm:h-32 md:h-40 rounded-xl overflow-hidden relative" style={{
+      background: 'linear-gradient(180deg, #1a1a1a 0%, #0a0a0a 100%)',
+      boxShadow: 'inset 0 2px 8px rgba(0,0,0,0.8), inset 0 -2px 4px rgba(255,255,255,0.05)'
+    }}>
+      {/* Retro bezel effect */}
+      <div className="absolute inset-0 border-2 border-black/50 rounded-xl pointer-events-none" style={{
+        boxShadow: 'inset 0 1px 2px rgba(255,255,255,0.1)'
+      }} />
+      
+      <div className="absolute inset-0 flex items-stretch justify-center gap-1 px-3 py-3">
         {bars.map(renderSegmentedBar)}
       </div>
       
       {/* Grid lines for classic equaliser look */}
-      <div className="absolute inset-0 pointer-events-none">
+      <div className="absolute inset-0 pointer-events-none px-3">
         {[...Array(5)].map((_, i) => (
           <div
             key={i}
-            className="absolute left-0 right-0 border-t border-white/10"
-            style={{ top: `${(i + 1) * 16.67}%` }}
+            className="absolute left-3 right-3 border-t"
+            style={{ 
+              top: `${(i + 1) * 16.67}%`,
+              borderColor: 'rgba(0,255,0,0.08)'
+            }}
           />
         ))}
       </div>
+      
+      {/* Vintage glass reflection effect */}
+      <div className="absolute inset-0 pointer-events-none rounded-xl" style={{
+        background: 'linear-gradient(165deg, rgba(255,255,255,0.03) 0%, transparent 40%, transparent 100%)'
+      }} />
     </div>
   );
 };
