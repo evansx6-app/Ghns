@@ -505,15 +505,14 @@ const ModernAudioPlayer = () => {
                 className="premium-container-strong rounded-3xl overflow-hidden relative transition-all duration-1000"
                 style={{
                   boxShadow: isPlaying 
-                    ? `
-                      0 0 30px ${colors.primary}60,
-                      0 0 60px ${colors.primary}40,
-                      0 0 90px ${colors.secondary}30,
-                      0 0 120px ${colors.accent}20,
-                      0 15px 50px rgba(0, 0, 0, 0.6)
-                    `
+                    ? `0 0 30px ${colors.primary}, 0 0 60px ${colors.primary}, 0 0 90px ${colors.secondary}, 0 0 120px ${colors.accent}, 0 15px 50px rgba(0, 0, 0, 0.6)`
                     : '0 15px 50px rgba(0, 0, 0, 0.6)',
-                  animation: isPlaying ? 'colorfulGlowPulse 4s ease-in-out infinite' : 'none'
+                  WebkitBoxShadow: isPlaying 
+                    ? `0 0 30px ${colors.primary}, 0 0 60px ${colors.primary}, 0 0 90px ${colors.secondary}, 0 0 120px ${colors.accent}, 0 15px 50px rgba(0, 0, 0, 0.6)`
+                    : '0 15px 50px rgba(0, 0, 0, 0.6)',
+                  animation: isPlaying ? 'colorfulGlowPulse 4s ease-in-out infinite' : 'none',
+                  WebkitAnimation: isPlaying ? 'colorfulGlowPulse 4s ease-in-out infinite' : 'none',
+                  willChange: isPlaying ? 'box-shadow, filter' : 'auto'
                 }}
               >
                 <CardContent className="p-6 md:p-8 lg:p-10">
