@@ -646,6 +646,7 @@ const ModernAudioPlayer = () => {
                           pauseDuration={1500}
                           direction="rtl"
                           align="center"
+                          alwaysScroll={(currentTrack?.title || '').length > 25}
                         />
                       </div>
                       
