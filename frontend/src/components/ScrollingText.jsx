@@ -73,6 +73,16 @@ const ScrollingText = ({
 
   if (!text) return null;
 
+  const getJustifyContent = () => {
+    if (shouldScroll) {
+      return direction === 'rtl' ? 'flex-end' : 'flex-start';
+    }
+    // When not scrolling, use the align prop
+    if (align === 'left') return 'flex-start';
+    if (align === 'right') return 'flex-end';
+    return 'center';
+  };
+
   return (
     <div 
       ref={containerRef}
@@ -80,7 +90,7 @@ const ScrollingText = ({
       style={{ 
         position: 'relative', 
         display: 'flex',
-        justifyContent: shouldScroll ? (direction === 'rtl' ? 'flex-end' : 'flex-start') : 'center',
+        justifyContent: getJustifyContent(),
         alignItems: 'center'
       }}
     >
