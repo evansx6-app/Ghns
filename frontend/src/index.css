@@ -92,6 +92,16 @@ code {
   }
 }
 
+/* Custom Scrolling Text Animation with direction support */
+@keyframes scroll-text-custom {
+  0%, 20% {
+    transform: translateX(var(--scroll-start, 0px));
+  }
+  80%, 100% {
+    transform: translateX(var(--scroll-end, 0px));
+  }
+}
+
 /* Car Mode Optimizations */
 .car-mode {
   font-size: 18px;
