@@ -214,4 +214,4 @@ const RecentTracks = ({ carMode = false }) => {
   );
 };
 
-export default RecentTracks;
+export default memo(RecentTracks);
