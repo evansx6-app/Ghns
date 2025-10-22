@@ -120,14 +120,17 @@ const RecentTracks = ({ carMode = false }) => {
           </div>
         ) : (
           recentTracks.map((track, index) => (
-            <div key={index}>
+            <div key={`track-${track.title}-${index}`} style={{ transform: 'translateZ(0)' }}>
               <div className="flex items-center space-x-2.5 sm:space-x-3 md:space-x-4 lg:space-x-5">
                 {/* Enhanced Scroll-Stable Artwork */}
                 <div 
                   className={`premium-container-subtle ${carMode ? 'w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16' : 'w-11 h-11 sm:w-12 sm:h-12 md:w-14 md:h-14 lg:w-16 lg:h-16'} rounded-md sm:rounded-lg overflow-hidden flex-shrink-0 relative`}
                   style={{
-                    isolation: 'isolate',
-                    contain: 'layout style paint'
+                    transform: 'translateZ(0)',
+                    backfaceVisibility: 'hidden',
+                    WebkitBackfaceVisibility: 'hidden',
+                    perspective: 1000,
+                    WebkitPerspective: 1000
                   }}
                 >
                   {/* Always visible static fallback */}
