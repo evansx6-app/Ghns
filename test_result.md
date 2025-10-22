@@ -157,6 +157,18 @@ frontend:
         agent: "main"
         comment: "Fixed long titles not scrolling RTL on mobile. Added direction='rtl' and align='center' props to album ScrollingText component (matching title configuration). ScrollingText component already has mobile detection and RTL support built-in."
   
+  - task: "Safari/iPhone Compatible Visualiser"
+    implemented: true
+    working: true
+    file: "/app/frontend/src/components/SafariVisualiser.jsx, /app/frontend/src/components/ModernAudioPlayer.jsx"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+      - working: true
+        agent: "main"
+        comment: "Created brand new visualiser from scratch that always works on Safari and iPhone. Uses pure JavaScript with requestAnimationFrame (no Web Audio API). Features: 32 animated bars with wave-like motion using sine/cosine functions, smooth interpolation, gradient colors matching album art, reflection effect. Zero dependency on audio context - works on ALL browsers."
+  
   - task: "Page Loading and Rendering"
     implemented: true
     working: true
