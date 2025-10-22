@@ -581,7 +581,7 @@ const ModernAudioPlayer = () => {
                         <span className="text-[10px] sm:text-xs font-semibold text-copper-300 uppercase tracking-wide">Now Playing</span>
                       </div>
                       
-                      {/* Scrolling Track Title - RTL when too long */}
+                      {/* Track Title - Centered, scrolls RTL only when too long */}
                       <div className="w-full">
                         <ScrollingText 
                           text={currentTrack?.title || 'Loading...'}
@@ -592,8 +592,8 @@ const ModernAudioPlayer = () => {
                         />
                       </div>
                       
-                      {/* Artist Name - No Scrolling */}
-                      <div className="w-full">
+                      {/* Artist Name - Centered, no scrolling */}
+                      <div className="w-full text-center">
                         <p className="text-lg sm:text-xl lg:text-2xl text-white/70 font-medium truncate">
                           {currentTrack?.artist || 'Loading...'}
                         </p>
