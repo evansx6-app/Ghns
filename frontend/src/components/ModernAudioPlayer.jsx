@@ -489,7 +489,8 @@ const ModernAudioPlayer = () => {
                     : '0 15px 50px rgba(0, 0, 0, 0.6)',
                   animation: isPlaying ? 'colorfulGlowPulse 4s ease-in-out infinite' : 'none'
                 }}
-                  <CardContent className="p-6 md:p-8 lg:p-10">
+              >
+                <CardContent className="p-6 md:p-8 lg:p-10">
                   
                   {/* Audio Element */}
                   <audio
