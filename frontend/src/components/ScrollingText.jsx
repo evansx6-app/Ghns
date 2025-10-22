@@ -18,12 +18,19 @@ const ScrollingText = ({
   useEffect(() => {
     const checkOverflow = () => {
       if (containerRef.current && textRef.current && text) {
+        // Force reflow to ensure accurate measurements
+        textRef.current.style.animation = 'none';
+        void textRef.current.offsetWidth; // Trigger reflow
+        
         // Force a reflow to get accurate measurements
         const containerRect = containerRef.current.getBoundingClientRect();
         const textRect = textRef.current.getBoundingClientRect();
         
         const containerWidth = containerRect.width;
         const textWidth = textRef.current.scrollWidth;
+        
+        // Debug logging
+        console.log('ScrollingText check:', { text, containerWidth, textWidth, shouldScroll: textWidth > containerWidth });
         
         // Very aggressive detection - if text is even slightly wider, scroll it
         const threshold = 1;
