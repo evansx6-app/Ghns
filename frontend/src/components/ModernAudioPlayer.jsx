@@ -467,14 +467,18 @@ const ModernAudioPlayer = () => {
                   alt="Greatest Hits Non-Stop" 
                   className="h-10 sm:h-14 w-auto"
                   style={{ 
-                    filter: 'drop-shadow(0 4px 12px rgba(0,0,0,0.9)) drop-shadow(0 8px 24px rgba(0,0,0,0.8)) drop-shadow(0 0 30px rgba(0,0,0,0.7))'
+                    filter: 'drop-shadow(0 2px 6px rgba(0,0,0,0.6)) drop-shadow(0 4px 12px rgba(0,0,0,0.4))'
                   }}
                 />
                 <div>
                   <h1 className="text-base sm:text-xl md:text-2xl font-bold text-white leading-tight" style={{ 
+                    fontFamily: '"Playfair Display", "Georgia", "Times New Roman", serif',
+                    letterSpacing: '0.02em',
                     textShadow: '0 2px 8px rgba(0,0,0,1), 0 4px 16px rgba(0,0,0,0.9), 0 6px 24px rgba(0,0,0,0.8), 0 0 40px rgba(0,0,0,0.7), 0 0 60px rgba(0,0,0,0.5)'
                   }}>Greatest Hits Non-Stop</h1>
                   <p className="text-[10px] sm:text-xs md:text-sm text-copper-400 font-medium" style={{ 
+                    fontFamily: '"Playfair Display", "Georgia", "Times New Roman", serif',
+                    letterSpacing: '0.03em',
                     textShadow: '0 2px 6px rgba(0,0,0,1), 0 3px 12px rgba(0,0,0,0.9), 0 4px 18px rgba(0,0,0,0.8), 0 0 30px rgba(0,0,0,0.6), 0 0 45px rgba(0,0,0,0.4)'
                   }}>Legendary Radio from Scotland</p>
                 </div>
