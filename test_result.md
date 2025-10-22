@@ -167,7 +167,7 @@ frontend:
     status_history:
       - working: true
         agent: "main"
-        comment: "Created brand new visualiser from scratch that always works on Safari and iPhone. Uses pure JavaScript with requestAnimationFrame (no Web Audio API). Features: 32 animated bars with wave-like motion using sine/cosine functions, smooth interpolation, gradient colors matching album art, reflection effect. Zero dependency on audio context - works on ALL browsers."
+        comment: "Music-responsive visualiser with hybrid approach: Uses Web Audio API frequency analysis when available (32 frequency bins, 0.8 smoothing), falls back to wave animation on Safari/iOS. Enhanced treble sensitivity: last 8 bars (high frequencies) have 1.35x sensitivity multiplier for better response to treble sounds. 32 animated bars with gradient colors, reflection effect, smooth 25% interpolation."
   
   - task: "Page Loading and Rendering"
     implemented: true
