@@ -86,8 +86,8 @@ const SafariVisualiser = ({ audioRef, isPlaying, colors }) => {
           rightLevel = baseLevel + peakInfluence + (Math.cos(time * 1.8) * 3);
           
           // Apply smoothing to reduce jitter
-          leftLevel = levels.left * 0.7 + leftLevel * 0.3;
-          rightLevel = levels.right * 0.7 + rightLevel * 0.3;
+          leftLevel = levelsRef.current.left * 0.7 + leftLevel * 0.3;
+          rightLevel = levelsRef.current.right * 0.7 + rightLevel * 0.3;
           
         } else {
           // Fallback: wave animation - smooth without random jitter
@@ -95,13 +95,13 @@ const SafariVisualiser = ({ audioRef, isPlaying, colors }) => {
           rightLevel = (Math.cos(time * 2.3) * 0.3 + 0.5) * 60;
           
           // Apply smoothing
-          leftLevel = levels.left * 0.7 + leftLevel * 0.3;
-          rightLevel = levels.right * 0.7 + rightLevel * 0.3;
+          leftLevel = levelsRef.current.left * 0.7 + leftLevel * 0.3;
+          rightLevel = levelsRef.current.right * 0.7 + rightLevel * 0.3;
         }
       } else {
         // When stopped, animate levels down to zero
-        leftLevel = Math.max(0, levels.left - 3);
-        rightLevel = Math.max(0, levels.right - 3);
+        leftLevel = Math.max(0, levelsRef.current.left - 3);
+        rightLevel = Math.max(0, levelsRef.current.right - 3);
       }
       
       // Clamp levels
