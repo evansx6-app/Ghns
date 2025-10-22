@@ -87,6 +87,15 @@ export const useSharedAudioContext = (audioRef, isPlaying) => {
           console.log('Audio context resumed:', globalAudioContext.state);
         }
 
+        // iOS Safari: Double-check context state
+        if (isSafari && globalAudioContext && isPlaying) {
+          // Force resume for iOS
+          if (globalAudioContext.state !== 'running') {
+            console.log('iOS: Forcing audio context resume...');
+            await globalAudioContext.resume();
+          }
+        }
+
         setIsReady(isGlobalSetup);
       } catch (error) {
         console.error('Failed to setup shared audio context:', error);
