@@ -193,19 +193,21 @@ const RecentTracks = ({ carMode = false }) => {
                   )}
                 </div>
 
-                {/* Track Info with Scrolling Text */}
+                {/* Track Info with Scrolling Text - Left Justified */}
                 <div className="flex-1 min-w-0">
                   <ScrollingText
                     text={track.title}
                     className={`text-white font-medium ${carMode ? 'text-base sm:text-lg md:text-xl' : 'text-xs sm:text-sm md:text-base lg:text-lg'}`}
                     speed={25}
                     pauseDuration={1000}
+                    align="left"
                   />
                   <ScrollingText
                     text={track.artist}
                     className={`text-white/70 ${carMode ? 'text-sm sm:text-base md:text-lg' : 'text-[10px] sm:text-xs md:text-sm lg:text-base'}`}
                     speed={25}
                     pauseDuration={1000}
+                    align="left"
                   />
                 </div>
 
