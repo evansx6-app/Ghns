@@ -7,6 +7,7 @@ const ScrollingText = ({
   pauseDuration = 2000, // pause at start/end in ms
   alwaysScroll = false, // prop to force scrolling
   direction = 'ltr', // 'ltr' (left-to-right) or 'rtl' (right-to-left)
+  align = 'center', // 'left', 'center', or 'right' - alignment when not scrolling
   children 
 }) => {
   const containerRef = useRef(null);
