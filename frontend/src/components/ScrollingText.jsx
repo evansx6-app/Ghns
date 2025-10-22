@@ -19,14 +19,17 @@ const ScrollingText = ({
     const checkOverflow = () => {
       if (containerRef.current && textRef.current && text) {
         // Force a reflow to get accurate measurements
-        containerRef.current.offsetHeight;
-        textRef.current.offsetHeight;
+        const containerRect = containerRef.current.getBoundingClientRect();
+        const textRect = textRef.current.getBoundingClientRect();
         
-        const containerWidth = containerRef.current.offsetWidth;
+        const containerWidth = containerRect.width;
         const textWidth = textRef.current.scrollWidth;
         
+        // More aggressive detection for mobile - lower threshold
+        const threshold = window.innerWidth < 768 ? 2 : 5;
+        
         // If alwaysScroll is true, force scrolling regardless of overflow
-        if (alwaysScroll || textWidth > containerWidth + 5) {
+        if (alwaysScroll || textWidth > containerWidth + threshold) {
           setShouldScroll(true);
           // Calculate scroll distance and animation duration
           const scrollDistance = alwaysScroll 
@@ -57,17 +60,26 @@ const ScrollingText = ({
     const timer2 = setTimeout(checkOverflow, 300);
     const timer3 = setTimeout(checkOverflow, 600);
     const timer4 = setTimeout(checkOverflow, 1000); // Extra check for mobile
+    const timer5 = setTimeout(checkOverflow, 1500); // Additional mobile check
     
     // Recheck on window resize and orientation change
-    window.addEventListener('resize', checkOverflow);
-    window.addEventListener('orientationchange', checkOverflow);
+    const handleResize = () => {
+      checkOverflow();
+      // Extra check after resize completes
+      setTimeout(checkOverflow, 100);
+    };
+    
+    window.addEventListener('resize', handleResize);
+    window.addEventListener('orientationchange', handleResize);
+    
     return () => {
       clearTimeout(timer1);
       clearTimeout(timer2);
       clearTimeout(timer3);
       clearTimeout(timer4);
-      window.removeEventListener('resize', checkOverflow);
-      window.removeEventListener('orientationchange', checkOverflow);
+      clearTimeout(timer5);
+      window.removeEventListener('resize', handleResize);
+      window.removeEventListener('orientationchange', handleResize);
     };
   }, [text, speed, pauseDuration, alwaysScroll, direction]);
 
