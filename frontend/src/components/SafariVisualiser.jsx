@@ -85,8 +85,12 @@ const SafariVisualiser = ({ audioRef, isPlaying, colors }) => {
           const dataIndex = i % dataArrayRef.current.length;
           const frequencyValue = dataArrayRef.current[dataIndex];
           
+          // Boost sensitivity for last 8 bars (treble frequencies)
+          const isHighFrequencyBar = i >= numBars - 8;
+          const sensitivityMultiplier = isHighFrequencyBar ? 1.35 : 1.0;
+          
           // Convert byte value (0-255) to height percentage (10-95%)
-          const baseHeight = (frequencyValue / 255) * 70 + 15;
+          const baseHeight = ((frequencyValue / 255) * 70 * sensitivityMultiplier) + 15;
           
           // Add small wave for smooth motion even with low audio
           const wave = Math.sin(time * 2 + i * 0.3) * 8;
