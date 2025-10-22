@@ -457,7 +457,7 @@ const ModernAudioPlayer = () => {
       {/* Modern Grid Layout */}
       <div className="relative z-10 min-h-screen">
         {/* Top Navigation Bar - Sticky */}
-        <nav className="sticky top-0 z-50 relative bg-gradient-to-r from-black/40 via-black/30 to-black/40 backdrop-blur-xl border-b border-white/10">
+        <nav className="sticky top-0 z-50 relative border-b border-white/5">
           <div className="relative z-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="flex items-center justify-between h-20">
               {/* Logo */}
@@ -468,8 +468,8 @@ const ModernAudioPlayer = () => {
                   className="h-10 sm:h-14 w-auto drop-shadow-2xl"
                 />
                 <div>
-                  <h1 className="text-base sm:text-xl md:text-2xl font-bold text-white leading-tight text-shadow-glow">Greatest Hits Non-Stop</h1>
-                  <p className="text-[10px] sm:text-xs md:text-sm text-copper-400 font-medium text-shadow-sm">Legendary Radio from Scotland</p>
+                  <h1 className="text-base sm:text-xl md:text-2xl font-bold text-white leading-tight" style={{ textShadow: '0 2px 10px rgba(0,0,0,0.8), 0 0 20px rgba(0,0,0,0.6)' }}>Greatest Hits Non-Stop</h1>
+                  <p className="text-[10px] sm:text-xs md:text-sm text-copper-400 font-medium" style={{ textShadow: '0 1px 6px rgba(0,0,0,0.8), 0 0 10px rgba(0,0,0,0.6)' }}>Legendary Radio from Scotland</p>
                 </div>
               </div>
 
