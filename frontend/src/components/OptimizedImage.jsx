@@ -26,9 +26,12 @@ const OptimizedImage = ({
     setIsLoaded(false);
     setHasError(false);
 
+    // Use proxy for Safari to avoid CORS issues
+    const proxiedSrc = getImageUrl(src);
+
     // Priority images update immediately
     if (priority) {
-      setImageSrc(src);
+      setImageSrc(proxiedSrc);
       return;
     }
 
