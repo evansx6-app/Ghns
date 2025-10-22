@@ -56,11 +56,7 @@ const SafariVisualiser = ({ audioRef, isPlaying, colors }) => {
       if (animationFrameRef.current) {
         cancelAnimationFrame(animationFrameRef.current);
       }
-      // Animate bars back to rest state
-      barsRef.current = barsRef.current.map(bar => ({
-        ...bar,
-        targetHeight: 20 + Math.random() * 10
-      }));
+      setLevels({ left: 0, right: 0, leftPeak: 0, rightPeak: 0 });
       return;
     }
 
@@ -69,99 +65,70 @@ const SafariVisualiser = ({ audioRef, isPlaying, colors }) => {
     const animate = () => {
       time += 0.016; // ~60fps
       
-      let updatedBars;
+      let leftLevel = 0;
+      let rightLevel = 0;
       
       // If audio analysis is available, use real frequency data
       if (analyserRef.current && dataArrayRef.current) {
         analyserRef.current.getByteFrequencyData(dataArrayRef.current);
         
-        // Find average and max values for adaptive scaling
-        let sum = 0;
-        let maxVal = 0;
-        for (let i = 0; i < dataArrayRef.current.length; i++) {
-          sum += dataArrayRef.current[i];
-          maxVal = Math.max(maxVal, dataArrayRef.current[i]);
-        }
-        const average = sum / dataArrayRef.current.length;
+        // Calculate average levels (simulating stereo by splitting frequency range)
+        // Lower frequencies = left channel, higher = right channel (for visual variety)
+        const mid = Math.floor(dataArrayRef.current.length / 2);
         
-        updatedBars = barsRef.current.map((bar, i) => {
-          // Map each bar to a frequency bin (evenly distributed across spectrum)
-          const dataIndex = Math.floor((i / numBars) * dataArrayRef.current.length);
-          let frequencyValue = dataArrayRef.current[dataIndex];
-          
-          // Adaptive boost for quieter frequencies to make bars more even
-          const quietBoost = frequencyValue < average ? 1.3 : 1.0;
-          frequencyValue = Math.min(255, frequencyValue * quietBoost);
-          
-          // Progressive sensitivity boost for high frequency bars (right side)
-          let sensitivityMultiplier = 1.0;
-          if (i >= numBars - 12) {
-            // Last 12 bars: progressive increase from 1.5x to 2.0x
-            const highFreqIndex = i - (numBars - 12);
-            sensitivityMultiplier = 1.5 + (highFreqIndex / 12) * 0.5;
-          } else if (i < 8) {
-            // First 8 bars (bass): slight boost for better low-end response
-            sensitivityMultiplier = 1.2;
-          }
-          
-          // Convert byte value (0-255) to height percentage (5-100%)
-          const baseHeight = ((frequencyValue / 255) * 85 * sensitivityMultiplier) + 10;
-          
-          // Add small wave for smooth motion even with low audio
-          const wave = Math.sin(time * 2 + i * 0.3) * 3;
-          const targetHeight = baseHeight + wave + Math.random() * 2;
-          
-          // Smooth interpolation
-          const currentHeight = bar.height + (targetHeight - bar.height) * 0.35;
-          const finalHeight = Math.max(5, Math.min(100, currentHeight));
-          
-          // Peak level logic
-          let peak = peaksRef.current[i] || { height: 0, holdTime: 0 };
-          
-          if (finalHeight > peak.height) {
-            // New peak reached
-            peak = { height: finalHeight, holdTime: 30 }; // Hold for 30 frames (~0.5s)
-          } else if (peak.holdTime > 0) {
-            // Hold peak at current position
-            peak.holdTime--;
-          } else {
-            // Slowly decay peak
-            peak.height = Math.max(0, peak.height - 1.5);
-          }
-          
-          peaksRef.current[i] = peak;
-          
-          return {
-            ...bar,
-            height: finalHeight,
-            targetHeight,
-            peak: peak.height
-          };
-        });
+        let leftSum = 0;
+        let rightSum = 0;
+        
+        // Left channel: lower frequencies with boost
+        for (let i = 0; i < mid; i++) {
+          leftSum += dataArrayRef.current[i];
+        }
+        leftLevel = (leftSum / mid / 255) * 100 * 1.3; // 30% boost for visibility
+        
+        // Right channel: higher frequencies with boost
+        for (let i = mid; i < dataArrayRef.current.length; i++) {
+          rightSum += dataArrayRef.current[i];
+        }
+        rightLevel = (rightSum / (dataArrayRef.current.length - mid) / 255) * 100 * 1.5; // 50% boost for highs
+        
       } else {
-        // Fallback: wave animation when audio analysis unavailable
-        updatedBars = barsRef.current.map((bar, i) => {
-          // Create wave patterns with different frequencies
-          const wave1 = Math.sin(time * bar.frequency + bar.phase) * 30;
-          const wave2 = Math.sin(time * bar.frequency * 2 + i * 0.5) * 15;
-          const wave3 = Math.cos(time * bar.frequency * 0.5 + i * 0.3) * 20;
-          
-          // Combine waves for complex motion
-          const targetHeight = 30 + wave1 + wave2 + wave3 + Math.random() * 10;
-          
-          // Smooth interpolation towards target
-          const currentHeight = bar.height + (targetHeight - bar.height) * 0.15;
-          
-          return {
-            ...bar,
-            height: Math.max(10, Math.min(95, currentHeight)),
-            targetHeight
-          };
-        });
+        // Fallback: wave animation
+        leftLevel = (Math.sin(time * 2) * 0.3 + 0.5) * 60 + Math.random() * 10;
+        rightLevel = (Math.cos(time * 2.3) * 0.3 + 0.5) * 60 + Math.random() * 10;
       }
       
-      barsRef.current = updatedBars;
-      setBars([...updatedBars]);
+      // Clamp levels
+      leftLevel = Math.max(0, Math.min(100, leftLevel));
+      rightLevel = Math.max(0, Math.min(100, rightLevel));
+      
+      // Peak level logic for left channel
+      let leftPeak = peaksRef.current.left;
+      if (leftLevel > leftPeak.height) {
+        leftPeak = { height: leftLevel, holdTime: 20 }; // Hold for 20 frames
+      } else if (leftPeak.holdTime > 0) {
+        leftPeak.holdTime--;
+      } else {
+        leftPeak.height = Math.max(0, leftPeak.height - 2);
+      }
+      peaksRef.current.left = leftPeak;
+      
+      // Peak level logic for right channel
+      let rightPeak = peaksRef.current.right;
+      if (rightLevel > rightPeak.height) {
+        rightPeak = { height: rightLevel, holdTime: 20 };
+      } else if (rightPeak.holdTime > 0) {
+        rightPeak.holdTime--;
+      } else {
+        rightPeak.height = Math.max(0, rightPeak.height - 2);
+      }
+      peaksRef.current.right = rightPeak;
+      
+      setLevels({
+        left: leftLevel,
+        right: rightLevel,
+        leftPeak: leftPeak.height,
+        rightPeak: rightPeak.height
+      });
       
       animationFrameRef.current = requestAnimationFrame(animate);
     };
