@@ -150,36 +150,57 @@ const SafariVisualiser = ({ audioRef, isPlaying, colors }) => {
     );
   }
 
+  // Classic equaliser: render segmented bars
+  const renderSegmentedBar = (bar) => {
+    const segments = 20; // Number of segments per bar
+    const filledSegments = Math.floor((bar.height / 100) * segments);
+    
+    return (
+      <div key={bar.id} className="flex-1 flex flex-col-reverse gap-[2px] max-w-[12px]">
+        {Array.from({ length: segments }).map((_, segIndex) => {
+          const isFilled = segIndex < filledSegments;
+          const segmentPercent = ((segIndex + 1) / segments) * 100;
+          
+          // Classic equaliser colors: green (bottom), yellow (middle), red (top)
+          let segmentColor;
+          if (segmentPercent <= 50) {
+            segmentColor = '#00FF00'; // Green
+          } else if (segmentPercent <= 80) {
+            segmentColor = '#FFFF00'; // Yellow
+          } else {
+            segmentColor = '#FF0000'; // Red
+          }
+          
+          return (
+            <div
+              key={segIndex}
+              className="w-full h-full transition-all duration-75"
+              style={{
+                backgroundColor: isFilled ? segmentColor : 'rgba(255,255,255,0.08)',
+                boxShadow: isFilled ? `0 0 8px ${segmentColor}80` : 'none',
+                border: '1px solid rgba(0,0,0,0.3)',
+                minHeight: '2px'
+              }}
+            />
+          );
+        })}
+      </div>
+    );
+  };
+
   return (
-    <div className="premium-container w-full h-24 sm:h-32 md:h-40 rounded-xl overflow-hidden relative">
-      <div className="absolute inset-0 flex items-end justify-center gap-1 px-2 pb-2">
-        {bars.map((bar) => (
-          <div
-            key={bar.id}
-            className="flex-1 max-w-[12px] rounded-t-full transition-all duration-75 ease-out"
-            style={{
-              height: `${bar.height}%`,
-              background: `linear-gradient(to top, ${colors.primary || '#B87333'}, ${colors.secondary || '#9E6B3F'}, ${colors.accent || '#8B5A3C'})`,
-              boxShadow: `0 0 10px ${colors.primary || '#B87333'}40`,
-              transform: 'scaleY(1)',
-              transformOrigin: 'bottom'
-            }}
-          />
-        ))}
+    <div className="premium-container w-full h-24 sm:h-32 md:h-40 rounded-xl overflow-hidden relative bg-black/50">
+      <div className="absolute inset-0 flex items-stretch justify-center gap-1 px-2 py-2">
+        {bars.map(renderSegmentedBar)}
       </div>
       
-      {/* Reflection effect */}
-      <div className="absolute inset-0 flex items-start justify-center gap-1 px-2 pt-2 opacity-30">
-        {bars.map((bar) => (
+      {/* Grid lines for classic equaliser look */}
+      <div className="absolute inset-0 pointer-events-none">
+        {[...Array(5)].map((_, i) => (
           <div
-            key={`reflection-${bar.id}`}
-            className="flex-1 max-w-[12px] rounded-b-full transition-all duration-75 ease-out"
-            style={{
-              height: `${bar.height * 0.4}%`,
-              background: `linear-gradient(to bottom, ${colors.primary || '#B87333'}60, transparent)`,
-              transform: 'scaleY(-1)',
-              transformOrigin: 'top'
-            }}
+            key={i}
+            className="absolute left-0 right-0 border-t border-white/10"
+            style={{ top: `${(i + 1) * 16.67}%` }}
           />
         ))}
       </div>
