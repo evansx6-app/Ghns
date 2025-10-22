@@ -167,7 +167,7 @@ frontend:
     status_history:
       - working: true
         agent: "main"
-        comment: "Music-responsive visualiser with hybrid approach: Uses Web Audio API frequency analysis when available (32 frequency bins, 0.8 smoothing), falls back to wave animation on Safari/iOS. Enhanced treble sensitivity: last 8 bars (high frequencies) have 1.35x sensitivity multiplier for better response to treble sounds. 32 animated bars with gradient colors, reflection effect, smooth 25% interpolation."
+        comment: "Classic equaliser style: 32 vertical bars with 20 segmented blocks each. Green/yellow/red color coding (green 0-50%, yellow 50-80%, red 80-100%). Horizontal grid lines, black background, individual segment lighting. Music-responsive with Web Audio API (32 frequency bins), enhanced treble sensitivity (1.35x for last 8 bars). Hybrid fallback to wave animation on Safari/iOS. Classic vintage stereo equipment appearance."
   
   - task: "Page Loading and Rendering"
     implemented: true
