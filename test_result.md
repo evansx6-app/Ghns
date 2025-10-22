@@ -131,7 +131,31 @@ frontend:
     status_history:
       - working: true
         agent: "main"
-        comment: "Final styling: Logo has 2 subtle shadow layers. Title 'Greatest Hits Non-Stop' uses Playfair Display serif with 3D lettering effect (12 layers of shadows creating depth/extrusion). Subtitle 'Legendary Radio from Scotland' uses original sans-serif font with simple shadows. Creates elegant contrast and dimensional title effect."
+        comment: "Retro styling complete: Changed title font to 'Righteous' (bold retro/vintage style) with 3D lettering effect and increased letter spacing (0.05em) for authentic retro appearance. Logo has subtle shadowing. Subtitle uses clean sans-serif."
+  
+  - task: "Fallback Artwork Display"
+    implemented: true
+    working: true
+    file: "/app/frontend/src/components/ModernAudioPlayer.jsx"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+      - working: true
+        agent: "main"
+        comment: "Fixed fallback artwork not appearing. Replaced broken CORS-blocked image URL with working logo URL (job_ghns-project/artifacts/5tmxnbvh_unnamed.png). Fallback now displays when album artwork is missing."
+  
+  - task: "Text Scrolling on Mobile"
+    implemented: true
+    working: true
+    file: "/app/frontend/src/components/ModernAudioPlayer.jsx, /app/frontend/src/components/ScrollingText.jsx"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+      - working: true
+        agent: "main"
+        comment: "Fixed long titles not scrolling RTL on mobile. Added direction='rtl' and align='center' props to album ScrollingText component (matching title configuration). ScrollingText component already has mobile detection and RTL support built-in."
   
   - task: "Page Loading and Rendering"
     implemented: true
