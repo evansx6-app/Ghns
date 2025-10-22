@@ -653,6 +653,8 @@ const ModernAudioPlayer = () => {
                             speed={30}
                             pauseDuration={1500}
                             alwaysScroll={true}
+                            direction="rtl"
+                            align="center"
                           />
                         </div>
                       )}
