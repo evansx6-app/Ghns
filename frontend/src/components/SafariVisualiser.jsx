@@ -142,95 +142,108 @@ const SafariVisualiser = ({ audioRef, isPlaying, colors }) => {
     };
   }, [isPlaying]);
 
-  if (!isPlaying) {
-    return (
-      <div className="premium-container-subtle w-full h-24 sm:h-32 md:h-40 rounded-xl overflow-hidden flex items-center justify-center">
-        <p className="text-white/50 text-sm">Play music to see visualiser</p>
-      </div>
-    );
-  }
-
-  // Classic equaliser: render segmented bars with peak indicators
-  const renderSegmentedBar = (bar) => {
-    const segments = 20; // Number of segments per bar
-    const filledSegments = Math.floor((bar.height / 100) * segments);
-    const peakSegment = Math.floor((bar.peak / 100) * segments);
+  // Render LED strip for a channel
+  const renderLEDStrip = (level, peakLevel, label) => {
+    const filledSegments = Math.floor((level / 100) * segments);
+    const peakSegment = Math.floor((peakLevel / 100) * segments);
     
     return (
-      <div key={bar.id} className="flex-1 flex flex-col-reverse gap-[3px] max-w-[14px]">
-        {Array.from({ length: segments }).map((_, segIndex) => {
-          const isFilled = segIndex < filledSegments;
-          const isPeak = segIndex === peakSegment - 1 && peakSegment > filledSegments;
-          const segmentNumber = segIndex + 1;
-          
-          // Classic equaliser colors based on segment position
-          // Green: segments 1-10 (0-50%)
-          // Yellow: segments 11-16 (50-80%)
-          // Red: segments 17-20 (80-100%)
-          let segmentColor;
-          if (segmentNumber <= 10) {
-            segmentColor = '#00FF00'; // Green
-          } else if (segmentNumber <= 16) {
-            segmentColor = '#FFD700'; // Gold/Yellow
-          } else {
-            segmentColor = '#FF0000'; // Red
-          }
-          
-          // Peak indicator always shows in corresponding color zone
-          const showSegment = isFilled || isPeak;
-          
-          return (
-            <div
-              key={segIndex}
-              className="w-full rounded-sm transition-all duration-75"
-              style={{
-                backgroundColor: showSegment ? segmentColor : 'rgba(40,40,40,0.6)',
-                boxShadow: showSegment ? `0 0 12px ${segmentColor}dd, 0 0 6px ${segmentColor}, inset 0 1px 0 rgba(255,255,255,0.3)` : 'inset 0 1px 0 rgba(255,255,255,0.05)',
-                border: `1px solid ${showSegment ? 'rgba(0,0,0,0.6)' : 'rgba(0,0,0,0.8)'}`,
-                minHeight: '3px',
-                height: '100%',
-                opacity: showSegment ? 1 : 0.4,
-                filter: isPeak ? 'brightness(1.3)' : 'none'
-              }}
-            />
-          );
-        })}
+      <div className="flex flex-col items-center gap-2">
+        {/* Channel label */}
+        <div className="text-xs font-bold text-white/70 tracking-wider" style={{
+          fontFamily: 'monospace',
+          textShadow: '0 0 4px rgba(0,255,0,0.5)'
+        }}>
+          {label}
+        </div>
+        
+        {/* LED strip */}
+        <div className="flex flex-col-reverse gap-[2px] w-12 sm:w-16">
+          {Array.from({ length: segments }).map((_, segIndex) => {
+            const isFilled = segIndex < filledSegments;
+            const isPeak = segIndex === peakSegment - 1 && peakSegment > 0;
+            const segmentNumber = segIndex + 1;
+            
+            // Cassette deck colors
+            let segmentColor;
+            if (segmentNumber <= 12) {
+              segmentColor = '#00FF00'; // Green (safe)
+            } else if (segmentNumber <= 17) {
+              segmentColor = '#FFD700'; // Yellow (moderate)
+            } else {
+              segmentColor = '#FF0000'; // Red (peak/danger)
+            }
+            
+            const showSegment = isFilled || isPeak;
+            
+            return (
+              <div
+                key={segIndex}
+                className="w-full h-2 sm:h-3 rounded-sm transition-all duration-50"
+                style={{
+                  backgroundColor: showSegment ? segmentColor : 'rgba(30,30,30,0.8)',
+                  boxShadow: showSegment 
+                    ? `0 0 8px ${segmentColor}dd, 0 0 4px ${segmentColor}, inset 0 1px 0 rgba(255,255,255,0.2)` 
+                    : 'inset 0 1px 0 rgba(0,0,0,0.5)',
+                  border: `1px solid ${showSegment ? 'rgba(0,0,0,0.5)' : 'rgba(0,0,0,0.7)'}`,
+                  opacity: showSegment ? 1 : 0.35,
+                  filter: isPeak ? 'brightness(1.4)' : 'none'
+                }}
+              />
+            );
+          })}
+        </div>
+        
+        {/* Level indicator */}
+        <div className="text-[10px] text-white/50 font-mono">
+          {Math.round(level)}%
+        </div>
       </div>
     );
   };
 
+  if (!isPlaying) {
+    return (
+      <div className="w-full h-24 sm:h-32 md:h-40 rounded-lg overflow-hidden relative" style={{
+        background: 'linear-gradient(180deg, #1a1a1a 0%, #0a0a0a 100%)',
+        boxShadow: 'inset 0 2px 8px rgba(0,0,0,0.8)'
+      }}>
+        <div className="absolute inset-0 flex items-center justify-center">
+          <p className="text-white/50 text-sm font-mono">PLAY TO MONITOR LEVELS</p>
+        </div>
+      </div>
+    );
+  }
+
   return (
-    <div className="w-full h-24 sm:h-32 md:h-40 rounded-xl overflow-hidden relative" style={{
+    <div className="w-full h-24 sm:h-32 md:h-40 rounded-lg overflow-hidden relative" style={{
       background: 'linear-gradient(180deg, #1a1a1a 0%, #0a0a0a 100%)',
       boxShadow: 'inset 0 2px 8px rgba(0,0,0,0.8), inset 0 -2px 4px rgba(255,255,255,0.05)'
     }}>
-      {/* Retro bezel effect */}
-      <div className="absolute inset-0 border-2 border-black/50 rounded-xl pointer-events-none" style={{
-        boxShadow: 'inset 0 1px 2px rgba(255,255,255,0.1)'
+      {/* Cassette deck bezel */}
+      <div className="absolute inset-0 border border-black/60 rounded-lg pointer-events-none" style={{
+        boxShadow: 'inset 0 1px 1px rgba(255,255,255,0.1)'
       }} />
       
-      <div className="absolute inset-0 flex items-stretch justify-center gap-1 px-3 py-3">
-        {bars.map(renderSegmentedBar)}
+      {/* Level meters */}
+      <div className="absolute inset-0 flex items-center justify-center gap-8 sm:gap-12 px-4">
+        {renderLEDStrip(levels.left, levels.leftPeak, 'L')}
+        {renderLEDStrip(levels.right, levels.rightPeak, 'R')}
       </div>
       
-      {/* Grid lines for classic equaliser look */}
-      <div className="absolute inset-0 pointer-events-none px-3">
-        {[...Array(5)].map((_, i) => (
-          <div
-            key={i}
-            className="absolute left-3 right-3 border-t"
-            style={{ 
-              top: `${(i + 1) * 16.67}%`,
-              borderColor: 'rgba(0,255,0,0.08)'
-            }}
-          />
-        ))}
-      </div>
-      
-      {/* Vintage glass reflection effect */}
-      <div className="absolute inset-0 pointer-events-none rounded-xl" style={{
-        background: 'linear-gradient(165deg, rgba(255,255,255,0.03) 0%, transparent 40%, transparent 100%)'
+      {/* Vintage glass reflection */}
+      <div className="absolute inset-0 pointer-events-none rounded-lg" style={{
+        background: 'linear-gradient(165deg, rgba(255,255,255,0.02) 0%, transparent 40%)'
       }} />
+      
+      {/* Level scale markings */}
+      <div className="absolute left-0 top-0 bottom-0 flex flex-col justify-between py-12 px-1 text-[8px] text-white/30 font-mono pointer-events-none">
+        <div>0</div>
+        <div>-3</div>
+        <div>-6</div>
+        <div>-12</div>
+        <div>-20</div>
+      </div>
     </div>
   );
 };
