@@ -551,6 +551,7 @@ const ModernAudioPlayer = () => {
                           </div>
                         ) : currentTrack?.artwork_url ? (
                           <OptimizedImage
+                            key={currentTrack.artwork_url}
                             src={currentTrack.artwork_url}
                             alt={`${currentTrack.artist} - ${currentTrack.title}`}
                             className="w-full h-full object-cover transform transition-transform duration-500"
