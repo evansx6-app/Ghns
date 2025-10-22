@@ -142,23 +142,23 @@ const SafariVisualiser = ({ audioRef, isPlaying, colors }) => {
     };
   }, [isPlaying]);
 
-  // Render LED strip for a channel
+  // Render horizontal LED strip for a channel
   const renderLEDStrip = (level, peakLevel, label) => {
     const filledSegments = Math.floor((level / 100) * segments);
     const peakSegment = Math.floor((peakLevel / 100) * segments);
     
     return (
-      <div className="flex flex-col items-center gap-2">
+      <div className="flex items-center gap-3 w-full">
         {/* Channel label */}
-        <div className="text-xs font-bold text-white/70 tracking-wider" style={{
+        <div className="text-sm sm:text-base font-bold text-white/70 tracking-wider w-8" style={{
           fontFamily: 'monospace',
           textShadow: '0 0 4px rgba(0,255,0,0.5)'
         }}>
           {label}
         </div>
         
-        {/* LED strip */}
-        <div className="flex flex-col-reverse gap-[2px] w-12 sm:w-16">
+        {/* LED strip - horizontal */}
+        <div className="flex gap-[3px] flex-1 max-w-2xl">
           {Array.from({ length: segments }).map((_, segIndex) => {
             const isFilled = segIndex < filledSegments;
             const isPeak = segIndex === peakSegment - 1 && peakSegment > 0;
@@ -179,13 +179,14 @@ const SafariVisualiser = ({ audioRef, isPlaying, colors }) => {
             return (
               <div
                 key={segIndex}
-                className="w-full h-2 sm:h-3 rounded-sm transition-all duration-50"
+                className="flex-1 h-4 sm:h-5 rounded-sm transition-all duration-50"
                 style={{
                   backgroundColor: showSegment ? segmentColor : 'rgba(30,30,30,0.8)',
                   boxShadow: showSegment 
                     ? `0 0 8px ${segmentColor}dd, 0 0 4px ${segmentColor}, inset 0 1px 0 rgba(255,255,255,0.2)` 
                     : 'inset 0 1px 0 rgba(0,0,0,0.5)',
                   border: `1px solid ${showSegment ? 'rgba(0,0,0,0.5)' : 'rgba(0,0,0,0.7)'}`,
+                  minWidth: '4px',
                   opacity: showSegment ? 1 : 0.35,
                   filter: isPeak ? 'brightness(1.4)' : 'none'
                 }}
@@ -195,7 +196,7 @@ const SafariVisualiser = ({ audioRef, isPlaying, colors }) => {
         </div>
         
         {/* Level indicator */}
-        <div className="text-[10px] text-white/50 font-mono">
+        <div className="text-xs sm:text-sm text-white/50 font-mono w-12 text-right">
           {Math.round(level)}%
         </div>
       </div>
