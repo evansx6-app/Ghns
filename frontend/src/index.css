@@ -532,6 +532,16 @@ span[id*="watermark" i] {
   -webkit-perspective: 1000px;
 }
 
+/* iOS-specific fixes for Web Audio API visualizer */
+@supports (-webkit-touch-callout: none) {
+  /* Force hardware acceleration for canvas on iOS */
+  canvas {
+    transform: translateZ(0);
+    -webkit-transform: translateZ(0);
+    will-change: auto;
+  }
+}
+
 .scroll-container-artwork-stable * {
   transform: translateZ(0);
   -webkit-transform: translateZ(0);
