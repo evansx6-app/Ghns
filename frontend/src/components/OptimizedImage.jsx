@@ -37,7 +37,7 @@ const OptimizedImage = ({
 
     // Lazy load non-priority images
     const img = new Image();
-    img.src = src;
+    img.src = proxiedSrc;
     
     img.onload = () => {
       setImageSrc(src);
