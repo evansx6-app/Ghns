@@ -15,6 +15,18 @@ module.exports = {
   		colors: {
   			background: 'hsl(var(--background))',
   			foreground: 'hsl(var(--foreground))',
+  			copper: {
+  				'50': '#FDF8F3',
+  				'100': '#FAF0E6',
+  				'200': '#E8D5C4',
+  				'300': '#D4B59E',
+  				'400': '#C39A7B',
+  				'500': '#B87333',
+  				'600': '#9E6B3F',
+  				'700': '#8B5A3C',
+  				'800': '#6F4A31',
+  				'900': '#5A3A26'
+  			},
   			card: {
   				DEFAULT: 'hsl(var(--card))',
   				foreground: 'hsl(var(--card-foreground))'

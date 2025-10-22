@@ -1,0 +1,178 @@
+/* Vinyl Record Fallback Animations and Styles */
+
+.vinyl-record-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.vinyl-record {
+  will-change: transform;
+  backface-visibility: hidden;
+  transform-style: preserve-3d;
+}
+
+/* Label stays static while vinyl rotates */
+.vinyl-label-static {
+  animation: none !important;
+  transform: translate(-50%, -50%) rotate(0deg) !important;
+}
+
+/* Spinning Animations */
+@keyframes vinylSpin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes vinylSpinSlow {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes vinylSpinFast {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Animation Classes */
+.vinyl-spin {
+  animation: vinylSpin 3s linear infinite;
+}
+
+.vinyl-spin-slow {
+  animation: vinylSpinSlow 6s linear infinite;
+}
+
+.vinyl-spin-fast {
+  animation: vinylSpinFast 1.5s linear infinite;
+}
+
+/* Pause animation on hover for better UX */
+.vinyl-record:hover {
+  animation-play-state: paused;
+}
+
+/* Vinyl Label Styles */
+.vinyl-label {
+  position: relative;
+  background: radial-gradient(circle at 30% 30%, #B87333 0%, #9E6B3F 40%, #8B5A3C 100%);
+  box-shadow: 
+    inset 0 2px 8px rgba(255,255,255,0.3),
+    inset 0 -2px 8px rgba(0,0,0,0.4),
+    0 0 20px rgba(184, 115, 51, 0.5),
+    0 4px 12px rgba(0,0,0,0.3);
+}
+
+.vinyl-label::before {
+  content: '';
+  position: absolute;
+  top: 5%;
+  left: 5%;
+  right: 5%;
+  bottom: 5%;
+  border-radius: 50%;
+  background: linear-gradient(135deg, rgba(255,255,255,0.15) 0%, transparent 50%, rgba(0,0,0,0.2) 100%);
+  pointer-events: none;
+}
+
+.vinyl-label::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 90%;
+  height: 90%;
+  border-radius: 50%;
+  background: radial-gradient(circle at center, transparent 60%, rgba(255,255,255,0.05) 70%, transparent 80%);
+  pointer-events: none;
+}
+
+/* Responsive sizing */
+@media (max-width: 768px) {
+  .vinyl-record-container {
+    min-width: 60px;
+    min-height: 60px;
+  }
+  
+  .vinyl-label {
+    min-width: 32px;
+    min-height: 32px;
+  }
+}
+
+/* Performance optimizations */
+.vinyl-record,
+.vinyl-label {
+  transform: translate3d(0, 0, 0);
+  backface-visibility: hidden;
+}
+
+/* Smooth transitions */
+.vinyl-record {
+  transition: transform 0.3s ease;
+}
+
+/* Accessibility - respect reduced motion preferences */
+@media (prefers-reduced-motion: reduce) {
+  .vinyl-spin,
+  .vinyl-spin-slow,
+  .vinyl-spin-fast {
+    animation: none;
+  }
+  
+  .vinyl-record {
+    transform: none;
+  }
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  .vinyl-record {
+    border: 2px solid white;
+  }
+  
+  .vinyl-label {
+    border: 2px solid white;
+  }
+}
+
+/* Additional visual enhancements */
+@keyframes labelGlow {
+  0%, 100% {
+    box-shadow: 
+      inset 0 2px 8px rgba(255,255,255,0.3),
+      inset 0 -2px 8px rgba(0,0,0,0.4),
+      0 0 20px rgba(184, 115, 51, 0.5),
+      0 4px 12px rgba(0,0,0,0.3);
+  }
+  50% {
+    box-shadow: 
+      inset 0 2px 8px rgba(255,255,255,0.3),
+      inset 0 -2px 8px rgba(0,0,0,0.4),
+      0 0 30px rgba(184, 115, 51, 0.7),
+      0 4px 12px rgba(0,0,0,0.3);
+  }
+}
+
+.vinyl-label {
+  animation: labelGlow 4s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .vinyl-label {
+    animation: none;
+  }
+}

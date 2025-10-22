@@ -1,0 +1,106 @@
+{
+  "short_name": "Greatest Hits",
+  "name": "Greatest Hits Non-Stop",
+  "description": "Legendary Radio from Scotland.",
+  "icons": [
+    {
+      "src": "https://customer-assets.emergentagent.com/job_sleep-timer-stream/artifacts/qcvmvlox_cropped-radio.png",
+      "sizes": "72x72",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "https://customer-assets.emergentagent.com/job_sleep-timer-stream/artifacts/qcvmvlox_cropped-radio.png",
+      "sizes": "96x96",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "https://customer-assets.emergentagent.com/job_sleep-timer-stream/artifacts/qcvmvlox_cropped-radio.png",
+      "sizes": "128x128",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "https://customer-assets.emergentagent.com/job_sleep-timer-stream/artifacts/qcvmvlox_cropped-radio.png",
+      "sizes": "144x144",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "https://customer-assets.emergentagent.com/job_sleep-timer-stream/artifacts/qcvmvlox_cropped-radio.png",
+      "sizes": "152x152",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "https://customer-assets.emergentagent.com/job_sleep-timer-stream/artifacts/qcvmvlox_cropped-radio.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "https://customer-assets.emergentagent.com/job_sleep-timer-stream/artifacts/qcvmvlox_cropped-radio.png",
+      "sizes": "384x384",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "https://customer-assets.emergentagent.com/job_sleep-timer-stream/artifacts/qcvmvlox_cropped-radio.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "start_url": "/?utm_source=pwa",
+  "display": "standalone",
+  "display_override": ["standalone", "minimal-ui"],
+  "theme_color": "#f59e0b",
+  "background_color": "#0f172a",
+  "orientation": "portrait-primary",
+  "categories": ["music", "entertainment", "audio", "radio"],
+  "iarc_rating_id": "e84b072d-71b3-4d3e-86ae-31a8ce4e53b7",
+  "lang": "en",
+  "dir": "ltr",
+  "scope": "/",
+  "prefer_related_applications": false,
+  "protocol_handlers": [
+    {
+      "protocol": "web+music",
+      "url": "/?track=%s"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Play Radio",
+      "short_name": "Play",
+      "description": "Start listening to Greatest Hits Non-Stop",
+      "url": "/?action=play",
+      "icons": [
+        {
+          "src": "https://customer-assets.emergentagent.com/job_sleep-timer-stream/artifacts/qcvmvlox_cropped-radio.png",
+          "sizes": "192x192"
+        }
+      ]
+    }
+  ],
+  "edge_side_panel": {
+    "preferred_width": 400
+  },
+  "screenshots": [
+    {
+      "src": "https://customer-assets.emergentagent.com/job_sleep-timer-stream/artifacts/qcvmvlox_cropped-radio.png",
+      "sizes": "1280x720",
+      "type": "image/png",
+      "platform": "wide",
+      "label": "Greatest Hits Non-Stop Radio Player"
+    },
+    {
+      "src": "https://customer-assets.emergentagent.com/job_sleep-timer-stream/artifacts/qcvmvlox_cropped-radio.png",
+      "sizes": "750x1334",
+      "type": "image/png",
+      "platform": "narrow",
+      "label": "Mobile Radio Player"
+    }
+  ]
+}
