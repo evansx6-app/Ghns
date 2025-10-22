@@ -637,7 +637,7 @@ const ModernAudioPlayer = () => {
                       </div>
                       
                       {/* Track Title - Centered, scrolls RTL only when too long */}
-                      <div className="w-full">
+                      <div className="w-full px-4 md:px-0">
                         <ScrollingText 
                           text={currentTrack?.title || 'Loading...'}
                           className="text-2xl sm:text-3xl lg:text-4xl xl:text-5xl font-bold text-white leading-tight tracking-tight"
