@@ -167,7 +167,7 @@ frontend:
     status_history:
       - working: true
         agent: "main"
-        comment: "Classic equaliser style: 32 bars with 20 segments each. Fixed color coding: Green segments 1-10, Yellow 11-16 (#FFDD00), Red 17-20. Enhanced high-frequency sensitivity: last 12 bars progressive boost 1.5x-2.0x (rightmost bars most sensitive). Full range 5-100%, enhanced glow on lit segments. Music-responsive via Web Audio API (32 frequency bins, 0.8 smoothing), hybrid fallback to wave animation on Safari/iOS."
+        comment: "Classic equaliser with even bar response: 32 bars with 20 segments each. Improved frequency mapping (evenly distributed across spectrum). Adaptive scaling: quieter frequencies get 1.3x boost for even response. Bass boost (first 8 bars: 1.2x), treble boost (last 12 bars: 1.5x-2.0x progressive). Color coding: Green 1-10, Yellow 11-16, Red 17-20. Faster interpolation (35%) for responsive movement. Music-responsive via Web Audio API, hybrid fallback for Safari/iOS."
   
   - task: "Page Loading and Rendering"
     implemented: true
