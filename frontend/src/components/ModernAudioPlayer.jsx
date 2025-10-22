@@ -480,24 +480,26 @@ const ModernAudioPlayer = () => {
                 {isPlaying && (
                   <>
                     {/* Top Edge LEDs */}
-                    {Array.from({ length: 50 }).map((_, i) => {
-                      const position = (i / 49) * 100;
-                      const colorIndex = Math.floor((i / 50) * 3);
+                    {Array.from({ length: 40 }).map((_, i) => {
+                      const position = (i / 39) * 100;
+                      const colorIndex = Math.floor((i / 40) * 3);
                       const ledColor = colorIndex === 0 ? colors.primary : colorIndex === 1 ? colors.secondary : colors.accent;
                       return (
                         <div
                           key={`top-${i}`}
-                          className="absolute -top-2 w-1.5 h-1.5 rounded-full pointer-events-none"
+                          className="absolute -top-4 w-1.5 h-1.5 rounded-full pointer-events-none"
                           style={{
                             left: `${position}%`,
                             background: ledColor,
                             boxShadow: `
-                              0 0 4px ${ledColor},
-                              0 0 8px ${ledColor},
-                              0 0 12px ${ledColor}90
+                              0 0 3px ${ledColor},
+                              0 0 6px ${ledColor},
+                              0 0 10px ${ledColor}95,
+                              0 0 15px ${ledColor}70,
+                              0 0 20px ${ledColor}40
                             `,
                             animation: `ledPulse 2s ease-in-out infinite`,
-                            animationDelay: `${i * 0.04}s`,
+                            animationDelay: `${i * 0.05}s`,
                             filter: 'blur(0.5px)'
                           }}
                         />
@@ -505,24 +507,26 @@ const ModernAudioPlayer = () => {
                     })}
 
                     {/* Bottom Edge LEDs */}
-                    {Array.from({ length: 50 }).map((_, i) => {
-                      const position = (i / 49) * 100;
-                      const colorIndex = Math.floor((i / 50) * 3);
+                    {Array.from({ length: 40 }).map((_, i) => {
+                      const position = (i / 39) * 100;
+                      const colorIndex = Math.floor((i / 40) * 3);
                       const ledColor = colorIndex === 0 ? colors.accent : colorIndex === 1 ? colors.primary : colors.secondary;
                       return (
                         <div
                           key={`bottom-${i}`}
-                          className="absolute -bottom-2 w-1.5 h-1.5 rounded-full pointer-events-none"
+                          className="absolute -bottom-4 w-1.5 h-1.5 rounded-full pointer-events-none"
                           style={{
                             left: `${position}%`,
                             background: ledColor,
                             boxShadow: `
-                              0 0 4px ${ledColor},
-                              0 0 8px ${ledColor},
-                              0 0 12px ${ledColor}90
+                              0 0 3px ${ledColor},
+                              0 0 6px ${ledColor},
+                              0 0 10px ${ledColor}95,
+                              0 0 15px ${ledColor}70,
+                              0 0 20px ${ledColor}40
                             `,
                             animation: `ledPulse 2s ease-in-out infinite`,
-                            animationDelay: `${i * 0.04 + 1}s`,
+                            animationDelay: `${i * 0.05 + 1}s`,
                             filter: 'blur(0.5px)'
                           }}
                         />
@@ -530,24 +534,26 @@ const ModernAudioPlayer = () => {
                     })}
 
                     {/* Left Edge LEDs */}
-                    {Array.from({ length: 35 }).map((_, i) => {
-                      const position = (i / 34) * 100;
-                      const colorIndex = Math.floor((i / 35) * 3);
+                    {Array.from({ length: 40 }).map((_, i) => {
+                      const position = (i / 39) * 100;
+                      const colorIndex = Math.floor((i / 40) * 3);
                       const ledColor = colorIndex === 0 ? colors.secondary : colorIndex === 1 ? colors.accent : colors.primary;
                       return (
                         <div
                           key={`left-${i}`}
-                          className="absolute -left-2 w-1.5 h-1.5 rounded-full pointer-events-none"
+                          className="absolute -left-4 w-1.5 h-1.5 rounded-full pointer-events-none"
                           style={{
                             top: `${position}%`,
                             background: ledColor,
                             boxShadow: `
-                              0 0 4px ${ledColor},
-                              0 0 8px ${ledColor},
-                              0 0 12px ${ledColor}90
+                              0 0 3px ${ledColor},
+                              0 0 6px ${ledColor},
+                              0 0 10px ${ledColor}95,
+                              0 0 15px ${ledColor}70,
+                              0 0 20px ${ledColor}40
                             `,
                             animation: `ledPulse 2s ease-in-out infinite`,
-                            animationDelay: `${i * 0.057}s`,
+                            animationDelay: `${i * 0.05}s`,
                             filter: 'blur(0.5px)'
                           }}
                         />
@@ -555,24 +561,26 @@ const ModernAudioPlayer = () => {
                     })}
 
                     {/* Right Edge LEDs */}
-                    {Array.from({ length: 35 }).map((_, i) => {
-                      const position = (i / 34) * 100;
-                      const colorIndex = Math.floor((i / 35) * 3);
+                    {Array.from({ length: 40 }).map((_, i) => {
+                      const position = (i / 39) * 100;
+                      const colorIndex = Math.floor((i / 40) * 3);
                       const ledColor = colorIndex === 0 ? colors.primary : colorIndex === 1 ? colors.secondary : colors.accent;
                       return (
                         <div
                           key={`right-${i}`}
-                          className="absolute -right-2 w-1.5 h-1.5 rounded-full pointer-events-none"
+                          className="absolute -right-4 w-1.5 h-1.5 rounded-full pointer-events-none"
                           style={{
                             top: `${position}%`,
                             background: ledColor,
                             boxShadow: `
-                              0 0 4px ${ledColor},
-                              0 0 8px ${ledColor},
-                              0 0 12px ${ledColor}90
+                              0 0 3px ${ledColor},
+                              0 0 6px ${ledColor},
+                              0 0 10px ${ledColor}95,
+                              0 0 15px ${ledColor}70,
+                              0 0 20px ${ledColor}40
                             `,
                             animation: `ledPulse 2s ease-in-out infinite`,
-                            animationDelay: `${i * 0.057 + 0.5}s`,
+                            animationDelay: `${i * 0.05 + 0.5}s`,
                             filter: 'blur(0.5px)'
                           }}
                         />
