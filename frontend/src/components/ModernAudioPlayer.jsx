@@ -594,11 +594,10 @@ const ModernAudioPlayer = () => {
                           </div>
                         ) : currentTrack?.title === "Legendary Radio from Scotland" ? (
                           <div className="w-full h-full flex items-center justify-center p-8 bg-gradient-to-br from-copper-900/20 to-copper-800/20">
-                            <OptimizedImage
-                              src="https://customer-assets.emergentagent.com/job_ghns-project/artifacts/5tmxnbvh_unnamed.png"
+                            <img 
+                              src="https://customer-assets.emergentagent.com/job_sleep-timer-stream/artifacts/qcvmvlox_cropped-radio.png"
                               alt="Greatest Hits Non-Stop Fallback"
                               className="w-full h-auto drop-shadow-2xl"
-                              priority={true}
                             />
                           </div>
                         ) : currentTrack?.artwork_url ? (
