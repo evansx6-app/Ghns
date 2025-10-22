@@ -13,7 +13,7 @@ import SleepTimer from './SleepTimer';
 import TrackInfo from './TrackInfo';
 import CastButton from './CastButton';
 import RecentTracks from './RecentTracks';
-import SimpleEqualizer from './SimpleEqualizer';
+import SafariVisualiser from './SafariVisualiser';
 import DynamicBackground from './DynamicBackground';
 import LyricsDisplay from './LyricsDisplay';
 import StreamRecorder from './StreamRecorder';
