@@ -146,7 +146,7 @@ const SafariVisualiser = ({ audioRef, isPlaying, colors }) => {
         cancelAnimationFrame(animationFrameRef.current);
       }
     };
-  }, [isPlaying, levels.left, levels.right]);
+  }, [isPlaying]);
 
   // Render horizontal LED strip for a channel
   const renderLEDStrip = (level, peakLevel, label) => {
