@@ -323,6 +323,35 @@ async def get_lyrics(artist: str, title: str):
             "title": title
         }
 
+@api_router.get("/proxy-image")
+async def proxy_image(url: str):
+    """Proxy images with proper CORS headers for Safari compatibility"""
+    import aiohttp
+    from fastapi.responses import Response
+    
+    try:
+        async with aiohttp.ClientSession() as session:
+            async with session.get(url, timeout=aiohttp.ClientTimeout(total=10)) as response:
+                if response.status == 200:
+                    content = await response.read()
+                    content_type = response.headers.get('Content-Type', 'image/jpeg')
+                    
+                    return Response(
+                        content=content,
+                        media_type=content_type,
+                        headers={
+                            'Access-Control-Allow-Origin': '*',
+                            'Access-Control-Allow-Methods': 'GET',
+                            'Cache-Control': 'public, max-age=86400'
+                        }
+                    )
+                else:
+                    logging.error(f"Failed to fetch image: {response.status}")
+                    return {"error": "Failed to fetch image"}
+    except Exception as e:
+        logging.error(f"Error proxying image: {e}")
+        return {"error": str(e)}
+
 # Include the router in the main app
 app.include_router(api_router)
 
