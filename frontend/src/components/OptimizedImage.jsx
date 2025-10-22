@@ -40,7 +40,7 @@ const OptimizedImage = ({
     img.src = proxiedSrc;
     
     img.onload = () => {
-      setImageSrc(src);
+      setImageSrc(proxiedSrc);
       setIsLoaded(true);
     };
     
