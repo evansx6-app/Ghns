@@ -69,7 +69,13 @@ const OptimizedImage = ({
       src={imageSrc}
       alt={alt}
       className={`${className} transition-opacity duration-300`}
-      style={{ opacity: isLoaded || priority ? 1 : 0 }}
+      style={{ 
+        opacity: isLoaded || priority ? 1 : 0,
+        WebkitBackfaceVisibility: 'hidden',
+        backfaceVisibility: 'hidden',
+        transform: 'translateZ(0)',
+        WebkitTransform: 'translateZ(0)'
+      }}
       loading={priority ? 'eager' : 'lazy'}
       decoding="async"
       onLoad={handleLoad}
