@@ -522,17 +522,9 @@ const ModernAudioPlayer = () => {
               
               {/* Hero Player Card with Colorful Glow */}
               <Card 
-                className="premium-container-strong rounded-3xl overflow-hidden relative transition-all duration-1000"
+                className="premium-container-strong rounded-3xl overflow-hidden relative"
                 style={{
-                  boxShadow: isPlaying 
-                    ? `0 0 10px ${colors.primary}, 0 0 20px ${colors.primary}, 0 0 30px ${colors.secondary}, 0 15px 50px rgba(0, 0, 0, 0.6)`
-                    : '0 15px 50px rgba(0, 0, 0, 0.6)',
-                  WebkitBoxShadow: isPlaying 
-                    ? `0 0 10px ${colors.primary}, 0 0 20px ${colors.primary}, 0 0 30px ${colors.secondary}, 0 15px 50px rgba(0, 0, 0, 0.6)`
-                    : '0 15px 50px rgba(0, 0, 0, 0.6)',
-                  animation: isPlaying ? 'colorfulGlowPulse 4s ease-in-out infinite' : 'none',
-                  WebkitAnimation: isPlaying ? 'colorfulGlowPulse 4s ease-in-out infinite' : 'none',
-                  willChange: isPlaying ? 'box-shadow, filter' : 'auto'
+                  boxShadow: '0 15px 50px rgba(0, 0, 0, 0.6)'
                 }}
               >
                 <CardContent className="p-6 md:p-8 lg:p-10">
