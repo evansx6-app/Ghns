@@ -467,34 +467,40 @@ div[style*="position: fixed"][style*="bottom"][style*="right"]:contains("Powered
   display: none !important;
 }
 
-/* Spotlight Animations */
-@keyframes spotlightSway {
+/* Ambilight LED Animations */
+@keyframes ambiPulse {
   0%, 100% {
-    transform: translateX(-50%) rotate(0deg);
-    opacity: 1;
-  }
-  25% {
-    transform: translateX(-50%) rotate(2deg);
-    opacity: 0.8;
-  }
-  50% {
-    transform: translateX(-50%) rotate(0deg);
-    opacity: 1;
-  }
-  75% {
-    transform: translateX(-50%) rotate(-2deg);
-    opacity: 0.8;
-  }
-}
-
-@keyframes atmosphericPulse {
-  0%, 100% {
-    opacity: 0.1;
+    opacity: 0.6;
     transform: scale(1);
   }
   50% {
-    opacity: 0.15;
-    transform: scale(1.05);
+    opacity: 0.8;
+    transform: scale(1.02);
+  }
+}
+
+@keyframes ledFlow {
+  0% {
+    background-position: 0% 50%;
+  }
+  100% {
+    background-position: 200% 50%;
+  }
+}
+
+/* Beat-reactive ambilight intensity */
+@keyframes ambiBeat {
+  0% {
+    opacity: 0.6;
+    filter: blur(40px) brightness(1);
+  }
+  50% {
+    opacity: 0.9;
+    filter: blur(45px) brightness(1.2);
+  }
+  100% {
+    opacity: 0.6;
+    filter: blur(40px) brightness(1);
   }
 }
 
