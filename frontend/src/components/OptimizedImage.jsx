@@ -16,7 +16,14 @@ const OptimizedImage = ({
   const imgRef = useRef(null);
 
   useEffect(() => {
-    if (!src || priority) return;
+    if (!src) return;
+
+    // Priority images update immediately
+    if (priority) {
+      setImageSrc(src);
+      setIsLoaded(false); // Reset loaded state for new image
+      return;
+    }
 
     // Lazy load non-priority images
     const img = new Image();
