@@ -74,25 +74,54 @@ const SafariVisualiser = ({ audioRef, isPlaying, colors }) => {
     const animate = () => {
       time += 0.016; // ~60fps
       
-      // Update each bar with smooth wave-like motion
-      const updatedBars = barsRef.current.map((bar, i) => {
-        // Create wave patterns with different frequencies
-        const wave1 = Math.sin(time * bar.frequency + bar.phase) * 30;
-        const wave2 = Math.sin(time * bar.frequency * 2 + i * 0.5) * 15;
-        const wave3 = Math.cos(time * bar.frequency * 0.5 + i * 0.3) * 20;
+      let updatedBars;
+      
+      // If audio analysis is available, use real frequency data
+      if (analyserRef.current && dataArrayRef.current) {
+        analyserRef.current.getByteFrequencyData(dataArrayRef.current);
         
-        // Combine waves for complex motion
-        const targetHeight = 30 + wave1 + wave2 + wave3 + Math.random() * 10;
-        
-        // Smooth interpolation towards target
-        const currentHeight = bar.height + (targetHeight - bar.height) * 0.15;
-        
-        return {
-          ...bar,
-          height: Math.max(10, Math.min(95, currentHeight)),
-          targetHeight
-        };
-      });
+        updatedBars = barsRef.current.map((bar, i) => {
+          // Get frequency data for this bar
+          const dataIndex = i % dataArrayRef.current.length;
+          const frequencyValue = dataArrayRef.current[dataIndex];
+          
+          // Convert byte value (0-255) to height percentage (10-95%)
+          const baseHeight = (frequencyValue / 255) * 70 + 15;
+          
+          // Add small wave for smooth motion even with low audio
+          const wave = Math.sin(time * 2 + i * 0.3) * 8;
+          const targetHeight = baseHeight + wave + Math.random() * 5;
+          
+          // Smooth interpolation
+          const currentHeight = bar.height + (targetHeight - bar.height) * 0.25;
+          
+          return {
+            ...bar,
+            height: Math.max(10, Math.min(95, currentHeight)),
+            targetHeight
+          };
+        });
+      } else {
+        // Fallback: wave animation when audio analysis unavailable
+        updatedBars = barsRef.current.map((bar, i) => {
+          // Create wave patterns with different frequencies
+          const wave1 = Math.sin(time * bar.frequency + bar.phase) * 30;
+          const wave2 = Math.sin(time * bar.frequency * 2 + i * 0.5) * 15;
+          const wave3 = Math.cos(time * bar.frequency * 0.5 + i * 0.3) * 20;
+          
+          // Combine waves for complex motion
+          const targetHeight = 30 + wave1 + wave2 + wave3 + Math.random() * 10;
+          
+          // Smooth interpolation towards target
+          const currentHeight = bar.height + (targetHeight - bar.height) * 0.15;
+          
+          return {
+            ...bar,
+            height: Math.max(10, Math.min(95, currentHeight)),
+            targetHeight
+          };
+        });
+      }
       
       barsRef.current = updatedBars;
       setBars([...updatedBars]);
