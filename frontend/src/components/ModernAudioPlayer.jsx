@@ -694,7 +694,6 @@ const ModernAudioPlayer = () => {
 
                 </CardContent>
               </Card>
-              </div>
 
               {/* Sleep Timer */}
               {showSleepTimer && (
