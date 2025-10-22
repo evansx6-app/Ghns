@@ -475,83 +475,105 @@ const ModernAudioPlayer = () => {
             <div className="space-y-6">
               
               {/* Hero Player Card with Ambilight */}
-              <div className="relative">
-                {/* Ambilight LED Effect */}
-                <div 
-                  className="absolute -inset-4 rounded-[2.5rem] opacity-0 transition-opacity duration-1000"
-                  style={{
-                    opacity: isPlaying ? 0.6 : 0,
-                    background: `
-                      radial-gradient(circle at 0% 0%, ${colors.primary} 0%, transparent 50%),
-                      radial-gradient(circle at 100% 0%, ${colors.secondary} 0%, transparent 50%),
-                      radial-gradient(circle at 100% 100%, ${colors.accent} 0%, transparent 50%),
-                      radial-gradient(circle at 0% 100%, ${colors.primary} 0%, transparent 50%)
-                    `,
-                    filter: 'blur(40px)',
-                    animation: isPlaying ? 'ambiPulse 4s ease-in-out infinite' : 'none'
-                  }}
-                />
-                
-                {/* LED Strips Effect */}
+              <div className="relative ambilight-container">
+                {/* Ambilight Effect - Light bleeding from under edges */}
                 {isPlaying && (
                   <>
-                    {/* Top LED strip */}
+                    {/* Top Edge Light Bleed */}
                     <div 
-                      className="absolute -top-2 left-0 right-0 h-1 rounded-full opacity-80"
+                      className="absolute -top-1 left-0 right-0 h-32 pointer-events-none overflow-visible"
                       style={{
-                        background: `linear-gradient(90deg, 
-                          ${colors.primary} 0%, 
-                          ${colors.secondary} 25%, 
-                          ${colors.accent} 50%, 
-                          ${colors.secondary} 75%, 
-                          ${colors.primary} 100%)`,
-                        boxShadow: `0 0 20px ${colors.primary}, 0 0 40px ${colors.secondary}`,
-                        animation: 'ledFlow 3s linear infinite'
+                        background: `linear-gradient(to bottom, 
+                          ${colors.primary}40 0%,
+                          ${colors.secondary}30 30%, 
+                          transparent 100%)`,
+                        filter: 'blur(30px)',
+                        transform: 'translateY(-20px)',
+                        animation: 'ambiGradientTop 8s ease-in-out infinite',
+                        opacity: 0.7
                       }}
                     />
                     
-                    {/* Bottom LED strip */}
+                    {/* Bottom Edge Light Bleed */}
                     <div 
-                      className="absolute -bottom-2 left-0 right-0 h-1 rounded-full opacity-80"
+                      className="absolute -bottom-1 left-0 right-0 h-32 pointer-events-none overflow-visible"
                       style={{
-                        background: `linear-gradient(90deg, 
-                          ${colors.primary} 0%, 
-                          ${colors.secondary} 25%, 
-                          ${colors.accent} 50%, 
-                          ${colors.secondary} 75%, 
-                          ${colors.primary} 100%)`,
-                        boxShadow: `0 0 20px ${colors.primary}, 0 0 40px ${colors.secondary}`,
-                        animation: 'ledFlow 3s linear infinite reverse'
+                        background: `linear-gradient(to top, 
+                          ${colors.accent}40 0%,
+                          ${colors.primary}30 30%, 
+                          transparent 100%)`,
+                        filter: 'blur(30px)',
+                        transform: 'translateY(20px)',
+                        animation: 'ambiGradientBottom 8s ease-in-out infinite',
+                        opacity: 0.7
                       }}
                     />
                     
-                    {/* Left LED strip */}
+                    {/* Left Edge Light Bleed */}
                     <div 
-                      className="absolute -left-2 top-0 bottom-0 w-1 rounded-full opacity-80"
+                      className="absolute -left-1 top-0 bottom-0 w-32 pointer-events-none overflow-visible"
                       style={{
-                        background: `linear-gradient(180deg, 
-                          ${colors.primary} 0%, 
-                          ${colors.accent} 25%, 
-                          ${colors.secondary} 50%, 
-                          ${colors.accent} 75%, 
-                          ${colors.primary} 100%)`,
-                        boxShadow: `0 0 20px ${colors.primary}, 0 0 40px ${colors.accent}`,
-                        animation: 'ledFlow 3s linear infinite'
+                        background: `linear-gradient(to right, 
+                          ${colors.secondary}40 0%,
+                          ${colors.accent}30 30%, 
+                          transparent 100%)`,
+                        filter: 'blur(30px)',
+                        transform: 'translateX(-20px)',
+                        animation: 'ambiGradientLeft 8s ease-in-out infinite',
+                        opacity: 0.7
                       }}
                     />
                     
-                    {/* Right LED strip */}
+                    {/* Right Edge Light Bleed */}
                     <div 
-                      className="absolute -right-2 top-0 bottom-0 w-1 rounded-full opacity-80"
+                      className="absolute -right-1 top-0 bottom-0 w-32 pointer-events-none overflow-visible"
                       style={{
-                        background: `linear-gradient(180deg, 
-                          ${colors.primary} 0%, 
-                          ${colors.accent} 25%, 
-                          ${colors.secondary} 50%, 
-                          ${colors.accent} 75%, 
-                          ${colors.primary} 100%)`,
-                        boxShadow: `0 0 20px ${colors.primary}, 0 0 40px ${colors.accent}`,
-                        animation: 'ledFlow 3s linear infinite reverse'
+                        background: `linear-gradient(to left, 
+                          ${colors.primary}40 0%,
+                          ${colors.secondary}30 30%, 
+                          transparent 100%)`,
+                        filter: 'blur(30px)',
+                        transform: 'translateX(20px)',
+                        animation: 'ambiGradientRight 8s ease-in-out infinite',
+                        opacity: 0.7
+                      }}
+                    />
+                    
+                    {/* Corner Accent Glows - Animated */}
+                    <div 
+                      className="absolute -top-6 -left-6 w-48 h-48 rounded-full pointer-events-none"
+                      style={{
+                        background: `radial-gradient(circle, ${colors.primary}60 0%, transparent 70%)`,
+                        filter: 'blur(40px)',
+                        animation: 'ambiCornerPulse 6s ease-in-out infinite',
+                        animationDelay: '0s'
+                      }}
+                    />
+                    <div 
+                      className="absolute -top-6 -right-6 w-48 h-48 rounded-full pointer-events-none"
+                      style={{
+                        background: `radial-gradient(circle, ${colors.secondary}60 0%, transparent 70%)`,
+                        filter: 'blur(40px)',
+                        animation: 'ambiCornerPulse 6s ease-in-out infinite',
+                        animationDelay: '1.5s'
+                      }}
+                    />
+                    <div 
+                      className="absolute -bottom-6 -right-6 w-48 h-48 rounded-full pointer-events-none"
+                      style={{
+                        background: `radial-gradient(circle, ${colors.accent}60 0%, transparent 70%)`,
+                        filter: 'blur(40px)',
+                        animation: 'ambiCornerPulse 6s ease-in-out infinite',
+                        animationDelay: '3s'
+                      }}
+                    />
+                    <div 
+                      className="absolute -bottom-6 -left-6 w-48 h-48 rounded-full pointer-events-none"
+                      style={{
+                        background: `radial-gradient(circle, ${colors.primary}60 0%, transparent 70%)`,
+                        filter: 'blur(40px)',
+                        animation: 'ambiCornerPulse 6s ease-in-out infinite',
+                        animationDelay: '4.5s'
                       }}
                     />
                   </>
