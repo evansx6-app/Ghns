@@ -528,42 +528,43 @@ const ModernAudioPlayer = () => {
 
                   {/* Track Info with Modern Layout */}
                   <div className="flex flex-col md:flex-row items-center md:items-start gap-6 mb-6">
-                    {/* Album Artwork */}
+                    {/* Album Artwork - Optimized */}
                     <div className="relative group">
                       <div className="w-48 h-48 md:w-56 md:h-56 lg:w-64 lg:h-64 rounded-2xl overflow-hidden shadow-2xl bg-gradient-to-br from-slate-800 to-slate-900">
                         {currentTrack?.title === "Greatest Hits Non-Stop" ? (
                           <div className="w-full h-full flex items-center justify-center p-8 bg-gradient-to-br from-copper-900/20 to-copper-800/20">
-                            <img
+                            <OptimizedImage
                               src="https://customer-assets.emergentagent.com/job_ghns-project/artifacts/5tmxnbvh_unnamed.png"
                               alt="Greatest Hits Non-Stop Logo"
                               className="w-full h-auto drop-shadow-2xl"
+                              priority={true}
                             />
                           </div>
                         ) : currentTrack?.title === "Legendary Radio from Scotland" ? (
                           <div className="w-full h-full flex items-center justify-center p-8 bg-gradient-to-br from-slate-800 to-slate-900">
-                            <img
+                            <OptimizedImage
                               src="https://customer-assets.emergentagent.com/job_ghns-tracker/artifacts/gkqz48mn_unnamed.png"
                               alt="Greatest Hits Non-Stop Fallback"
                               className="w-full h-full object-contain"
+                              priority={true}
                             />
                           </div>
                         ) : currentTrack?.artwork_url ? (
-                          <img
+                          <OptimizedImage
                             src={currentTrack.artwork_url}
                             alt={`${currentTrack.artist} - ${currentTrack.title}`}
                             className="w-full h-full object-cover transform transition-transform duration-500"
-                            loading="eager"
-                            fetchpriority="high"
-                            decoding="async"
+                            priority={true}
                             crossOrigin="anonymous"
                             referrerPolicy="no-referrer"
                           />
                         ) : (
                           <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-slate-800 to-slate-900">
-                            <img
+                            <OptimizedImage
                               src="https://customer-assets.emergentagent.com/job_graphnet-suite/artifacts/m9tzgak6_unnamed.png"
                               alt="Greatest Hits Non-Stop"
                               className="w-full h-full object-cover"
+                              priority={true}
                             />
                           </div>
                         )}
