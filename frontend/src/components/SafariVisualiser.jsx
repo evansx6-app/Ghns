@@ -80,10 +80,23 @@ const SafariVisualiser = ({ audioRef, isPlaying, colors }) => {
       if (analyserRef.current && dataArrayRef.current) {
         analyserRef.current.getByteFrequencyData(dataArrayRef.current);
         
+        // Find average and max values for adaptive scaling
+        let sum = 0;
+        let maxVal = 0;
+        for (let i = 0; i < dataArrayRef.current.length; i++) {
+          sum += dataArrayRef.current[i];
+          maxVal = Math.max(maxVal, dataArrayRef.current[i]);
+        }
+        const average = sum / dataArrayRef.current.length;
+        
         updatedBars = barsRef.current.map((bar, i) => {
-          // Get frequency data for this bar
-          const dataIndex = i % dataArrayRef.current.length;
-          const frequencyValue = dataArrayRef.current[dataIndex];
+          // Map each bar to a frequency bin (evenly distributed across spectrum)
+          const dataIndex = Math.floor((i / numBars) * dataArrayRef.current.length);
+          let frequencyValue = dataArrayRef.current[dataIndex];
+          
+          // Adaptive boost for quieter frequencies to make bars more even
+          const quietBoost = frequencyValue < average ? 1.3 : 1.0;
+          frequencyValue = Math.min(255, frequencyValue * quietBoost);
           
           // Progressive sensitivity boost for high frequency bars (right side)
           let sensitivityMultiplier = 1.0;
@@ -91,17 +104,20 @@ const SafariVisualiser = ({ audioRef, isPlaying, colors }) => {
             // Last 12 bars: progressive increase from 1.5x to 2.0x
             const highFreqIndex = i - (numBars - 12);
             sensitivityMultiplier = 1.5 + (highFreqIndex / 12) * 0.5;
+          } else if (i < 8) {
+            // First 8 bars (bass): slight boost for better low-end response
+            sensitivityMultiplier = 1.2;
           }
           
           // Convert byte value (0-255) to height percentage (5-100%)
           const baseHeight = ((frequencyValue / 255) * 85 * sensitivityMultiplier) + 10;
           
           // Add small wave for smooth motion even with low audio
-          const wave = Math.sin(time * 2 + i * 0.3) * 5;
-          const targetHeight = baseHeight + wave + Math.random() * 3;
+          const wave = Math.sin(time * 2 + i * 0.3) * 3;
+          const targetHeight = baseHeight + wave + Math.random() * 2;
           
           // Smooth interpolation
-          const currentHeight = bar.height + (targetHeight - bar.height) * 0.3;
+          const currentHeight = bar.height + (targetHeight - bar.height) * 0.35;
           
           return {
             ...bar,
