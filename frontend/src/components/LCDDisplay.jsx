@@ -2,15 +2,12 @@ import React, { useState, useEffect, useRef } from 'react';
 
 const LCDDisplay = ({ title, artist, album, isPlaying }) => {
   const [titleScroll, setTitleScroll] = useState(0);
-  const [artistScroll, setArtistScroll] = useState(0);
   const titleAnimRef = useRef(null);
-  const artistAnimRef = useRef(null);
 
-  // Prepare display text
-  const titleText = title ? title.toUpperCase() + '     ' + title.toUpperCase() : '--- NO TITLE ---';
-  const artistText = artist ? artist.toUpperCase() + '     ' + artist.toUpperCase() : '--- NO ARTIST ---';
+  // Prepare display text - only title scrolls
+  const titleText = title ? title + '          ' + title : '--- NO TITLE ---';
 
-  // Title scrolling animation
+  // Title scrolling animation - right to left only
   useEffect(() => {
     if (!isPlaying || !title) {
       setTitleScroll(0);
@@ -19,8 +16,8 @@ const LCDDisplay = ({ title, artist, album, isPlaying }) => {
 
     const scroll = () => {
       setTitleScroll((prev) => {
-        const maxScroll = (title.length + 5);
-        return prev >= maxScroll ? 0 : prev + 0.3;
+        const maxScroll = (title.length + 10) * 8; // Approximate character width
+        return prev >= maxScroll ? 0 : prev + 1.2; // Pixels per frame
       });
       titleAnimRef.current = requestAnimationFrame(scroll);
     };
@@ -34,111 +31,73 @@ const LCDDisplay = ({ title, artist, album, isPlaying }) => {
     };
   }, [isPlaying, title]);
 
-  // Artist scrolling animation
-  useEffect(() => {
-    if (!isPlaying || !artist) {
-      setArtistScroll(0);
-      return;
-    }
-
-    const scroll = () => {
-      setArtistScroll((prev) => {
-        const maxScroll = (artist.length + 5);
-        return prev >= maxScroll ? 0 : prev + 0.25;
-      });
-      artistAnimRef.current = requestAnimationFrame(scroll);
-    };
-
-    artistAnimRef.current = requestAnimationFrame(scroll);
-
-    return () => {
-      if (artistAnimRef.current) {
-        cancelAnimationFrame(artistAnimRef.current);
-      }
-    };
-  }, [isPlaying, artist]);
-
   return (
     <div className="w-full my-6 px-4">
       <div 
-        className="relative rounded-lg overflow-hidden border-4"
+        className="relative rounded-md overflow-hidden border-2"
         style={{
-          background: '#000000',
-          borderColor: '#333333',
-          boxShadow: 'inset 0 2px 8px rgba(0,0,0,0.9), 0 4px 12px rgba(0,0,0,0.6)'
+          background: 'linear-gradient(180deg, #1a3d5c 0%, #0d2438 100%)',
+          borderColor: '#2a4d6c',
+          boxShadow: 'inset 0 1px 3px rgba(0,0,0,0.5), 0 2px 8px rgba(0,0,0,0.4)'
         }}
       >
-        {/* LCD pixel grid overlay */}
+        {/* MiniDisc LCD grid texture */}
         <div 
           className="absolute inset-0 pointer-events-none"
           style={{
-            backgroundImage: 'repeating-linear-gradient(0deg, rgba(255,255,255,0.03) 0px, transparent 1px, transparent 2px, rgba(255,255,255,0.03) 3px)',
-            opacity: 0.4
+            backgroundImage: 'repeating-linear-gradient(0deg, rgba(255,255,255,0.02) 0px, transparent 1px, transparent 2px)',
+            opacity: 0.5
           }}
         />
         
-        <div className="relative px-4 py-4 space-y-3">
-          {/* Title Line */}
-          <div className="overflow-hidden">
-            <div className="flex items-center gap-2 mb-1">
-              <span className="text-[10px] text-white/40 font-mono">TITLE:</span>
-            </div>
+        <div className="relative px-4 py-3">
+          {/* Title Line - Scrolling */}
+          <div className="overflow-hidden mb-2">
             <div 
-              className="whitespace-nowrap font-mono text-base sm:text-lg md:text-xl font-semibold tracking-wider"
+              className="whitespace-nowrap font-mono text-lg sm:text-xl md:text-2xl font-medium tracking-wide"
               style={{
-                color: '#E0E0E0',
-                textShadow: '0 0 8px rgba(224, 224, 224, 0.6), 0 0 4px rgba(224, 224, 224, 0.3)',
-                transform: `translateX(-${titleScroll}ch)`,
-                transition: 'transform 0.1s linear'
+                color: '#00D4FF',
+                textShadow: '0 0 10px rgba(0, 212, 255, 0.6), 0 0 5px rgba(0, 212, 255, 0.4)',
+                transform: `translateX(-${titleScroll}px)`,
+                willChange: 'transform'
               }}
             >
               {titleText}
             </div>
           </div>
           
-          {/* Artist Line */}
+          {/* Artist Line - Static */}
           <div className="overflow-hidden">
-            <div className="flex items-center gap-2 mb-1">
-              <span className="text-[10px] text-white/40 font-mono">ARTIST:</span>
-            </div>
             <div 
-              className="whitespace-nowrap font-mono text-base sm:text-lg md:text-xl font-semibold tracking-wider"
-              style={{
-                color: '#E0E0E0',
-                textShadow: '0 0 8px rgba(224, 224, 224, 0.6), 0 0 4px rgba(224, 224, 224, 0.3)',
-                transform: `translateX(-${artistScroll}ch)`,
-                transition: 'transform 0.1s linear'
-              }}
+              className="truncate font-mono text-sm sm:text-base text-cyan-300/80 tracking-wide"
             >
-              {artistText}
+              {artist || 'Unknown Artist'}
             </div>
           </div>
-          
-          {/* Album Line (static, truncated) */}
-          {album && (
-            <div className="overflow-hidden">
-              <div className="flex items-center gap-2 mb-1">
-                <span className="text-[10px] text-white/40 font-mono">ALBUM:</span>
-              </div>
-              <div 
-                className="truncate font-mono text-sm sm:text-base text-white/60 tracking-wide"
-              >
-                {album.toUpperCase()}
-              </div>
+        </div>
+        
+        {/* MiniDisc style indicators */}
+        <div className="absolute top-1.5 right-2 flex items-center gap-2">
+          {isPlaying && (
+            <div className="flex items-center gap-1">
+              <svg width="12" height="12" viewBox="0 0 12 12" className="animate-pulse">
+                <polygon points="2,1 2,11 10,6" fill="#00D4FF" opacity="0.8" />
+              </svg>
+              <span className="text-[9px] text-cyan-300/70 font-mono font-bold">▶</span>
             </div>
           )}
         </div>
         
-        {/* Status indicator */}
-        <div className="absolute top-2 right-2 flex items-center gap-1">
-          {isPlaying && (
-            <>
-              <div className="w-1.5 h-1.5 rounded-full bg-white animate-pulse" style={{
-                boxShadow: '0 0 6px rgba(255,255,255,0.8)'
-              }} />
-              <span className="text-[8px] text-white/50 font-mono">PLAY</span>
-            </>
-          )}
+        {/* Bottom info bar */}
+        <div 
+          className="px-4 py-1 flex justify-between items-center text-[9px] font-mono text-cyan-400/50"
+          style={{
+            background: 'rgba(0,0,0,0.2)',
+            borderTop: '1px solid rgba(0, 212, 255, 0.1)'
+          }}
+        >
+          <span>TRACK</span>
+          {album && <span className="truncate max-w-[50%]">{album.substring(0, 20)}</span>}
         </div>
       </div>
     </div>
