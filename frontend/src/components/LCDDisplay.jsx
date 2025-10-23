@@ -153,13 +153,15 @@ const LCDDisplay = ({ title, artist, album, isPlaying }) => {
             </div>
           </div>
           
-          {/* Artist Line - Static */}
+          {/* Artist Line - Scrolling for long names */}
           <div className="overflow-hidden">
             <div 
-              className="truncate text-sm sm:text-base tracking-wider transition-colors duration-500"
+              className="whitespace-nowrap text-sm sm:text-base tracking-wider transition-colors duration-500"
               style={{
                 fontFamily: '"Orbitron", monospace',
-                color: isPlaying ? 'rgba(255,255,255,0.7)' : '#222222'
+                color: isPlaying ? 'rgba(255,255,255,0.7)' : '#222222',
+                transform: `translateX(-${artistScroll}px)`,
+                willChange: 'transform'
               }}
             >
               {artist || 'Unknown Artist'}
