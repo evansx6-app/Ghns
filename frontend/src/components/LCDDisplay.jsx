@@ -40,7 +40,7 @@ const LCDDisplay = ({ title, artist, album, isPlaying }) => {
     }
   }, [artist]);
 
-  // Title scrolling animation - ALWAYS SCROLL RIGHT TO LEFT
+  // Title scrolling animation - SEAMLESS CONTINUOUS LOOP
   useEffect(() => {
     if (!title) return;
 
@@ -49,26 +49,20 @@ const LCDDisplay = ({ title, artist, album, isPlaying }) => {
 
     const scroll = () => {
       setTitleScroll((prev) => {
-        // Scroll in from right
+        // Initial scroll in from right
         if (titleScrollingIn) {
           if (prev < 0) return prev + 3;
           setTitleScrollingIn(false);
-          return prev;
+          return 0;
         }
         
-        // Always continue scrolling from right to left when playing
+        // Continuous scrolling - loop seamlessly when playing
         if (isPlaying) {
-          const maxScroll = titleWidth + 100; // Add extra space before looping
-          if (prev >= maxScroll && !titlePaused) {
-            setTitlePaused(true);
-            titlePauseRef.current = setTimeout(() => {
-              setTitleScroll(-700);
-              setTitleScrollingIn(true);
-              setTitlePaused(false);
-            }, 1000);
-            return prev;
+          const maxScroll = titleWidth + containerWidth; // Scroll completely off screen
+          if (prev >= maxScroll) {
+            // Immediately restart from right (no pause)
+            return 0;
           }
-          if (titlePaused) return prev;
           return prev + 1;
         }
         return prev;
@@ -81,7 +75,7 @@ const LCDDisplay = ({ title, artist, album, isPlaying }) => {
       if (titleAnimRef.current) cancelAnimationFrame(titleAnimRef.current);
       if (titlePauseRef.current) clearTimeout(titlePauseRef.current);
     };
-  }, [title, isPlaying, titlePaused, titleScrollingIn]);
+  }, [title, isPlaying, titleScrollingIn]);
 
   // Artist scrolling animation
   useEffect(() => {
