@@ -481,8 +481,9 @@ const ModernAudioPlayer = () => {
                   }}
                 />
                 <div className="min-w-0 flex-1">
-                  <h1 className="text-base sm:text-xl md:text-2xl font-black leading-tight text-shine" style={{ 
+                  <h1 className="text-base sm:text-xl md:text-2xl font-black leading-tight" style={{ 
                     fontFamily: '"Russo One", sans-serif',
+                    color: '#c0c0c0',
                     textShadow: '0 1px 2px rgba(255,255,255,0.3), 0 -1px 2px rgba(0,0,0,0.8)',
                     letterSpacing: '0.5px'
                   }}>GREATEST HITS NON-STOP</h1>
@@ -495,8 +496,9 @@ const ModernAudioPlayer = () => {
                     direction="ltr"
                     align="left"
                   >
-                    <span className="text-shine" style={{ 
+                    <span style={{ 
                       fontFamily: '"Russo One", sans-serif',
+                      color: '#c0c0c0',
                       textShadow: '0 1px 2px rgba(255,255,255,0.2), 0 -1px 2px rgba(0,0,0,0.6)',
                       letterSpacing: '0.5px'
                     }}>LEGENDARY RADIO FROM SCOTLAND</span>
