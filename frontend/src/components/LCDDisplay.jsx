@@ -136,7 +136,7 @@ const LCDDisplay = ({ title, artist, album, isPlaying }) => {
           {/* Title Line - Scrolling on mobile, static on desktop */}
           <div className="overflow-hidden mb-2">
             <div 
-              className={`text-lg sm:text-xl md:text-2xl font-semibold tracking-wider ${isDesktop ? 'truncate' : 'whitespace-nowrap inline-flex'}`}
+              className={`text-base sm:text-lg md:text-xl font-semibold tracking-wider ${isDesktop ? 'truncate' : 'whitespace-nowrap inline-flex'}`}
               style={{
                 fontFamily: '"Orbitron", monospace',
                 color: isPlaying ? '#E8E8E8' : '#333333',
