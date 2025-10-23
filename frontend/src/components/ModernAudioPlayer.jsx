@@ -645,7 +645,9 @@ const ModernAudioPlayer = () => {
                               className="w-full h-auto drop-shadow-2xl"
                             />
                           </div>
-                        ) : currentTrack?.artwork_url ? (
+                        ) : currentTrack?.artwork_url && 
+                           currentTrack.artwork_url !== 'vinyl-fallback-placeholder' && 
+                           !currentTrack.artwork_url.includes('unsplash.com') ? (
                           <OptimizedImage
                             key={currentTrack.artwork_url}
                             src={currentTrack.artwork_url}
