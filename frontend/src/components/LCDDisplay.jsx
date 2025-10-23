@@ -133,37 +133,49 @@ const LCDDisplay = ({ title, artist, album, isPlaying }) => {
         />
         
         <div className="relative px-4 py-3">
-          {/* Title Line - Continuous scrolling with duplicated text */}
+          {/* Title Line - Scrolling on mobile, static on desktop */}
           <div className="overflow-hidden mb-2">
             <div 
-              className="whitespace-nowrap text-lg sm:text-xl md:text-2xl font-semibold tracking-wider inline-flex"
+              className={`text-lg sm:text-xl md:text-2xl font-semibold tracking-wider ${isDesktop ? 'truncate' : 'whitespace-nowrap inline-flex'}`}
               style={{
                 fontFamily: '"Orbitron", monospace',
                 color: isPlaying ? '#E8E8E8' : '#333333',
                 textShadow: isPlaying ? '0 0 8px rgba(232, 232, 232, 0.5), 0 0 4px rgba(232, 232, 232, 0.3)' : 'none',
-                transform: `translateX(-${titleScroll}px)`,
-                willChange: 'transform',
+                transform: isDesktop ? 'none' : `translateX(-${titleScroll}px)`,
+                willChange: isDesktop ? 'auto' : 'transform',
                 transition: 'color 0.5s'
               }}
             >
-              <span className="mr-24">{title || '--- NO TITLE ---'}</span>
-              <span>{title || '--- NO TITLE ---'}</span>
+              {isDesktop ? (
+                <span>{title || '--- NO TITLE ---'}</span>
+              ) : (
+                <>
+                  <span className="mr-24">{title || '--- NO TITLE ---'}</span>
+                  <span>{title || '--- NO TITLE ---'}</span>
+                </>
+              )}
             </div>
           </div>
           
-          {/* Artist Line - Scrolling for long names with duplicated text */}
+          {/* Artist Line - Scrolling on mobile, static on desktop */}
           <div className="overflow-hidden">
             <div 
-              className="whitespace-nowrap text-sm sm:text-base tracking-wider transition-colors duration-500 inline-flex"
+              className={`text-sm sm:text-base tracking-wider transition-colors duration-500 ${isDesktop ? 'truncate' : 'whitespace-nowrap inline-flex'}`}
               style={{
                 fontFamily: '"Orbitron", monospace',
                 color: isPlaying ? 'rgba(255,255,255,0.7)' : '#222222',
-                transform: `translateX(-${artistScroll}px)`,
-                willChange: 'transform'
+                transform: isDesktop ? 'none' : `translateX(-${artistScroll}px)`,
+                willChange: isDesktop ? 'auto' : 'transform'
               }}
             >
-              <span className="mr-24">{artist || 'Unknown Artist'}</span>
-              <span>{artist || 'Unknown Artist'}</span>
+              {isDesktop ? (
+                <span>{artist || 'Unknown Artist'}</span>
+              ) : (
+                <>
+                  <span className="mr-24">{artist || 'Unknown Artist'}</span>
+                  <span>{artist || 'Unknown Artist'}</span>
+                </>
+              )}
             </div>
           </div>
         </div>
