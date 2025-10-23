@@ -457,15 +457,16 @@ const ModernAudioPlayer = () => {
       
       {/* Modern Grid Layout */}
       <div className="relative z-10 min-h-screen">
-        {/* Top Navigation Bar - Metallic Logo Plate */}
-        <nav className="sticky top-0 z-50 relative border-b border-white/10">
+        {/* Top Navigation Bar - Black Chrome with Bevel */}
+        <nav className="sticky top-0 z-50 relative border-b border-white/5">
           <div 
             className="relative z-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8"
             style={{
-              background: 'linear-gradient(180deg, #c0c0c0 0%, #a8a8a8 20%, #8a8a8a 50%, #787878 80%, #5a5a5a 100%)',
-              boxShadow: 'inset 0 1px 2px rgba(255,255,255,0.3), inset 0 -1px 2px rgba(0,0,0,0.4), 0 4px 8px rgba(0,0,0,0.3)',
-              borderTop: '1px solid rgba(255,255,255,0.2)',
-              borderBottom: '2px solid rgba(0,0,0,0.3)'
+              background: 'linear-gradient(180deg, #2a2a2a 0%, #1a1a1a 10%, #0a0a0a 50%, #000000 90%, #0a0a0a 100%)',
+              boxShadow: 'inset 0 2px 4px rgba(255,255,255,0.1), inset 0 -2px 4px rgba(0,0,0,0.8), 0 4px 12px rgba(0,0,0,0.6)',
+              borderTop: '1px solid rgba(255,255,255,0.1)',
+              borderBottom: '1px solid rgba(0,0,0,0.8)',
+              borderRadius: '0 0 8px 8px'
             }}
           >
             <div className="flex items-center justify-between h-20">
