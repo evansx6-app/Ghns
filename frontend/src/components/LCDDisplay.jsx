@@ -30,64 +30,7 @@ const LCDDisplay = ({ title, artist, album, isPlaying }) => {
     }
   }, [artist]);
 
-  // Title scrolling animation - SEAMLESS CONTINUOUS LOOP (Mobile only)
-  useEffect(() => {
-    if (!title || !isPlaying || isDesktop) {
-      return;
-    }
-
-    const titleWidth = title.length * 15; // Character width estimate
-    const spacing = 96; // Space between duplicated text (mr-24 = 96px)
-    const loopPoint = titleWidth + spacing; // When first text is fully off screen
-
-    const scroll = () => {
-      setTitleScroll((prev) => {
-        // Seamless loop: when first text is fully off screen, reset to 0
-        // This makes the second text (which is now visible) become the "first" text
-        if (prev >= loopPoint) {
-          return 0;
-        }
-        return prev + 2; // Continuous scrolling speed
-      });
-      titleAnimRef.current = requestAnimationFrame(scroll);
-    };
-
-    titleAnimRef.current = requestAnimationFrame(scroll);
-    return () => {
-      if (titleAnimRef.current) cancelAnimationFrame(titleAnimRef.current);
-    };
-  }, [title, isPlaying, isDesktop]);
-
-  // Artist scrolling animation - SEAMLESS LOOP FOR LONG NAMES (Mobile only)
-  useEffect(() => {
-    if (!artist || !isPlaying || isDesktop) return;
-
-    const artistWidth = artist.length * 9; // Character width estimate (smaller font)
-    const containerWidth = 450; // Lower threshold to trigger scrolling earlier
-    const isLong = artistWidth > containerWidth;
-
-    // Only scroll if artist name is long
-    if (!isLong) return;
-
-    const spacing = 96; // Space between duplicated text (mr-24 = 96px)
-    const loopPoint = artistWidth + spacing; // When first text is fully off screen
-
-    const scroll = () => {
-      setArtistScroll((prev) => {
-        // Seamless loop: when first text is fully off screen, reset to 0
-        if (prev >= loopPoint) {
-          return 0;
-        }
-        return prev + 1.5; // Continuous scrolling speed (slightly slower than title)
-      });
-      artistAnimRef.current = requestAnimationFrame(scroll);
-    };
-
-    artistAnimRef.current = requestAnimationFrame(scroll);
-    return () => {
-      if (artistAnimRef.current) cancelAnimationFrame(artistAnimRef.current);
-    };
-  }, [artist, isPlaying, isDesktop]);
+  // No scrolling - static text display only
 
   return (
     <div className="w-full">
