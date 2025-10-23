@@ -11,24 +11,24 @@ const LCDDisplay = ({ title, artist, album, isPlaying }) => {
   const prevArtistRef = useRef(artist);
   const isMountedRef = useRef(false);
 
-  // Combine title and artist into one line
-  const combinedText = `${title || '--- NO TITLE ---'} • ${artist || 'Unknown Artist'}`;
-
-  // Detect if combined text needs scrolling
+  // Detect if title or artist needs scrolling
   useEffect(() => {
-    const textLength = combinedText.length;
-    // If more than 40 characters, enable scrolling
-    setTitleNeedsScroll(textLength > 40);
-  }, [combinedText]);
+    const titleLength = title?.length || 0;
+    const artistLength = artist?.length || 0;
+    
+    // If more than 30 characters, enable scrolling
+    setTitleNeedsScroll(titleLength > 30);
+    setArtistNeedsScroll(artistLength > 30);
+  }, [title, artist]);
 
-  // Continuous scrolling for combined text when needed
+  // Continuous scrolling for long titles
   useEffect(() => {
     if (!isPlaying || !titleNeedsScroll) {
       setTitleScroll(0);
       return;
     }
 
-    const textWidth = combinedText.length * 11; // Character width estimate
+    const textWidth = (title?.length || 0) * 12; // Character width estimate
     const spacing = 120; // Space between duplicated text
     const loopPoint = textWidth + spacing;
 
@@ -37,7 +37,7 @@ const LCDDisplay = ({ title, artist, album, isPlaying }) => {
         if (prev >= loopPoint) {
           return 0; // Reset to start for seamless loop
         }
-        return prev + 0.8; // Slow continuous scrolling
+        return prev + 0.8; // Continuous scrolling speed
       });
       titleAnimRef.current = requestAnimationFrame(scroll);
     };
@@ -46,7 +46,34 @@ const LCDDisplay = ({ title, artist, album, isPlaying }) => {
     return () => {
       if (titleAnimRef.current) cancelAnimationFrame(titleAnimRef.current);
     };
-  }, [combinedText, isPlaying, titleNeedsScroll]);
+  }, [title, isPlaying, titleNeedsScroll]);
+
+  // Continuous scrolling for long artist names
+  useEffect(() => {
+    if (!isPlaying || !artistNeedsScroll) {
+      setArtistScroll(0);
+      return;
+    }
+
+    const textWidth = (artist?.length || 0) * 10;
+    const spacing = 120;
+    const loopPoint = textWidth + spacing;
+
+    const scroll = () => {
+      setArtistScroll((prev) => {
+        if (prev >= loopPoint) {
+          return 0;
+        }
+        return prev + 0.7; // Slightly slower than title
+      });
+      artistAnimRef.current = requestAnimationFrame(scroll);
+    };
+
+    artistAnimRef.current = requestAnimationFrame(scroll);
+    return () => {
+      if (artistAnimRef.current) cancelAnimationFrame(artistAnimRef.current);
+    };
+  }, [artist, isPlaying, artistNeedsScroll]);
 
   return (
     <div className="w-full">
