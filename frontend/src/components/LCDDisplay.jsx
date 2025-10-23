@@ -53,49 +53,31 @@ const LCDDisplay = ({ title, artist, album, isPlaying }) => {
         />
         
         <div className="relative px-4 py-3">
-          {/* Title Line - Scrolling on mobile, static on desktop */}
+          {/* Title Line - Static text with truncation */}
           <div className="overflow-hidden mb-2">
             <div 
-              className={`text-base sm:text-lg md:text-xl font-semibold tracking-wider ${isDesktop ? 'truncate' : 'whitespace-nowrap inline-flex'}`}
+              className="text-base sm:text-lg md:text-xl font-semibold tracking-wider truncate"
               style={{
                 fontFamily: '"Orbitron", monospace',
                 color: isPlaying ? '#E8E8E8' : '#333333',
                 textShadow: isPlaying ? '0 0 8px rgba(232, 232, 232, 0.5), 0 0 4px rgba(232, 232, 232, 0.3)' : 'none',
-                transform: isDesktop ? 'none' : `translateX(-${titleScroll}px)`,
-                willChange: isDesktop ? 'auto' : 'transform',
                 transition: 'color 0.5s'
               }}
             >
-              {isDesktop ? (
-                <span>{title || '--- NO TITLE ---'}</span>
-              ) : (
-                <>
-                  <span className="mr-24">{title || '--- NO TITLE ---'}</span>
-                  <span>{title || '--- NO TITLE ---'}</span>
-                </>
-              )}
+              {title || '--- NO TITLE ---'}
             </div>
           </div>
           
-          {/* Artist Line - Scrolling on mobile, static on desktop */}
+          {/* Artist Line - Static text with truncation */}
           <div className="overflow-hidden">
             <div 
-              className={`text-xs sm:text-sm md:text-base tracking-wider transition-colors duration-500 ${isDesktop ? 'truncate' : 'whitespace-nowrap inline-flex'}`}
+              className="text-xs sm:text-sm md:text-base tracking-wider transition-colors duration-500 truncate"
               style={{
                 fontFamily: '"Orbitron", monospace',
-                color: isPlaying ? 'rgba(255,255,255,0.7)' : '#222222',
-                transform: isDesktop ? 'none' : `translateX(-${artistScroll}px)`,
-                willChange: isDesktop ? 'auto' : 'transform'
+                color: isPlaying ? 'rgba(255,255,255,0.7)' : '#222222'
               }}
             >
-              {isDesktop ? (
-                <span>{artist || 'Unknown Artist'}</span>
-              ) : (
-                <>
-                  <span className="mr-24">{artist || 'Unknown Artist'}</span>
-                  <span>{artist || 'Unknown Artist'}</span>
-                </>
-              )}
+              {artist || 'Unknown Artist'}
             </div>
           </div>
         </div>
