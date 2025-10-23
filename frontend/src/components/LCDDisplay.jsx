@@ -11,33 +11,33 @@ const LCDDisplay = ({ title, artist, album, isPlaying }) => {
   const prevArtistRef = useRef(artist);
   const isMountedRef = useRef(false);
 
-  // Detect if text is too long and needs scrolling
-  useEffect(() => {
-    const titleLength = title?.length || 0;
-    const artistLength = artist?.length || 0;
-    
-    // Approximate: if more than 30 characters, it likely needs scrolling
-    setTitleNeedsScroll(titleLength > 30);
-    setArtistNeedsScroll(artistLength > 30);
-  }, [title, artist]);
+  // Combine title and artist into one line
+  const combinedText = `${title || '--- NO TITLE ---'} • ${artist || 'Unknown Artist'}`;
 
-  // Slow continuous scrolling for long titles
+  // Detect if combined text needs scrolling
   useEffect(() => {
-    if (!title || !isPlaying || !titleNeedsScroll) {
+    const textLength = combinedText.length;
+    // If more than 40 characters, enable scrolling
+    setTitleNeedsScroll(textLength > 40);
+  }, [combinedText]);
+
+  // Continuous scrolling for combined text when needed
+  useEffect(() => {
+    if (!isPlaying || !titleNeedsScroll) {
       setTitleScroll(0);
       return;
     }
 
-    const titleWidth = title.length * 12; // Character width estimate
-    const spacing = 100; // Space between duplicated text
-    const loopPoint = titleWidth + spacing;
+    const textWidth = combinedText.length * 11; // Character width estimate
+    const spacing = 120; // Space between duplicated text
+    const loopPoint = textWidth + spacing;
 
     const scroll = () => {
       setTitleScroll((prev) => {
         if (prev >= loopPoint) {
           return 0; // Reset to start for seamless loop
         }
-        return prev + 0.5; // Slow scrolling speed
+        return prev + 0.8; // Slow continuous scrolling
       });
       titleAnimRef.current = requestAnimationFrame(scroll);
     };
@@ -46,34 +46,7 @@ const LCDDisplay = ({ title, artist, album, isPlaying }) => {
     return () => {
       if (titleAnimRef.current) cancelAnimationFrame(titleAnimRef.current);
     };
-  }, [title, isPlaying, titleNeedsScroll]);
-
-  // Slow continuous scrolling for long artist names
-  useEffect(() => {
-    if (!artist || !isPlaying || !artistNeedsScroll) {
-      setArtistScroll(0);
-      return;
-    }
-
-    const artistWidth = artist.length * 10;
-    const spacing = 100;
-    const loopPoint = artistWidth + spacing;
-
-    const scroll = () => {
-      setArtistScroll((prev) => {
-        if (prev >= loopPoint) {
-          return 0;
-        }
-        return prev + 0.4; // Slightly slower than title
-      });
-      artistAnimRef.current = requestAnimationFrame(scroll);
-    };
-
-    artistAnimRef.current = requestAnimationFrame(scroll);
-    return () => {
-      if (artistAnimRef.current) cancelAnimationFrame(artistAnimRef.current);
-    };
-  }, [artist, isPlaying, artistNeedsScroll]);
+  }, [combinedText, isPlaying, titleNeedsScroll]);
 
   return (
     <div className="w-full">
