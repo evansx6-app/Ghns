@@ -35,33 +35,49 @@ const LCDDisplay = ({ title, artist, album, isPlaying }) => {
     });
   }, [title, artist, isPlaying]);
 
-  // Continuous scrolling for long titles - seamless character-by-character loop
+  // Continuous scrolling for long titles with 1 second pause between loops
   useEffect(() => {
     if (!isPlaying || !titleNeedsScroll) {
       setTitleScroll(0);
+      setTitlePaused(false);
+      if (titlePauseTimeoutRef.current) {
+        clearTimeout(titlePauseTimeoutRef.current);
+      }
       return;
     }
 
     const charWidth = 12;
     const textWidth = (title?.length || 0) * charWidth;
-    const loopPoint = textWidth; // Loop exactly at text width for seamless wrapping
+    const loopPoint = textWidth;
 
     const scroll = () => {
+      if (titlePaused) {
+        titleAnimRef.current = requestAnimationFrame(scroll);
+        return;
+      }
+
       setTitleScroll((prev) => {
         if (prev >= loopPoint) {
-          return 0; // Reset immediately for continuous character loop
+          // Pause for 1 second before resetting
+          setTitlePaused(true);
+          titlePauseTimeoutRef.current = setTimeout(() => {
+            setTitlePaused(false);
+            setTitleScroll(0);
+          }, 1000);
+          return prev; // Keep at current position during pause
         }
-        return prev + 0.8; // Continuous scrolling speed
+        return prev + 0.8;
       });
       titleAnimRef.current = requestAnimationFrame(scroll);
     };
 
-    console.log('[LCD] Title scrolling started (seamless loop)', { textWidth, loopPoint });
+    console.log('[LCD] Title scrolling started (with 1s pause)', { textWidth, loopPoint });
     titleAnimRef.current = requestAnimationFrame(scroll);
     return () => {
       if (titleAnimRef.current) cancelAnimationFrame(titleAnimRef.current);
+      if (titlePauseTimeoutRef.current) clearTimeout(titlePauseTimeoutRef.current);
     };
-  }, [title, isPlaying, titleNeedsScroll]);
+  }, [title, isPlaying, titleNeedsScroll, titlePaused]);
 
   // Continuous scrolling for long artist names - seamless character-by-character loop
   useEffect(() => {
