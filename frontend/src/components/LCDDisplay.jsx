@@ -68,9 +68,11 @@ const LCDDisplay = ({ title, artist, album, isPlaying }) => {
       return;
     }
 
-    const textWidth = (artist?.length || 0) * 10;
-    const spacing = 600; // Large spacing to ensure only one copy visible at a time
-    const loopPoint = textWidth + spacing;
+    const charWidth = 10;
+    const numSpaces = 10; // Number of spaces between duplicates
+    const textWidth = (artist?.length || 0) * charWidth;
+    const spacingWidth = numSpaces * charWidth; // Account for visual spaces
+    const loopPoint = textWidth + spacingWidth;
 
     const scroll = () => {
       setArtistScroll((prev) => {
@@ -82,7 +84,7 @@ const LCDDisplay = ({ title, artist, album, isPlaying }) => {
       artistAnimRef.current = requestAnimationFrame(scroll);
     };
 
-    console.log('[LCD] Artist scrolling started');
+    console.log('[LCD] Artist scrolling started', { textWidth, spacingWidth, loopPoint });
     artistAnimRef.current = requestAnimationFrame(scroll);
     return () => {
       if (artistAnimRef.current) cancelAnimationFrame(artistAnimRef.current);
