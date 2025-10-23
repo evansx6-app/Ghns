@@ -43,8 +43,8 @@ const AudioPlayer = () => {
 
   // Stream URLs with fallback (Greatest Hits Non-Stop with backup)
   const STREAM_URLS = [
-    "https://s8.myradiostream.com/58238/listen.mp3", // Primary Greatest Hits Non-Stop
-    "https://icecast.omroep.nl/radio1-bb-mp3"  // Working fallback stream
+    process.env.REACT_APP_STREAM_URL, // Primary Greatest Hits Non-Stop
+    process.env.REACT_APP_FALLBACK_STREAM_URL  // Working fallback stream
   ];
   
   const [currentStreamIndex, setCurrentStreamIndex] = useState(0);
