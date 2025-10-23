@@ -67,7 +67,7 @@ const LCDDisplay = ({ title, artist, album, isPlaying }) => {
     }
 
     const textWidth = (artist?.length || 0) * 10;
-    const spacing = 300; // Increased spacing for better text separation
+    const spacing = 600; // Large spacing to ensure only one copy visible at a time
     const loopPoint = textWidth + spacing;
 
     const scroll = () => {
