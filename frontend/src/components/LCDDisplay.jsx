@@ -80,7 +80,7 @@ const LCDDisplay = ({ title, artist, album, isPlaying }) => {
     };
   }, [title, isPlaying, titleNeedsScroll, titlePaused]);
 
-  // Continuous scrolling for long artist names with 1 second pause between loops
+  // Simple left-to-right scrolling with 1 second pause between loops
   useEffect(() => {
     if (!isPlaying || !artistNeedsScroll) {
       setArtistScroll(0);
@@ -92,10 +92,9 @@ const LCDDisplay = ({ title, artist, album, isPlaying }) => {
     }
 
     const charWidth = 10;
-    const numSpaces = 20; // Increased spacing to prevent duplicate display
     const textWidth = (artist?.length || 0) * charWidth;
-    const spacingWidth = numSpaces * charWidth;
-    const loopPoint = textWidth + spacingWidth;
+    const containerWidth = 400; // Approximate LCD container width
+    const scrollDistance = textWidth + 40; // Text width + small buffer
 
     const scroll = () => {
       if (artistPaused) {
@@ -104,21 +103,21 @@ const LCDDisplay = ({ title, artist, album, isPlaying }) => {
       }
 
       setArtistScroll((prev) => {
-        if (prev >= loopPoint) {
-          // Pause for 1 second before resetting
+        if (prev >= scrollDistance) {
+          // Text has scrolled completely off screen, pause before resetting
           setArtistPaused(true);
           artistPauseTimeoutRef.current = setTimeout(() => {
             setArtistPaused(false);
             setArtistScroll(0);
           }, 1000);
-          return prev; // Keep at current position during pause
+          return prev;
         }
-        return prev + 0.7;
+        return prev + 0.5; // Slower scroll speed
       });
       artistAnimRef.current = requestAnimationFrame(scroll);
     };
 
-    console.log('[LCD] Artist scrolling started (with 1s pause)', { textWidth, spacingWidth, loopPoint });
+    console.log('[LCD] Artist scrolling started', { textWidth, scrollDistance });
     artistAnimRef.current = requestAnimationFrame(scroll);
     return () => {
       if (artistAnimRef.current) cancelAnimationFrame(artistAnimRef.current);
