@@ -509,8 +509,10 @@ const ModernAudioPlayer = () => {
       
       {/* Modern Grid Layout */}
       <div className="relative z-10 min-h-screen">
-        {/* Top Navigation Bar - Black Chrome with Bevel */}
-        <nav className="sticky top-0 z-50 relative border-b border-white/5">
+        {/* Top Navigation Bar - Black Chrome with Bevel and Orange Top Edge */}
+        <nav className="sticky top-0 z-50 relative border-b border-white/5" style={{
+          borderTop: '3px solid #ea580c'
+        }}>
           <div 
             className="relative z-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8"
             style={{
