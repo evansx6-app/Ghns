@@ -14,6 +14,40 @@ const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
 export const useSharedAudioContext = (audioRef, isPlaying) => {
   const [isReady, setIsReady] = useState(false);
   const setupAttempted = useRef(false);
+  const interactionHandled = useRef(false);
+  
+  // iOS: Setup interaction listener to resume audio context
+  useEffect(() => {
+    if (isSafari && !interactionHandled.current) {
+      const handleUserInteraction = async () => {
+        if (globalAudioContext && globalAudioContext.state === 'suspended') {
+          console.log('iOS: User interaction detected, resuming audio context...');
+          try {
+            await globalAudioContext.resume();
+            console.log('iOS: Audio context resumed via user interaction - state:', globalAudioContext.state);
+            if (isGlobalSetup) {
+              setIsReady(globalAudioContext.state === 'running');
+            }
+            interactionHandled.current = true;
+          } catch (err) {
+            console.warn('iOS: Failed to resume on interaction:', err);
+          }
+        }
+      };
+      
+      // Listen for any user interaction
+      const events = ['touchstart', 'touchend', 'click', 'keydown'];
+      events.forEach(event => {
+        document.addEventListener(event, handleUserInteraction, { once: true, passive: true });
+      });
+      
+      return () => {
+        events.forEach(event => {
+          document.removeEventListener(event, handleUserInteraction);
+        });
+      };
+    }
+  }, []);
   
   // Setup shared audio context
   useEffect(() => {
