@@ -119,12 +119,26 @@ export const useSharedAudioContext = (audioRef, isPlaying) => {
     setupSharedContext();
   }, [audioRef.current]);
 
-  // Resume context when playing starts
+  // Resume context when playing starts - aggressive iOS handling
   useEffect(() => {
-    if (isPlaying && globalAudioContext && globalAudioContext.state === 'suspended') {
-      globalAudioContext.resume().catch(console.error);
+    if (isPlaying && globalAudioContext) {
+      if (globalAudioContext.state === 'suspended') {
+        console.log('iOS: Resuming suspended audio context...');
+        globalAudioContext.resume()
+          .then(() => {
+            console.log('iOS: Audio context resumed successfully - state:', globalAudioContext.state);
+            setIsReady(isGlobalSetup && globalAudioContext.state === 'running');
+          })
+          .catch(err => {
+            console.error('iOS: Failed to resume audio context:', err);
+          });
+      } else if (globalAudioContext.state === 'running' && !isReady && isGlobalSetup) {
+        // Context is running but isReady is false - update state
+        console.log('iOS: Audio context already running, updating ready state');
+        setIsReady(true);
+      }
     }
-  }, [isPlaying]);
+  }, [isPlaying, isReady]);
 
   // Create analyzer node connected to the shared source
   const createAnalyzer = useCallback((config = {}) => {
