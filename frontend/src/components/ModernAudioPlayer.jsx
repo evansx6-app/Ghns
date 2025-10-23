@@ -51,7 +51,7 @@ const ModernAudioPlayer = () => {
   const { toast } = useToast();
 
   // Determine artwork URL - use logo for station ID
-  const logoUrl = 'https://customer-assets.emergentagent.com/job_ghns-project/artifacts/5tmxnbvh_unnamed.png';
+  const logoUrl = process.env.REACT_APP_LOGO_URL;
   const isStationID = currentTrack?.title === "Greatest Hits Non-Stop";
   const isFallbackTrack = currentTrack?.title === "Legendary Radio from Scotland";
   const artworkForColorExtraction = isStationID ? logoUrl : (!isFallbackTrack ? currentTrack?.artwork_url : null);
