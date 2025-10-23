@@ -1,36 +1,79 @@
 import React, { useState, useEffect, useRef } from 'react';
 
 const LCDDisplay = ({ title, artist, album, isPlaying }) => {
+  const [titleScroll, setTitleScroll] = useState(0);
+  const [artistScroll, setArtistScroll] = useState(0);
+  const [titleNeedsScroll, setTitleNeedsScroll] = useState(false);
+  const [artistNeedsScroll, setArtistNeedsScroll] = useState(false);
+  const titleAnimRef = useRef(null);
+  const artistAnimRef = useRef(null);
   const prevTitleRef = useRef(title);
   const prevArtistRef = useRef(artist);
   const isMountedRef = useRef(false);
 
-  // Initial mount - trigger animation
+  // Detect if text is too long and needs scrolling
   useEffect(() => {
-    isMountedRef.current = true;
-  }, []);
+    const titleLength = title?.length || 0;
+    const artistLength = artist?.length || 0;
+    
+    // Approximate: if more than 30 characters, it likely needs scrolling
+    setTitleNeedsScroll(titleLength > 30);
+    setArtistNeedsScroll(artistLength > 30);
+  }, [title, artist]);
 
-  // Reset when title changes - scroll in animation
+  // Slow continuous scrolling for long titles
   useEffect(() => {
-    if (prevTitleRef.current !== title || !isMountedRef.current) {
-      setTitleScroll(-700);
-      setTitleScrollingIn(true);
-      setTitlePaused(false);
-      prevTitleRef.current = title;
+    if (!title || !isPlaying || !titleNeedsScroll) {
+      setTitleScroll(0);
+      return;
     }
-  }, [title]);
 
-  // Reset when artist changes - scroll in animation
+    const titleWidth = title.length * 12; // Character width estimate
+    const spacing = 100; // Space between duplicated text
+    const loopPoint = titleWidth + spacing;
+
+    const scroll = () => {
+      setTitleScroll((prev) => {
+        if (prev >= loopPoint) {
+          return 0; // Reset to start for seamless loop
+        }
+        return prev + 0.5; // Slow scrolling speed
+      });
+      titleAnimRef.current = requestAnimationFrame(scroll);
+    };
+
+    titleAnimRef.current = requestAnimationFrame(scroll);
+    return () => {
+      if (titleAnimRef.current) cancelAnimationFrame(titleAnimRef.current);
+    };
+  }, [title, isPlaying, titleNeedsScroll]);
+
+  // Slow continuous scrolling for long artist names
   useEffect(() => {
-    if (prevArtistRef.current !== artist || !isMountedRef.current) {
-      setArtistScroll(-700);
-      setArtistScrollingIn(true);
-      setArtistPaused(false);
-      prevArtistRef.current = artist;
+    if (!artist || !isPlaying || !artistNeedsScroll) {
+      setArtistScroll(0);
+      return;
     }
-  }, [artist]);
 
-  // No scrolling - static text display only
+    const artistWidth = artist.length * 10;
+    const spacing = 100;
+    const loopPoint = artistWidth + spacing;
+
+    const scroll = () => {
+      setArtistScroll((prev) => {
+        if (prev >= loopPoint) {
+          return 0;
+        }
+        return prev + 0.4; // Slightly slower than title
+      });
+      artistAnimRef.current = requestAnimationFrame(scroll);
+    };
+
+    artistAnimRef.current = requestAnimationFrame(scroll);
+    return () => {
+      if (artistAnimRef.current) cancelAnimationFrame(artistAnimRef.current);
+    };
+  }, [artist, isPlaying, artistNeedsScroll]);
 
   return (
     <div className="w-full">
