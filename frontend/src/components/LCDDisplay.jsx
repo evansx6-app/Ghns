@@ -58,7 +58,7 @@ const LCDDisplay = ({ title, artist, album, isPlaying }) => {
     }
 
     const charWidth = 12;
-    const textWidth = (title?.length || 0) * charWidth;
+    const textWidth = displayTitle.length * charWidth;
     const containerWidth = 400; // Approximate LCD container width
     const scrollDistance = textWidth + 40; // Text width + small buffer
 
