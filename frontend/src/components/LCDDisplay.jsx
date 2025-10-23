@@ -40,33 +40,24 @@ const LCDDisplay = ({ title, artist, album, isPlaying }) => {
     }
   }, [artist]);
 
-  // Title scrolling animation - ALWAYS CONTINUOUS SCROLL
+  // Title scrolling animation - SEAMLESS CONTINUOUS LOOP
   useEffect(() => {
     if (!title || !isPlaying) {
       return;
     }
 
-    const titleWidth = title.length * 15; // Character width
-    const containerWidth = 600;
-    let scrollingIn = titleScrollingIn;
+    const titleWidth = title.length * 15; // Character width estimate
+    const spacing = 96; // Space between duplicated text (mr-24 = 96px)
+    const loopPoint = titleWidth + spacing; // When first text is fully off screen
 
     const scroll = () => {
       setTitleScroll((prev) => {
-        // Initial scroll in from right
-        if (scrollingIn) {
-          if (prev < 0) return prev + 3;
-          scrollingIn = false;
-          setTitleScrollingIn(false);
+        // Seamless loop: when first text is fully off screen, reset to 0
+        // This makes the second text (which is now visible) become the "first" text
+        if (prev >= loopPoint) {
           return 0;
         }
-        
-        // ALWAYS scroll continuously - regardless of title length
-        const maxScroll = titleWidth + 50; // Add small buffer
-        if (prev >= maxScroll) {
-          // Restart from off-screen right (negative value positions it to the right)
-          return -containerWidth;
-        }
-        return prev + 2; // Scrolling speed
+        return prev + 2; // Continuous scrolling speed
       });
       titleAnimRef.current = requestAnimationFrame(scroll);
     };
@@ -74,7 +65,6 @@ const LCDDisplay = ({ title, artist, album, isPlaying }) => {
     titleAnimRef.current = requestAnimationFrame(scroll);
     return () => {
       if (titleAnimRef.current) cancelAnimationFrame(titleAnimRef.current);
-      if (titlePauseRef.current) clearTimeout(titlePauseRef.current);
     };
   }, [title, isPlaying]);
 
