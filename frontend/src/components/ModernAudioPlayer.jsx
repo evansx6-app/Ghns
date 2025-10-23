@@ -597,14 +597,26 @@ const ModernAudioPlayer = () => {
                       >
                         {/* Screen glass effect */}
                         <div className="absolute inset-0 pointer-events-none" style={{
-                          background: 'linear-gradient(165deg, rgba(255,255,255,0.05) 0%, transparent 50%)',
+                          background: 'linear-gradient(165deg, rgba(255,255,255,0.08) 0%, transparent 50%)',
                           zIndex: 10
+                        }} />
+                        
+                        {/* Scanline effect for screen */}
+                        <div className="absolute inset-0 pointer-events-none" style={{
+                          backgroundImage: 'repeating-linear-gradient(0deg, transparent 0px, rgba(0,0,0,0.03) 1px, rgba(0,0,0,0.03) 2px, transparent 3px)',
+                          zIndex: 9
+                        }} />
+                        
+                        {/* Screen vignette */}
+                        <div className="absolute inset-0 pointer-events-none rounded-lg" style={{
+                          boxShadow: 'inset 0 0 60px rgba(0,0,0,0.4), inset 0 0 100px rgba(0,0,0,0.2)',
+                          zIndex: 8
                         }} />
                         
                         {/* Actual display area */}
                         <div className="relative w-full aspect-square rounded-lg overflow-hidden shadow-2xl bg-gradient-to-br from-slate-800 to-slate-900" style={{
                           border: '2px solid #000',
-                          boxShadow: 'inset 0 0 20px rgba(0,0,0,0.5)'
+                          boxShadow: 'inset 0 0 30px rgba(0,0,0,0.6)'
                         }}>
                         {(currentTrack?.title === "Greatest Hits Non-Stop" || 
                           currentTrack?.title === "Legendary Radio from Scotland" ||
