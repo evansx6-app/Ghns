@@ -145,8 +145,9 @@ const ModernAudioPlayer = () => {
         console.log('Aggressively preloading new track artwork:', track.title);
       }
       
-      // Update track data
+      // Update track data and preserve in ref
       setCurrentTrack(track);
+      lastValidTrackRef.current = track; // Save as last valid track
       setLastUpdate(new Date());
       console.log(`Track updated: ${track.title} by ${track.artist}`);
       
