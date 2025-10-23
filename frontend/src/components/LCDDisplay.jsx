@@ -47,7 +47,7 @@ const LCDDisplay = ({ title, artist, album, isPlaying }) => {
     }
 
     const charWidth = 12;
-    const numSpaces = 8; // Spacing between duplicates
+    const numSpaces = 20; // Increased spacing to prevent duplicate display
     const textWidth = (title?.length || 0) * charWidth;
     const spacingWidth = numSpaces * charWidth;
     const loopPoint = textWidth + spacingWidth;
