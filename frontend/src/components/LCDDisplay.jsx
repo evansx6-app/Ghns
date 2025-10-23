@@ -140,10 +140,10 @@ const LCDDisplay = ({ title, artist, album, isPlaying }) => {
         />
         
         <div className="relative px-4 py-3">
-          {/* Title Line - Scrolling once */}
+          {/* Title Line - Continuous scrolling with duplicated text */}
           <div className="overflow-hidden mb-2">
             <div 
-              className="whitespace-nowrap text-lg sm:text-xl md:text-2xl font-semibold tracking-wider"
+              className="whitespace-nowrap text-lg sm:text-xl md:text-2xl font-semibold tracking-wider inline-flex"
               style={{
                 fontFamily: '"Orbitron", monospace',
                 color: isPlaying ? '#E8E8E8' : '#333333',
@@ -153,7 +153,8 @@ const LCDDisplay = ({ title, artist, album, isPlaying }) => {
                 transition: 'color 0.5s'
               }}
             >
-              {title || '--- NO TITLE ---'}
+              <span className="mr-24">{title || '--- NO TITLE ---'}</span>
+              <span>{title || '--- NO TITLE ---'}</span>
             </div>
           </div>
           
