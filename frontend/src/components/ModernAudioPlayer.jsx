@@ -469,7 +469,7 @@ const ModernAudioPlayer = () => {
               borderRadius: '0 0 8px 8px'
             }}
           >
-            <div className="flex items-center justify-between h-20">
+            <div className="flex items-center justify-between h-14 py-2">
               {/* Logo */}
               <div className="flex items-center space-x-3 sm:space-x-4">
                 <img 
