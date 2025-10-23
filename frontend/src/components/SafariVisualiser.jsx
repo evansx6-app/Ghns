@@ -3,6 +3,7 @@ import useSharedAudioContext from '../hooks/useSharedAudioContext';
 
 const SafariVisualiser = ({ audioRef, isPlaying, colors }) => {
   const [levels, setLevels] = useState({ left: 0, right: 0, leftPeak: 0, rightPeak: 0 });
+  const [isFallbackMode, setIsFallbackMode] = useState(false);
   const animationFrameRef = useRef(null);
   const levelsRef = useRef({ left: 0, right: 0 }); // Track levels in ref to avoid dependency issues
   const peaksRef = useRef({ left: { height: 0, holdTime: 0 }, right: { height: 0, holdTime: 0 } });
