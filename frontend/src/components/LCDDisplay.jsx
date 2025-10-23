@@ -46,7 +46,7 @@ const LCDDisplay = ({ title, artist, album, isPlaying }) => {
     });
   }, [displayTitle, displayArtist, isPlaying]);
 
-  // Simple left-to-right scrolling with 1 second pause between loops
+  // Continuous seamless scrolling with wrap-around
   useEffect(() => {
     if (!isPlaying || !titleNeedsScroll) {
       setTitleScroll(0);
@@ -59,8 +59,8 @@ const LCDDisplay = ({ title, artist, album, isPlaying }) => {
 
     const charWidth = 12;
     const textWidth = displayTitle.length * charWidth;
-    const containerWidth = 400; // Approximate LCD container width
-    const scrollDistance = textWidth + 40; // Text width + small buffer
+    const spacing = 120; // Space between text and its duplicate
+    const totalScrollDistance = textWidth + spacing;
 
     const scroll = () => {
       if (titlePaused) {
@@ -69,27 +69,24 @@ const LCDDisplay = ({ title, artist, album, isPlaying }) => {
       }
 
       setTitleScroll((prev) => {
-        if (prev >= scrollDistance) {
-          // Text has scrolled completely off screen, pause before resetting
-          setTitlePaused(true);
-          titlePauseTimeoutRef.current = setTimeout(() => {
-            setTitlePaused(false);
-            setTitleScroll(0);
-          }, 1000);
-          return prev;
+        const newScroll = prev + 0.6; // Scroll speed
+        
+        // When we've scrolled one full cycle, reset seamlessly
+        if (newScroll >= totalScrollDistance) {
+          return 0; // Reset to create continuous loop
         }
-        return prev + 0.6; // Slower scroll speed
+        return newScroll;
       });
       titleAnimRef.current = requestAnimationFrame(scroll);
     };
 
-    console.log('[LCD] Title scrolling started', { textWidth, scrollDistance });
+    console.log('[LCD] Title scrolling started (continuous)', { textWidth, spacing, totalScrollDistance });
     titleAnimRef.current = requestAnimationFrame(scroll);
     return () => {
       if (titleAnimRef.current) cancelAnimationFrame(titleAnimRef.current);
       if (titlePauseTimeoutRef.current) clearTimeout(titlePauseTimeoutRef.current);
     };
-  }, [title, isPlaying, titleNeedsScroll, titlePaused]);
+  }, [displayTitle, isPlaying, titleNeedsScroll, titlePaused]);
 
   // Simple left-to-right scrolling with 1 second pause between loops
   useEffect(() => {
