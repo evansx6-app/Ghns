@@ -71,7 +71,7 @@ const RecentTracks = ({ carMode = false }) => {
       <Card className="premium-container-strong rounded-2xl">
         <CardHeader className="pb-4">
           <CardTitle className={`text-white flex items-center space-x-2 ${carMode ? 'text-xl' : ''}`}>
-            <Clock className={`${carMode ? 'h-7 w-7' : 'h-5 w-5'}`} />
+            <Clock className={`${carMode ? 'h-7 w-7' : 'h-5 w-5'}`} style={{ color: '#ea580c' }} />
             <span>Recently Played</span>
           </CardTitle>
         </CardHeader>
