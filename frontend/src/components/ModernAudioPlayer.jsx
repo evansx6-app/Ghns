@@ -483,7 +483,6 @@ const ModernAudioPlayer = () => {
                   <h1 className="text-base sm:text-xl md:text-2xl font-black leading-tight" style={{ 
                     fontFamily: '"Russo One", sans-serif',
                     color: '#4a4a4a',
-                    textShadow: '0 1px 0 rgba(255,255,255,0.4), 0 -1px 0 rgba(0,0,0,0.8), 1px 0 0 rgba(255,255,255,0.2), -1px 0 0 rgba(0,0,0,0.6)',
                     letterSpacing: '0.5px'
                   }}>GREATEST HITS NON-STOP</h1>
                   <ScrollingText 
@@ -498,7 +497,6 @@ const ModernAudioPlayer = () => {
                     <span style={{ 
                       fontFamily: '"Russo One", sans-serif',
                       color: '#4a4a4a',
-                      textShadow: '0 1px 0 rgba(255,255,255,0.3), 0 -1px 0 rgba(0,0,0,0.6)',
                       letterSpacing: '0.5px'
                     }}>LEGENDARY RADIO FROM SCOTLAND</span>
                   </ScrollingText>
