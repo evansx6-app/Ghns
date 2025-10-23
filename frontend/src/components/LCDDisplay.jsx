@@ -61,10 +61,7 @@ const LCDDisplay = ({ title, artist, album, isPlaying }) => {
 
   // Continuous scrolling for long artist names
   useEffect(() => {
-    console.log('🎬 [LCD] Artist scroll effect triggered:', { isPlaying, artistNeedsScroll, artist });
-    
     if (!isPlaying || !artistNeedsScroll) {
-      console.log('⏸️ [LCD] Artist scroll stopped (not playing or doesn\'t need scroll)');
       setArtistScroll(0);
       return;
     }
@@ -72,26 +69,20 @@ const LCDDisplay = ({ title, artist, album, isPlaying }) => {
     const textWidth = (artist?.length || 0) * 10;
     const spacing = 120;
     const loopPoint = textWidth + spacing;
-    
-    console.log('🎯 [LCD] Artist scroll params:', { textWidth, spacing, loopPoint });
 
-    let frameCount = 0;
     const scroll = () => {
       setArtistScroll((prev) => {
-        const newScroll = prev >= loopPoint ? 0 : prev + 0.7;
-        if (frameCount % 60 === 0) { // Log every 60 frames (~1 second)
-          console.log('🔄 [LCD] Artist scrolling:', { prev, newScroll, loopPoint });
+        if (prev >= loopPoint) {
+          return 0;
         }
-        frameCount++;
-        return newScroll;
+        return prev + 0.7; // Slightly slower than title
       });
       artistAnimRef.current = requestAnimationFrame(scroll);
     };
 
-    console.log('▶️ [LCD] Starting artist scroll animation');
+    console.log('[LCD] Artist scrolling started');
     artistAnimRef.current = requestAnimationFrame(scroll);
     return () => {
-      console.log('🛑 [LCD] Stopping artist scroll animation');
       if (artistAnimRef.current) cancelAnimationFrame(artistAnimRef.current);
     };
   }, [artist, isPlaying, artistNeedsScroll]);
