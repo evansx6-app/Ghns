@@ -68,41 +68,24 @@ const LCDDisplay = ({ title, artist, album, isPlaying }) => {
           }}
         />
         
-        <div className="relative px-4 py-3">
-          {/* Title Line - Conditional scrolling */}
-          <div className="overflow-hidden mb-2">
+        <div className="relative px-4 py-3 flex items-center justify-center">
+          {/* Combined Track Info - Single Line with Conditional Scrolling */}
+          <div className="overflow-hidden w-full">
             <div 
-              className={`text-base sm:text-lg md:text-xl font-semibold tracking-wider ${titleNeedsScroll ? '' : 'truncate'}`}
+              className="text-sm sm:text-base md:text-lg font-semibold tracking-wider"
               style={{
                 fontFamily: '"Orbitron", monospace',
                 color: isPlaying ? '#E8E8E8' : '#333333',
                 textShadow: isPlaying ? '0 0 8px rgba(232, 232, 232, 0.5), 0 0 4px rgba(232, 232, 232, 0.3)' : 'none',
                 transition: 'color 0.5s',
                 transform: titleNeedsScroll && isPlaying ? `translateX(-${titleScroll}px)` : 'none',
-                whiteSpace: titleNeedsScroll ? 'nowrap' : 'normal'
+                whiteSpace: 'nowrap',
+                textAlign: titleNeedsScroll ? 'left' : 'center'
               }}
             >
               {titleNeedsScroll && isPlaying ? 
-                `${title || '--- NO TITLE ---'}     ${title || '--- NO TITLE ---'}` : 
-                (title || '--- NO TITLE ---')
-              }
-            </div>
-          </div>
-          
-          {/* Artist Line - Conditional scrolling */}
-          <div className="overflow-hidden">
-            <div 
-              className={`text-xs sm:text-sm md:text-base tracking-wider transition-colors duration-500 ${artistNeedsScroll ? '' : 'truncate'}`}
-              style={{
-                fontFamily: '"Orbitron", monospace',
-                color: isPlaying ? 'rgba(255,255,255,0.7)' : '#222222',
-                transform: artistNeedsScroll && isPlaying ? `translateX(-${artistScroll}px)` : 'none',
-                whiteSpace: artistNeedsScroll ? 'nowrap' : 'normal'
-              }}
-            >
-              {artistNeedsScroll && isPlaying ? 
-                `${artist || 'Unknown Artist'}     ${artist || 'Unknown Artist'}` : 
-                (artist || 'Unknown Artist')
+                `${combinedText}     ${combinedText}` : 
+                combinedText
               }
             </div>
           </div>
