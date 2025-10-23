@@ -244,7 +244,7 @@ export const streamAPI = {
         return {
           status: 'offline',
           reason: 'No internet connection',
-          streamUrl: 'https://s8.myradiostream.com/58238/listen.mp3',
+          streamUrl: process.env.REACT_APP_STREAM_URL,
           lastChecked: new Date().toISOString()
         };
       }
