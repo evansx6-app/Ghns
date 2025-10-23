@@ -1,6 +1,10 @@
 import React, { useState, useEffect, useRef } from 'react';
 
 const LCDDisplay = ({ title, artist, album, isPlaying }) => {
+  // Ensure we always have valid title and artist values
+  const displayTitle = title || '--- NO TITLE ---';
+  const displayArtist = artist || 'Unknown Artist';
+  
   const [titleScroll, setTitleScroll] = useState(0);
   const [artistScroll, setArtistScroll] = useState(0);
   const [titleNeedsScroll, setTitleNeedsScroll] = useState(false);
@@ -11,8 +15,8 @@ const LCDDisplay = ({ title, artist, album, isPlaying }) => {
   const artistAnimRef = useRef(null);
   const titlePauseTimeoutRef = useRef(null);
   const artistPauseTimeoutRef = useRef(null);
-  const prevTitleRef = useRef(title);
-  const prevArtistRef = useRef(artist);
+  const prevTitleRef = useRef(displayTitle);
+  const prevArtistRef = useRef(displayArtist);
   const isMountedRef = useRef(false);
 
   // Detect if title or artist needs scrolling based on container width
