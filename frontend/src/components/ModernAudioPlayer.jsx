@@ -581,12 +581,29 @@ const ModernAudioPlayer = () => {
                       isPlaying={isPlaying}
                     />
                     
-                    {/* Album Artwork - Compact */}
-                    <div className="relative">
-                      <div className="w-40 h-40 sm:w-48 sm:h-48 md:w-56 md:h-56 rounded-xl overflow-hidden shadow-2xl bg-gradient-to-br from-slate-800 to-slate-900" style={{
-                        border: '3px solid #2a2a2a',
-                        boxShadow: '0 10px 30px rgba(0,0,0,0.5), inset 0 1px 1px rgba(255,255,255,0.1)'
-                      }}>
+                    {/* Album Artwork - Large Display Screen */}
+                    <div className="relative w-full max-w-lg px-4">
+                      {/* Screen bezel/frame */}
+                      <div 
+                        className="relative rounded-xl overflow-hidden"
+                        style={{
+                          background: 'linear-gradient(135deg, #1a1a1a 0%, #0a0a0a 100%)',
+                          padding: '16px',
+                          boxShadow: 'inset 0 2px 10px rgba(0,0,0,0.8), 0 10px 40px rgba(0,0,0,0.6)',
+                          border: '3px solid #2a2a2a'
+                        }}
+                      >
+                        {/* Screen glass effect */}
+                        <div className="absolute inset-0 pointer-events-none" style={{
+                          background: 'linear-gradient(165deg, rgba(255,255,255,0.05) 0%, transparent 50%)',
+                          zIndex: 10
+                        }} />
+                        
+                        {/* Actual display area */}
+                        <div className="relative w-full aspect-square rounded-lg overflow-hidden shadow-2xl bg-gradient-to-br from-slate-800 to-slate-900" style={{
+                          border: '2px solid #000',
+                          boxShadow: 'inset 0 0 20px rgba(0,0,0,0.5)'
+                        }}>
                         {currentTrack?.title === "Greatest Hits Non-Stop" ? (
                           <div className="w-full h-full flex items-center justify-center p-8 bg-gradient-to-br from-copper-900/20 to-copper-800/20">
                             <OptimizedImage
