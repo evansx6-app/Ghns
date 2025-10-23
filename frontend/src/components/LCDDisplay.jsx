@@ -33,10 +33,7 @@ const LCDDisplay = ({ title, artist, album, isPlaying }) => {
 
   // Continuous scrolling for long titles
   useEffect(() => {
-    console.log('🎬 [LCD] Title scroll effect triggered:', { isPlaying, titleNeedsScroll, title });
-    
     if (!isPlaying || !titleNeedsScroll) {
-      console.log('⏸️ [LCD] Title scroll stopped (not playing or doesn\'t need scroll)');
       setTitleScroll(0);
       return;
     }
@@ -44,26 +41,20 @@ const LCDDisplay = ({ title, artist, album, isPlaying }) => {
     const textWidth = (title?.length || 0) * 12; // Character width estimate
     const spacing = 120; // Space between duplicated text
     const loopPoint = textWidth + spacing;
-    
-    console.log('🎯 [LCD] Title scroll params:', { textWidth, spacing, loopPoint });
 
-    let frameCount = 0;
     const scroll = () => {
       setTitleScroll((prev) => {
-        const newScroll = prev >= loopPoint ? 0 : prev + 0.8;
-        if (frameCount % 60 === 0) { // Log every 60 frames (~1 second)
-          console.log('🔄 [LCD] Title scrolling:', { prev, newScroll, loopPoint });
+        if (prev >= loopPoint) {
+          return 0; // Reset to start for seamless loop
         }
-        frameCount++;
-        return newScroll;
+        return prev + 0.8; // Continuous scrolling speed
       });
       titleAnimRef.current = requestAnimationFrame(scroll);
     };
 
-    console.log('▶️ [LCD] Starting title scroll animation');
+    console.log('[LCD] Title scrolling started');
     titleAnimRef.current = requestAnimationFrame(scroll);
     return () => {
-      console.log('🛑 [LCD] Stopping title scroll animation');
       if (titleAnimRef.current) cancelAnimationFrame(titleAnimRef.current);
     };
   }, [title, isPlaying, titleNeedsScroll]);
