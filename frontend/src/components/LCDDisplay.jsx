@@ -2,86 +2,125 @@ import React, { useState, useEffect, useRef } from 'react';
 
 const LCDDisplay = ({ title, artist, album, isPlaying }) => {
   const [titleScroll, setTitleScroll] = useState(0);
-  const [isPaused, setIsPaused] = useState(false);
-  const [isScrollingIn, setIsScrollingIn] = useState(true);
+  const [artistScroll, setArtistScroll] = useState(0);
+  const [titlePaused, setTitlePaused] = useState(false);
+  const [artistPaused, setArtistPaused] = useState(false);
+  const [titleScrollingIn, setTitleScrollingIn] = useState(true);
+  const [artistScrollingIn, setArtistScrollingIn] = useState(true);
   const titleAnimRef = useRef(null);
-  const pauseTimeoutRef = useRef(null);
+  const artistAnimRef = useRef(null);
+  const titlePauseRef = useRef(null);
+  const artistPauseRef = useRef(null);
   const prevTitleRef = useRef(title);
+  const prevArtistRef = useRef(artist);
 
-  // Reset when title changes - scroll in new title
+  // Reset when title changes - scroll in animation
   useEffect(() => {
     if (prevTitleRef.current !== title) {
-      setTitleScroll(-600); // Start from right (off-screen)
-      setIsScrollingIn(true);
-      setIsPaused(false);
+      setTitleScroll(-700);
+      setTitleScrollingIn(true);
+      setTitlePaused(false);
       prevTitleRef.current = title;
     }
   }, [title]);
 
+  // Reset when artist changes - scroll in animation
+  useEffect(() => {
+    if (prevArtistRef.current !== artist) {
+      setArtistScroll(-700);
+      setArtistScrollingIn(true);
+      setArtistPaused(false);
+      prevArtistRef.current = artist;
+    }
+  }, [artist]);
+
   // Title scrolling animation
   useEffect(() => {
-    if (!title) {
-      setTitleScroll(0);
-      return;
-    }
+    if (!title) return;
 
-    const titleWidth = title.length * 10; // Approximate character width in pixels
-    const containerWidth = 600; // Approximate container width
-    const isLongTitle = titleWidth > containerWidth;
+    const titleWidth = title.length * 10;
+    const containerWidth = 600;
+    const isLong = titleWidth > containerWidth;
 
     const scroll = () => {
       setTitleScroll((prev) => {
-        // Scrolling in from right
-        if (isScrollingIn) {
-          if (prev < 0) {
-            return prev + 2; // Scroll in at 2px per frame
-          } else {
-            setIsScrollingIn(false);
-            if (!isLongTitle) {
-              return 0; // Stay at position 0 for short titles
-            }
-            return prev;
-          }
+        // Scroll in from right
+        if (titleScrollingIn) {
+          if (prev < 0) return prev + 3;
+          setTitleScrollingIn(false);
+          return isLong ? prev : 0;
         }
         
-        // For long titles, continue scrolling after scroll-in
-        if (isLongTitle && isPlaying) {
+        // Continue scrolling if long
+        if (isLong && isPlaying) {
           const maxScroll = titleWidth - containerWidth;
-          
-          if (prev >= maxScroll && !isPaused) {
-            // Reached end, pause before resetting
-            setIsPaused(true);
-            pauseTimeoutRef.current = setTimeout(() => {
-              setTitleScroll(-600);
-              setIsScrollingIn(true);
-              setIsPaused(false);
-            }, 2000); // 2 second pause
+          if (prev >= maxScroll && !titlePaused) {
+            setTitlePaused(true);
+            titlePauseRef.current = setTimeout(() => {
+              setTitleScroll(-700);
+              setTitleScrollingIn(true);
+              setTitlePaused(false);
+            }, 2000);
             return prev;
           }
-          
-          if (isPaused) {
-            return prev;
-          }
-          
-          return prev + 0.8; // Scroll speed for long titles
+          if (titlePaused) return prev;
+          return prev + 1;
         }
-        
         return prev;
       });
       titleAnimRef.current = requestAnimationFrame(scroll);
     };
 
     titleAnimRef.current = requestAnimationFrame(scroll);
-
     return () => {
-      if (titleAnimRef.current) {
-        cancelAnimationFrame(titleAnimRef.current);
-      }
-      if (pauseTimeoutRef.current) {
-        clearTimeout(pauseTimeoutRef.current);
-      }
+      if (titleAnimRef.current) cancelAnimationFrame(titleAnimRef.current);
+      if (titlePauseRef.current) clearTimeout(titlePauseRef.current);
     };
-  }, [title, isPlaying, isPaused, isScrollingIn]);
+  }, [title, isPlaying, titlePaused, titleScrollingIn]);
+
+  // Artist scrolling animation
+  useEffect(() => {
+    if (!artist) return;
+
+    const artistWidth = artist.length * 9;
+    const containerWidth = 600;
+    const isLong = artistWidth > containerWidth;
+
+    const scroll = () => {
+      setArtistScroll((prev) => {
+        // Scroll in from right (with delay for staggered effect)
+        if (artistScrollingIn) {
+          if (prev < 0) return prev + 2.5;
+          setArtistScrollingIn(false);
+          return isLong ? prev : 0;
+        }
+        
+        // Continue scrolling if long
+        if (isLong && isPlaying) {
+          const maxScroll = artistWidth - containerWidth;
+          if (prev >= maxScroll && !artistPaused) {
+            setArtistPaused(true);
+            artistPauseRef.current = setTimeout(() => {
+              setArtistScroll(-700);
+              setArtistScrollingIn(true);
+              setArtistPaused(false);
+            }, 2000);
+            return prev;
+          }
+          if (artistPaused) return prev;
+          return prev + 0.9;
+        }
+        return prev;
+      });
+      artistAnimRef.current = requestAnimationFrame(scroll);
+    };
+
+    artistAnimRef.current = requestAnimationFrame(scroll);
+    return () => {
+      if (artistAnimRef.current) cancelAnimationFrame(artistAnimRef.current);
+      if (artistPauseRef.current) clearTimeout(artistPauseRef.current);
+    };
+  }, [artist, isPlaying, artistPaused, artistScrollingIn]);
 
   return (
     <div className="w-full my-6 px-4">
