@@ -74,11 +74,11 @@ const LCDDisplay = ({ title, artist, album, isPlaying }) => {
     };
   }, [title, isPlaying, titleScrollingIn]);
 
-  // Artist scrolling animation - SEAMLESS LOOP FOR LONG NAMES
+  // Artist scrolling animation - ALWAYS SCROLL LONG NAMES
   useEffect(() => {
-    if (!artist) return;
+    if (!artist || !isPlaying) return;
 
-    const artistWidth = artist.length * 9;
+    const artistWidth = artist.length * 10; // Increased for better calculation
     const containerWidth = 600;
     const isLong = artistWidth > containerWidth;
 
@@ -92,13 +92,13 @@ const LCDDisplay = ({ title, artist, album, isPlaying }) => {
         }
         
         // Continuous scrolling for long artist names
-        if (isLong && isPlaying) {
+        if (isLong) {
           const maxScroll = artistWidth + containerWidth; // Scroll completely off screen
           if (prev >= maxScroll) {
             // Immediately restart from right (no pause)
             return 0;
           }
-          return prev + 0.9;
+          return prev + 1.2; // Slightly faster
         }
         return prev;
       });
