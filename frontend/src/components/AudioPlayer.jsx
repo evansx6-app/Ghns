@@ -136,7 +136,7 @@ const AudioPlayer = () => {
         artist: "Live Radio Stream", 
         album: "Legendary Radio from Scotland",
         isLive: true,
-        streamUrl: STREAM_URL,
+        streamUrl: process.env.REACT_APP_STREAM_URL,
         artwork_url: "https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=500&h=500&fit=crop&crop=center"
       });
     } finally {
