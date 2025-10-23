@@ -87,8 +87,18 @@ const ModernAudioPlayer = () => {
       // Preload artwork for faster display
       const track = await streamAPI.getCurrentTrack();
       
+      // Only update if we have valid track data
+      if (!track || track.fallback) {
+        console.warn('Received fallback track data, keeping current track info');
+        // Don't override current track with fallback if we already have valid data
+        if (!currentTrack || currentTrack.fallback) {
+          setCurrentTrack(track);
+        }
+        return;
+      }
+      
       // Preload the image for faster rendering
-      if (track?.artwork_url) {
+      if (track?.artwork_url && track.artwork_url !== 'vinyl-fallback-placeholder') {
         const img = new Image();
         img.src = track.artwork_url;
       }
@@ -130,14 +140,20 @@ const ModernAudioPlayer = () => {
       }
     } catch (error) {
       console.error('Error fetching current track:', error);
-      setCurrentTrack({
-        title: "Greatest Hits Non-Stop",
-        artist: "Live Radio Stream", 
-        album: "Legendary Radio from Scotland",
-        isLive: true,
-        streamUrl: STREAM_URL,
-        artwork_url: "https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=500&h=500&fit=crop&crop=center"
-      });
+      // Only set fallback if we don't have any current track data
+      if (!currentTrack) {
+        setCurrentTrack({
+          title: "Greatest Hits Non-Stop",
+          artist: "Live Radio Stream", 
+          album: "Legendary Radio from Scotland",
+          isLive: true,
+          streamUrl: STREAM_URL,
+          artwork_url: "https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=500&h=500&fit=crop&crop=center",
+          fallback: true
+        });
+      } else {
+        console.log('Keeping existing track info due to fetch error');
+      }
     } finally {
       setIsLoading(false);
     }
