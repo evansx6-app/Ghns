@@ -706,7 +706,7 @@ const ModernAudioPlayer = () => {
                       </div>
                     
                     {/* Level Meters */}
-                    <div className="w-full max-w-md md:max-w-lg mt-4">
+                    <div className="w-full max-w-md md:max-w-lg mt-2">
                       <SafariVisualiser 
                         audioRef={audioRef}
                         isPlaying={isPlaying}
