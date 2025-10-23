@@ -15,7 +15,7 @@ export const useMediaSession = (track, isPlaying, audioRef) => {
       // Create metadata object
       const artworkUrl = trackData.artwork_url && trackData.artwork_url !== 'vinyl-fallback-placeholder' 
         ? trackData.artwork_url 
-        : 'https://customer-assets.emergentagent.com/job_ghns-project/artifacts/5tmxnbvh_unnamed.png';
+        : process.env.REACT_APP_LOGO_URL;
       
       const metadataConfig = {
         title: (trackData.title || 'Greatest Hits Non-Stop').trim(),
