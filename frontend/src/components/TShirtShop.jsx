@@ -78,10 +78,10 @@ const TShirtShop = memo(({ isCarMode }) => {
               }}
             >
               <div className="flex items-center gap-2 mb-2">
-                <ShoppingBag className="w-5 h-5 text-copper-400" />
+                <ShoppingBag className="w-5 h-5" style={{ color: '#ea580c' }} />
                 <h3 className="text-white text-lg font-bold drop-shadow-lg">Official Merchandise</h3>
               </div>
-              <p className="text-copper-400 text-sm font-medium drop-shadow-lg mb-2">Greatest Hits Non-Stop</p>
+              <p className="text-sm font-medium drop-shadow-lg mb-2" style={{ color: '#ea580c' }}>Greatest Hits Non-Stop</p>
               <div className="flex items-center gap-2 text-white/80 text-xs">
                 <span>Visit Shop</span>
                 <ExternalLink className="w-3 h-3" />
