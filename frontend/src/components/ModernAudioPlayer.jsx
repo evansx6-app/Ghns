@@ -457,9 +457,17 @@ const ModernAudioPlayer = () => {
       
       {/* Modern Grid Layout */}
       <div className="relative z-10 min-h-screen">
-        {/* Top Navigation Bar - Sticky */}
-        <nav className="sticky top-0 z-50 relative border-b border-white/5">
-          <div className="relative z-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        {/* Top Navigation Bar - Metallic Logo Plate */}
+        <nav className="sticky top-0 z-50 relative border-b border-white/10">
+          <div 
+            className="relative z-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8"
+            style={{
+              background: 'linear-gradient(180deg, #c0c0c0 0%, #a8a8a8 20%, #8a8a8a 50%, #787878 80%, #5a5a5a 100%)',
+              boxShadow: 'inset 0 1px 2px rgba(255,255,255,0.3), inset 0 -1px 2px rgba(0,0,0,0.4), 0 4px 8px rgba(0,0,0,0.3)',
+              borderTop: '1px solid rgba(255,255,255,0.2)',
+              borderBottom: '2px solid rgba(0,0,0,0.3)'
+            }}
+          >
             <div className="flex items-center justify-between h-20">
               {/* Logo */}
               <div className="flex items-center space-x-3 sm:space-x-4">
@@ -468,16 +476,19 @@ const ModernAudioPlayer = () => {
                   alt="Greatest Hits Non-Stop" 
                   className="h-10 sm:h-14 w-auto"
                   style={{ 
-                    filter: 'drop-shadow(0 2px 6px rgba(0,0,0,0.6)) drop-shadow(0 4px 12px rgba(0,0,0,0.4))'
+                    filter: 'drop-shadow(0 2px 4px rgba(0,0,0,0.8)) drop-shadow(0 0 8px rgba(255,255,255,0.3))'
                   }}
                 />
                 <div className="min-w-0 flex-1">
-                  <h1 className="text-base sm:text-xl md:text-2xl font-black text-white leading-tight" style={{ 
-                    textShadow: '0 2px 4px rgba(0,0,0,0.8)'
-                  }}>Greatest Hits Non-Stop</h1>
+                  <h1 className="text-base sm:text-xl md:text-2xl font-black leading-tight" style={{ 
+                    fontFamily: '"Russo One", sans-serif',
+                    color: '#1a1a1a',
+                    textShadow: '0 1px 0 rgba(255,255,255,0.4), 0 -1px 0 rgba(0,0,0,0.8), 1px 0 0 rgba(255,255,255,0.2), -1px 0 0 rgba(0,0,0,0.6)',
+                    letterSpacing: '0.5px'
+                  }}>GREATEST HITS NON-STOP</h1>
                   <ScrollingText 
-                    text="Legendary Radio from Scotland"
-                    className="text-[10px] sm:text-xs md:text-sm text-copper-400 font-semibold"
+                    text="LEGENDARY RADIO FROM SCOTLAND"
+                    className="text-[10px] sm:text-xs md:text-sm font-bold"
                     speed={20}
                     pauseDuration={1000}
                     alwaysScroll={true}
@@ -485,8 +496,11 @@ const ModernAudioPlayer = () => {
                     align="left"
                   >
                     <span style={{ 
-                      textShadow: '0 1px 2px rgba(0,0,0,0.8)'
-                    }}>Legendary Radio from Scotland</span>
+                      fontFamily: '"Russo One", sans-serif',
+                      color: '#2a2a2a',
+                      textShadow: '0 1px 0 rgba(255,255,255,0.3), 0 -1px 0 rgba(0,0,0,0.6)',
+                      letterSpacing: '0.5px'
+                    }}>LEGENDARY RADIO FROM SCOTLAND</span>
                   </ScrollingText>
                 </div>
               </div>
