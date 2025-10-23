@@ -670,18 +670,9 @@ const ModernAudioPlayer = () => {
                         </div>
                       </div>
                     </div>
-                    
-                    {/* Level Meters */}
-                    <div className="w-full max-w-2xl">
-                      <SafariVisualiser 
-                        audioRef={audioRef}
-                        isPlaying={isPlaying}
-                        colors={colors}
-                      />
-                    </div>
 
-                    {/* Quick Actions */}
-                    <div className="flex flex-wrap justify-center gap-2 w-full max-w-md">
+                    {/* Quick Actions - Below Album Art on Desktop */}
+                    <div className="flex flex-wrap justify-center gap-2 w-full max-w-md md:max-w-lg mt-4">
                         <Button
                           variant="outline"
                           size="sm"
