@@ -108,7 +108,11 @@ const StreamRecorder = ({ audioRef, isPlaying }) => {
             <Button
               onClick={handleStartRecording}
               disabled={!isPlaying}
-              className="flex items-center gap-1.5 sm:gap-2 bg-red-600 hover:bg-red-700 text-white border-red-500 min-h-[44px] touch-manipulation text-xs sm:text-sm"
+              className="flex items-center gap-1.5 sm:gap-2 text-white min-h-[44px] touch-manipulation text-xs sm:text-sm"
+              style={{
+                backgroundColor: '#ea580c',
+                borderColor: '#ea580c'
+              }}
               size="sm"
             >
               <Circle className="h-3.5 w-3.5 sm:h-4 sm:w-4 fill-current" />
