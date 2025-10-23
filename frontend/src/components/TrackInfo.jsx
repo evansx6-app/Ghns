@@ -7,7 +7,7 @@ const TrackInfo = ({ track }) => {
   // Check if this is the station ID track or fallback track
   const isStationID = track?.title === "Greatest Hits Non-Stop";
   const isFallbackTrack = track?.title === "Legendary Radio from Scotland";
-  const logoUrl = 'https://customer-assets.emergentagent.com/job_ghns-project/artifacts/5tmxnbvh_unnamed.png';
+  const logoUrl = process.env.REACT_APP_LOGO_URL;
   
   // For fallback track, force vinyl display by treating it as no artwork
   const hasArtwork = !isFallbackTrack && track?.artwork_url && 
