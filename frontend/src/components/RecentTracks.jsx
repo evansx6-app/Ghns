@@ -88,7 +88,7 @@ const RecentTracks = ({ carMode = false }) => {
     <Card className="premium-container rounded-xl sm:rounded-2xl md:rounded-3xl shadow-2xl">
       <CardHeader className="flex flex-row items-center justify-between pb-3 sm:pb-4 md:pb-5 px-4 sm:px-6 md:px-8 lg:px-10 pt-4 sm:pt-6 md:pt-8">
         <CardTitle className={`text-white flex items-center space-x-2 sm:space-x-3 ${carMode ? 'text-lg sm:text-xl md:text-2xl' : 'text-base sm:text-lg md:text-xl lg:text-2xl'}`}>
-          <Clock className={`${carMode ? 'h-6 w-6 sm:h-7 sm:w-7 md:h-8 md:w-8' : 'h-4 w-4 sm:h-5 sm:w-5 md:h-6 md:w-6 lg:h-7 lg:w-7'}`} />
+          <Clock className={`${carMode ? 'h-6 w-6 sm:h-7 sm:w-7 md:h-8 md:w-8' : 'h-4 w-4 sm:h-5 sm:w-5 md:h-6 md:w-6 lg:h-7 lg:w-7'}`} style={{ color: '#ea580c' }} />
           <span>Recently Played</span>
         </CardTitle>
         <Button
