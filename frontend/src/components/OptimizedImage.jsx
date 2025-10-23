@@ -35,24 +35,55 @@ const OptimizedImage = ({
       return;
     }
 
-    // Lazy load non-priority images
-    const img = new Image();
-    img.src = proxiedSrc;
-    
-    img.onload = () => {
-      setImageSrc(proxiedSrc);
-      setIsLoaded(true);
-    };
-    
-    img.onerror = () => {
-      console.warn('Image failed to load:', src);
-      setHasError(true);
-      setImageSrc(fallbackSrc);
+    // Optimized preloading with IntersectionObserver for lazy loading
+    let img = null;
+    let observer = null;
+
+    const loadImage = () => {
+      img = new Image();
+      img.src = proxiedSrc;
+      
+      // Add size hint for faster loading
+      img.sizes = '(max-width: 768px) 100vw, 800px';
+      
+      img.onload = () => {
+        setImageSrc(proxiedSrc);
+        setIsLoaded(true);
+      };
+      
+      img.onerror = () => {
+        console.warn('Image failed to load:', src);
+        setHasError(true);
+        setImageSrc(fallbackSrc);
+      };
     };
 
+    // Use IntersectionObserver for better lazy loading
+    if (imgRef.current && 'IntersectionObserver' in window) {
+      observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              loadImage();
+              observer?.disconnect();
+            }
+          });
+        },
+        { rootMargin: '50px' } // Start loading 50px before image enters viewport
+      );
+      
+      observer.observe(imgRef.current);
+    } else {
+      // Fallback for browsers without IntersectionObserver
+      loadImage();
+    }
+
     return () => {
-      img.onload = null;
-      img.onerror = null;
+      if (img) {
+        img.onload = null;
+        img.onerror = null;
+      }
+      observer?.disconnect();
     };
   }, [src, priority, fallbackSrc]);
 
