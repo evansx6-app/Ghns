@@ -717,7 +717,7 @@ const ModernAudioPlayer = () => {
 
                   {/* Classic Player Controls */}
                   <div className="space-y-4">
-                    {/* Play/Pause Button - Rectangular with shimmer when paused - Fixed orange tint */}
+                    {/* Play/Pause Button - Black with orange outline and shimmer when paused */}
                     <div className="flex justify-center">
                       <Button
                         onClick={togglePlayPause}
@@ -726,11 +726,11 @@ const ModernAudioPlayer = () => {
                         }`}
                         style={{
                           background: !isPlaying 
-                            ? `linear-gradient(90deg, #d97706cc 0%, #ea580ccc 25%, rgba(255,255,255,0.2) 50%, #ea580ccc 75%, #d97706cc 100%), linear-gradient(135deg, rgba(0,0,0,0.4), rgba(0,0,0,0.6))`
-                            : `linear-gradient(135deg, #d97706dd, #ea580cdd), linear-gradient(135deg, rgba(0,0,0,0.3), rgba(0,0,0,0.5))`,
-                          border: `3px solid #c2410c`,
+                            ? `linear-gradient(90deg, #1a1a1a 0%, #0a0a0a 25%, rgba(255,255,255,0.15) 50%, #0a0a0a 75%, #1a1a1a 100%)`
+                            : `linear-gradient(135deg, #1a1a1a, #0a0a0a)`,
+                          border: `3px solid #ea580c`,
                           boxShadow: !isPlaying 
-                            ? `0 0 30px #d9770640, 0 0 60px #ea580c20, inset 0 0 20px #c2410c30` 
+                            ? `0 0 30px #ea580c40, 0 0 60px #ea580c20, inset 0 0 20px #ea580c30` 
                             : '0 20px 40px rgba(0,0,0,0.3)'
                         }}
                       >
