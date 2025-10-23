@@ -518,14 +518,16 @@ const ModernAudioPlayer = () => {
             {/* Main Player - Full Width */}
             <div className="space-y-6">
               
-              {/* Hero Player Card with Colorful Glow */}
+              {/* Classic Portable Player Design */}
               <Card 
-                className="premium-container-strong rounded-3xl overflow-hidden relative"
+                className="rounded-2xl overflow-hidden relative"
                 style={{
-                  boxShadow: '0 15px 50px rgba(0, 0, 0, 0.6)'
+                  background: 'linear-gradient(135deg, #2a2a2a 0%, #1a1a1a 50%, #0a0a0a 100%)',
+                  boxShadow: '0 20px 60px rgba(0, 0, 0, 0.8), inset 0 1px 2px rgba(255,255,255,0.1)',
+                  border: '2px solid #3a3a3a'
                 }}
               >
-                <CardContent className="p-6 md:p-8 lg:p-10">
+                <CardContent className="p-4 md:p-6 lg:p-8">
                   
                   {/* Audio Element - iOS Compatible */}
                   <audio
