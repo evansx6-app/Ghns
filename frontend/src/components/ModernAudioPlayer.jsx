@@ -624,30 +624,19 @@ const ModernAudioPlayer = () => {
                           </div>
                         )}
                       </div>
-                      
-                      {/* Glow Effect */}
-                      <div 
-                        className="absolute inset-0 -z-10 blur-3xl opacity-50 rounded-2xl"
-                        style={{ background: `linear-gradient(135deg, ${colors.primary}, ${colors.secondary})` }}
+                    </div>
+                    
+                    {/* Level Meters */}
+                    <div className="w-full max-w-md">
+                      <SafariVisualiser 
+                        audioRef={audioRef}
+                        isPlaying={isPlaying}
+                        colors={colors}
                       />
                     </div>
 
-                    {/* Track Details */}
-                    <div className="flex-1 text-center md:text-left space-y-2 overflow-hidden">
-                      <div className="inline-flex items-center px-3 py-1 rounded-full bg-copper-500/20 border border-copper-500/30 mb-2">
-                        <span className="text-[10px] sm:text-xs font-semibold text-copper-300 uppercase tracking-wide">Now Playing</span>
-                      </div>
-                      
-                      {/* LCD Display for track information */}
-                      <LCDDisplay 
-                        title={currentTrack?.title}
-                        artist={currentTrack?.artist}
-                        album={currentTrack?.album}
-                        isPlaying={isPlaying}
-                      />
-
-                      {/* Quick Actions */}
-                      <div className="flex flex-wrap justify-center gap-2 pt-3">
+                    {/* Quick Actions */}
+                    <div className="flex flex-wrap justify-center gap-2 w-full max-w-md">
                         <Button
                           variant="outline"
                           size="sm"
