@@ -717,13 +717,18 @@ const ModernAudioPlayer = () => {
 
                   {/* Classic Player Controls */}
                   <div className="space-y-4">
-                    {/* Play/Pause Button */}
+                    {/* Play/Pause Button - Rectangular with pulse when paused */}
                     <div className="flex justify-center">
                       <Button
                         onClick={togglePlayPause}
-                        className="w-20 h-20 md:w-24 md:h-24 rounded-full shadow-2xl transform hover:scale-105 active:scale-95 transition-all duration-300"
+                        className={`px-12 py-6 md:px-16 md:py-8 rounded-xl shadow-2xl transform hover:scale-105 active:scale-95 transition-all duration-300 ${
+                          !isPlaying ? 'animate-pulse' : ''
+                        }`}
                         style={{
-                          background: `linear-gradient(135deg, ${colors.primary}, ${colors.secondary})`
+                          background: `linear-gradient(135deg, ${colors.primary}, ${colors.secondary})`,
+                          boxShadow: !isPlaying 
+                            ? `0 0 30px ${colors.primary}40, 0 0 60px ${colors.secondary}20` 
+                            : '0 20px 40px rgba(0,0,0,0.3)'
                         }}
                       >
                         {isPlaying ? (
