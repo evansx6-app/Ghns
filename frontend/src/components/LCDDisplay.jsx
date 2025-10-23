@@ -35,7 +35,7 @@ const LCDDisplay = ({ title, artist, album, isPlaying }) => {
     });
   }, [title, artist, isPlaying]);
 
-  // Continuous scrolling for long titles with 1 second pause between loops
+  // Simple left-to-right scrolling with 1 second pause between loops
   useEffect(() => {
     if (!isPlaying || !titleNeedsScroll) {
       setTitleScroll(0);
@@ -47,10 +47,9 @@ const LCDDisplay = ({ title, artist, album, isPlaying }) => {
     }
 
     const charWidth = 12;
-    const numSpaces = 20; // Increased spacing to prevent duplicate display
     const textWidth = (title?.length || 0) * charWidth;
-    const spacingWidth = numSpaces * charWidth;
-    const loopPoint = textWidth + spacingWidth;
+    const containerWidth = 400; // Approximate LCD container width
+    const scrollDistance = textWidth + 40; // Text width + small buffer
 
     const scroll = () => {
       if (titlePaused) {
@@ -59,21 +58,21 @@ const LCDDisplay = ({ title, artist, album, isPlaying }) => {
       }
 
       setTitleScroll((prev) => {
-        if (prev >= loopPoint) {
-          // Pause for 1 second before resetting
+        if (prev >= scrollDistance) {
+          // Text has scrolled completely off screen, pause before resetting
           setTitlePaused(true);
           titlePauseTimeoutRef.current = setTimeout(() => {
             setTitlePaused(false);
             setTitleScroll(0);
           }, 1000);
-          return prev; // Keep at current position during pause
+          return prev;
         }
-        return prev + 0.8;
+        return prev + 0.6; // Slower scroll speed
       });
       titleAnimRef.current = requestAnimationFrame(scroll);
     };
 
-    console.log('[LCD] Title scrolling started (with 1s pause)', { textWidth, spacingWidth, loopPoint });
+    console.log('[LCD] Title scrolling started', { textWidth, scrollDistance });
     titleAnimRef.current = requestAnimationFrame(scroll);
     return () => {
       if (titleAnimRef.current) cancelAnimationFrame(titleAnimRef.current);
