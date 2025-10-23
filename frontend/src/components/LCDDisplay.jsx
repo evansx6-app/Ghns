@@ -96,7 +96,7 @@ const LCDDisplay = ({ title, artist, album, isPlaying }) => {
         />
         
         <div className="relative px-4 py-3">
-          {/* Title Line - Scrolls when long */}
+          {/* Title Line - Left justified, scrolls when long */}
           <div className="overflow-hidden mb-2">
             <div 
               className="text-base sm:text-lg md:text-xl font-semibold tracking-wider"
@@ -107,7 +107,7 @@ const LCDDisplay = ({ title, artist, album, isPlaying }) => {
                 transition: 'color 0.5s',
                 transform: titleNeedsScroll && isPlaying ? `translateX(-${titleScroll}px)` : 'none',
                 whiteSpace: 'nowrap',
-                textAlign: titleNeedsScroll ? 'left' : 'center'
+                textAlign: 'left'
               }}
             >
               {titleNeedsScroll && isPlaying ? 
@@ -117,7 +117,7 @@ const LCDDisplay = ({ title, artist, album, isPlaying }) => {
             </div>
           </div>
           
-          {/* Artist Line - Scrolls when long */}
+          {/* Artist Line - Left justified, scrolls when long */}
           <div className="overflow-hidden">
             <div 
               className="text-xs sm:text-sm md:text-base tracking-wider transition-colors duration-500"
@@ -126,7 +126,7 @@ const LCDDisplay = ({ title, artist, album, isPlaying }) => {
                 color: isPlaying ? 'rgba(255,255,255,0.7)' : '#222222',
                 transform: artistNeedsScroll && isPlaying ? `translateX(-${artistScroll}px)` : 'none',
                 whiteSpace: 'nowrap',
-                textAlign: artistNeedsScroll ? 'left' : 'center'
+                textAlign: 'left'
               }}
             >
               {artistNeedsScroll && isPlaying ? 
