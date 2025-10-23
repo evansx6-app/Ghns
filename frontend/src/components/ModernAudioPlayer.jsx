@@ -106,10 +106,18 @@ const ModernAudioPlayer = () => {
         return;
       }
       
+      // Ensure track has required fields with fallbacks
+      const validatedTrack = {
+        ...track,
+        title: track.title || 'Unknown Title',
+        artist: track.artist || 'Unknown Artist',
+        album: track.album || ''
+      };
+      
       // Check if this is actually a new/different track
       const isNewTrack = !currentTrack || 
-        currentTrack.title !== track.title || 
-        currentTrack.artist !== track.artist;
+        currentTrack.title !== validatedTrack.title || 
+        currentTrack.artist !== validatedTrack.artist;
       
       // If same track, keep existing data (prevents unnecessary re-renders)
       if (!isNewTrack && currentTrack && !showToast) {
@@ -118,19 +126,19 @@ const ModernAudioPlayer = () => {
       }
       
       // Aggressive artwork preloading for new tracks
-      if (isNewTrack && track?.artwork_url && track.artwork_url !== 'vinyl-fallback-placeholder') {
+      if (isNewTrack && validatedTrack?.artwork_url && validatedTrack.artwork_url !== 'vinyl-fallback-placeholder') {
         // Method 1: Image object preload
         const img = new Image();
         img.crossOrigin = 'anonymous';
         img.referrerPolicy = 'no-referrer';
         img.fetchPriority = 'high';
-        img.src = track.artwork_url;
+        img.src = validatedTrack.artwork_url;
         
         // Method 2: Link preload in head
         const link = document.createElement('link');
         link.rel = 'preload';
         link.as = 'image';
-        link.href = track.artwork_url;
+        link.href = validatedTrack.artwork_url;
         link.crossOrigin = 'anonymous';
         link.fetchPriority = 'high';
         document.head.appendChild(link);
@@ -142,14 +150,14 @@ const ModernAudioPlayer = () => {
           }
         }, 5000);
         
-        console.log('Aggressively preloading new track artwork:', track.title);
+        console.log('Aggressively preloading new track artwork:', validatedTrack.title);
       }
       
       // Update track data and preserve in ref
-      setCurrentTrack(track);
-      lastValidTrackRef.current = track; // Save as last valid track
+      setCurrentTrack(validatedTrack);
+      lastValidTrackRef.current = validatedTrack; // Save as last valid track
       setLastUpdate(new Date());
-      console.log(`Track updated: ${track.title} by ${track.artist}`);
+      console.log(`Track updated: ${validatedTrack.title} by ${validatedTrack.artist}`);
       
       // Show toast for new tracks
       if (isNewTrack && currentTrack) {
