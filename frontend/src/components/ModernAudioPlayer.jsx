@@ -571,18 +571,20 @@ const ModernAudioPlayer = () => {
                   />
 
                   {/* Classic Player Layout - Vertical Stack */}
-                  <div className="flex flex-col items-center gap-4">
+                  <div className="flex flex-col items-center gap-6">
                     
                     {/* LCD Display Section */}
-                    <LCDDisplay 
-                      title={currentTrack?.title}
-                      artist={currentTrack?.artist}
-                      album={currentTrack?.album}
-                      isPlaying={isPlaying}
-                    />
+                    <div className="w-full max-w-md">
+                      <LCDDisplay 
+                        title={currentTrack?.title}
+                        artist={currentTrack?.artist}
+                        album={currentTrack?.album}
+                        isPlaying={isPlaying}
+                      />
+                    </div>
                     
                     {/* Album Artwork - Large Display Screen */}
-                    <div className="relative w-full max-w-lg px-4">
+                    <div className="relative w-full max-w-md px-4">
                       {/* Screen bezel/frame */}
                       <div 
                         className="relative rounded-xl overflow-hidden"
