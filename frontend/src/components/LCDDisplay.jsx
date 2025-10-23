@@ -15,20 +15,24 @@ const LCDDisplay = ({ title, artist, album, isPlaying }) => {
   const prevArtistRef = useRef(artist);
   const isMountedRef = useRef(false);
 
-  // Detect if title or artist needs scrolling
+  // Detect if title or artist needs scrolling based on container width
   useEffect(() => {
     const titleLength = title?.length || 0;
     const artistLength = artist?.length || 0;
     
-    // If more than 12 characters, enable scrolling
-    const needsTitle = titleLength > 12;
-    const needsArtist = artistLength > 12;
+    // Approximate characters that fit in container width
+    // Container is ~400px, title chars ~12px wide, artist ~10px wide
+    const titleFitsInContainer = 33; // 400/12 ≈ 33 characters
+    const artistFitsInContainer = 40; // 400/10 = 40 characters
+    
+    const needsTitle = titleLength > titleFitsInContainer;
+    const needsArtist = artistLength > artistFitsInContainer;
     
     setTitleNeedsScroll(needsTitle);
     setArtistNeedsScroll(needsArtist);
     
     console.log('[LCD] Scroll check:', { 
-      title: title?.substring(0, 20), 
+      title: title?.substring(0, 25), 
       titleLength, 
       needsTitle, 
       isPlaying 
