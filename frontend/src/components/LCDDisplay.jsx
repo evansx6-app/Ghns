@@ -88,7 +88,7 @@ const LCDDisplay = ({ title, artist, album, isPlaying }) => {
     };
   }, [displayTitle, isPlaying, titleNeedsScroll, titlePaused]);
 
-  // Simple left-to-right scrolling with 1 second pause between loops
+  // Continuous seamless scrolling with wrap-around
   useEffect(() => {
     if (!isPlaying || !artistNeedsScroll) {
       setArtistScroll(0);
@@ -101,8 +101,8 @@ const LCDDisplay = ({ title, artist, album, isPlaying }) => {
 
     const charWidth = 10;
     const textWidth = displayArtist.length * charWidth;
-    const containerWidth = 400; // Approximate LCD container width
-    const scrollDistance = textWidth + 40; // Text width + small buffer
+    const spacing = 120; // Space between text and its duplicate
+    const totalScrollDistance = textWidth + spacing;
 
     const scroll = () => {
       if (artistPaused) {
@@ -111,27 +111,24 @@ const LCDDisplay = ({ title, artist, album, isPlaying }) => {
       }
 
       setArtistScroll((prev) => {
-        if (prev >= scrollDistance) {
-          // Text has scrolled completely off screen, pause before resetting
-          setArtistPaused(true);
-          artistPauseTimeoutRef.current = setTimeout(() => {
-            setArtistPaused(false);
-            setArtistScroll(0);
-          }, 1000);
-          return prev;
+        const newScroll = prev + 0.5; // Scroll speed
+        
+        // When we've scrolled one full cycle, reset seamlessly
+        if (newScroll >= totalScrollDistance) {
+          return 0; // Reset to create continuous loop
         }
-        return prev + 0.5; // Slower scroll speed
+        return newScroll;
       });
       artistAnimRef.current = requestAnimationFrame(scroll);
     };
 
-    console.log('[LCD] Artist scrolling started', { textWidth, scrollDistance });
+    console.log('[LCD] Artist scrolling started (continuous)', { textWidth, spacing, totalScrollDistance });
     artistAnimRef.current = requestAnimationFrame(scroll);
     return () => {
       if (artistAnimRef.current) cancelAnimationFrame(artistAnimRef.current);
       if (artistPauseTimeoutRef.current) clearTimeout(artistPauseTimeoutRef.current);
     };
-  }, [artist, isPlaying, artistNeedsScroll, artistPaused]);
+  }, [displayArtist, isPlaying, artistNeedsScroll, artistPaused]);
 
   return (
     <div className="w-full">
