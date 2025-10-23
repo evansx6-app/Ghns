@@ -31,7 +31,7 @@ const LCDDisplay = ({ title, artist, album, isPlaying }) => {
     });
   }, [title, artist, isPlaying]);
 
-  // Continuous scrolling for long titles
+  // Continuous scrolling for long titles - seamless character-by-character loop
   useEffect(() => {
     if (!isPlaying || !titleNeedsScroll) {
       setTitleScroll(0);
@@ -39,22 +39,20 @@ const LCDDisplay = ({ title, artist, album, isPlaying }) => {
     }
 
     const charWidth = 12;
-    const numSpaces = 25; // Increased spacing to prevent both copies showing together
     const textWidth = (title?.length || 0) * charWidth;
-    const spacingWidth = numSpaces * charWidth; // Account for visual spaces
-    const loopPoint = textWidth + spacingWidth;
+    const loopPoint = textWidth; // Loop exactly at text width for seamless wrapping
 
     const scroll = () => {
       setTitleScroll((prev) => {
         if (prev >= loopPoint) {
-          return 0; // Reset to start for seamless loop
+          return 0; // Reset immediately for continuous character loop
         }
         return prev + 0.8; // Continuous scrolling speed
       });
       titleAnimRef.current = requestAnimationFrame(scroll);
     };
 
-    console.log('[LCD] Title scrolling started', { textWidth, spacingWidth, loopPoint });
+    console.log('[LCD] Title scrolling started (seamless loop)', { textWidth, loopPoint });
     titleAnimRef.current = requestAnimationFrame(scroll);
     return () => {
       if (titleAnimRef.current) cancelAnimationFrame(titleAnimRef.current);
