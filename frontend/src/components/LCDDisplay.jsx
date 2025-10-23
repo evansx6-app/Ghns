@@ -152,8 +152,9 @@ const LCDDisplay = ({ title, artist, album, isPlaying }) => {
           {/* Title Line - Scrolling once */}
           <div className="overflow-hidden mb-2">
             <div 
-              className="whitespace-nowrap font-mono text-lg sm:text-xl md:text-2xl font-medium tracking-wide"
+              className="whitespace-nowrap text-lg sm:text-xl md:text-2xl font-semibold tracking-wider"
               style={{
+                fontFamily: '"Orbitron", monospace',
                 color: isPlaying ? '#E8E8E8' : '#333333',
                 textShadow: isPlaying ? '0 0 8px rgba(232, 232, 232, 0.5), 0 0 4px rgba(232, 232, 232, 0.3)' : 'none',
                 transform: `translateX(-${titleScroll}px)`,
@@ -168,8 +169,9 @@ const LCDDisplay = ({ title, artist, album, isPlaying }) => {
           {/* Artist Line - Static */}
           <div className="overflow-hidden">
             <div 
-              className="truncate font-mono text-sm sm:text-base tracking-wide transition-colors duration-500"
+              className="truncate text-sm sm:text-base tracking-wider transition-colors duration-500"
               style={{
+                fontFamily: '"Orbitron", monospace',
                 color: isPlaying ? 'rgba(255,255,255,0.7)' : '#222222'
               }}
             >
