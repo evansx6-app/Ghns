@@ -17,17 +17,25 @@ const OptimizedImage = ({
   const imgRef = useRef(null);
 
   useEffect(() => {
-    if (!src) {
-      setImageSrc(fallbackSrc);
+    if (!src || src === 'vinyl-fallback-placeholder') {
+      // Only set fallback if we don't have a valid image already loaded
+      if (!isLoaded) {
+        setImageSrc(fallbackSrc);
+      }
       return;
     }
 
-    // Reset states when src changes
-    setIsLoaded(false);
-    setHasError(false);
-
     // Use proxy for Safari to avoid CORS issues
     const proxiedSrc = getImageUrl(src);
+    
+    // Don't reload if it's the same source
+    if (imageSrc === proxiedSrc && isLoaded) {
+      return;
+    }
+
+    // Reset states when src changes to a different valid source
+    setIsLoaded(false);
+    setHasError(false);
 
     // Priority images update immediately
     if (priority) {
@@ -54,7 +62,10 @@ const OptimizedImage = ({
       img.onerror = () => {
         console.warn('Image failed to load:', src);
         setHasError(true);
-        setImageSrc(fallbackSrc);
+        // Only set fallback if we don't already have a valid image
+        if (!isLoaded) {
+          setImageSrc(fallbackSrc);
+        }
       };
     };
 
