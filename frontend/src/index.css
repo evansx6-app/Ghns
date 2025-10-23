@@ -82,20 +82,19 @@ code {
     }
 }
 
-/* Slow Pulse Animation for Play Button */
-@keyframes slow-pulse {
-  0%, 100% {
-    opacity: 1;
-    transform: scale(1);
+/* Shimmer Animation for Play Button */
+@keyframes shimmer {
+  0% {
+    background-position: -200% center;
   }
-  50% {
-    opacity: 0.85;
-    transform: scale(1.02);
+  100% {
+    background-position: 200% center;
   }
 }
 
-.animate-slow-pulse {
-  animation: slow-pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+.animate-shimmer {
+  background-size: 200% 100%;
+  animation: shimmer 3s ease-in-out infinite;
 }
 
 /* Scrolling Text Animation */
