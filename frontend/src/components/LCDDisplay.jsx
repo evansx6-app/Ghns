@@ -163,7 +163,7 @@ const LCDDisplay = ({ title, artist, album, isPlaying }) => {
               }}
             >
               {titleNeedsScroll && isPlaying ? 
-                `${title || '--- NO TITLE ---'}${title || '--- NO TITLE ---'}` : 
+                `${title || '--- NO TITLE ---'}        ${title || '--- NO TITLE ---'}` : 
                 (title || '--- NO TITLE ---')
               }
             </div>
