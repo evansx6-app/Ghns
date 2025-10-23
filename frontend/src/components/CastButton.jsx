@@ -43,16 +43,17 @@ const CastButton = ({
           : 'bg-white/10 border-white/20 text-white hover:bg-white/20'
         } 
         transition-all duration-300 touch-manipulation
+        ${!carMode ? 'text-xs px-3 py-1.5' : ''}
       `}
     >
       {isCasting ? (
         <>
-          <Cast className={`${carMode ? 'h-6 w-6 mr-3' : 'h-4 w-4 mr-2'} animate-pulse`} />
+          <Cast className={`${carMode ? 'h-6 w-6 mr-3' : 'h-3.5 w-3.5 mr-1.5'} animate-pulse`} />
           <span className={carMode ? 'text-lg' : ''}>Casting</span>
         </>
       ) : (
         <>
-          <Cast className={`${carMode ? 'h-6 w-6 mr-3' : 'h-4 w-4 mr-2'}`} />
+          <Cast className={`${carMode ? 'h-6 w-6 mr-3' : 'h-3.5 w-3.5 mr-1.5'}`} />
           <span className={carMode ? 'text-lg' : ''}>Cast to TV</span>
         </>
       )}
