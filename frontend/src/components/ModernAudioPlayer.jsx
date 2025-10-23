@@ -651,6 +651,7 @@ const ModernAudioPlayer = () => {
                             alt={`${currentTrack.artist} - ${currentTrack.title}`}
                             className="w-full h-full object-cover transform transition-transform duration-500"
                             priority={true}
+                            fallbackSrc="https://customer-assets.emergentagent.com/job_sleep-timer-stream/artifacts/qcvmvlox_cropped-radio.png"
                             crossOrigin="anonymous"
                             referrerPolicy="no-referrer"
                           />
