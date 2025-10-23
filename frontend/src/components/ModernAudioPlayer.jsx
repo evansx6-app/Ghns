@@ -671,16 +671,7 @@ const ModernAudioPlayer = () => {
                     </div>
                   </div>
 
-                  {/* Safari Visualiser */}
-                  <div className="mb-6">
-                    <SafariVisualiser 
-                      audioRef={audioRef}
-                      isPlaying={isPlaying}
-                      colors={colors}
-                    />
-                  </div>
-
-                  {/* Modern Controls */}
+                  {/* Classic Player Controls */}
                   <div className="space-y-4">
                     {/* Play/Pause Button */}
                     <div className="flex justify-center">
