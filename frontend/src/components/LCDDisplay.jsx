@@ -95,11 +95,11 @@ const LCDDisplay = ({ title, artist, album, isPlaying }) => {
           }}
         />
         
-        <div className="relative px-4 py-3 flex items-center justify-center">
-          {/* Combined Track Info - Single Line with Conditional Scrolling */}
-          <div className="overflow-hidden w-full">
+        <div className="relative px-4 py-3">
+          {/* Title Line - Scrolls when long */}
+          <div className="overflow-hidden mb-2">
             <div 
-              className="text-sm sm:text-base md:text-lg font-semibold tracking-wider"
+              className="text-base sm:text-lg md:text-xl font-semibold tracking-wider"
               style={{
                 fontFamily: '"Orbitron", monospace',
                 color: isPlaying ? '#E8E8E8' : '#333333',
@@ -111,8 +111,27 @@ const LCDDisplay = ({ title, artist, album, isPlaying }) => {
               }}
             >
               {titleNeedsScroll && isPlaying ? 
-                `${combinedText}     ${combinedText}` : 
-                combinedText
+                `${title || '--- NO TITLE ---'}     ${title || '--- NO TITLE ---'}` : 
+                (title || '--- NO TITLE ---')
+              }
+            </div>
+          </div>
+          
+          {/* Artist Line - Scrolls when long */}
+          <div className="overflow-hidden">
+            <div 
+              className="text-xs sm:text-sm md:text-base tracking-wider transition-colors duration-500"
+              style={{
+                fontFamily: '"Orbitron", monospace',
+                color: isPlaying ? 'rgba(255,255,255,0.7)' : '#222222',
+                transform: artistNeedsScroll && isPlaying ? `translateX(-${artistScroll}px)` : 'none',
+                whiteSpace: 'nowrap',
+                textAlign: artistNeedsScroll ? 'left' : 'center'
+              }}
+            >
+              {artistNeedsScroll && isPlaying ? 
+                `${artist || 'Unknown Artist'}     ${artist || 'Unknown Artist'}` : 
+                (artist || 'Unknown Artist')
               }
             </div>
           </div>
