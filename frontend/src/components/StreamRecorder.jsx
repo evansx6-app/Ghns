@@ -110,8 +110,9 @@ const StreamRecorder = ({ audioRef, isPlaying }) => {
               disabled={!isPlaying}
               className="flex items-center gap-1.5 sm:gap-2 text-white min-h-[44px] touch-manipulation text-xs sm:text-sm"
               style={{
-                backgroundColor: '#ea580c',
-                borderColor: '#ea580c'
+                background: 'linear-gradient(135deg, #1a1a1a, #0a0a0a)',
+                border: '2px solid #ea580c',
+                boxShadow: '0 0 20px rgba(234, 88, 12, 0.3)'
               }}
               size="sm"
             >
