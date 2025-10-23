@@ -570,11 +570,23 @@ const ModernAudioPlayer = () => {
                     crossOrigin="anonymous"
                   />
 
-                  {/* Track Info with Modern Layout */}
-                  <div className="flex flex-col md:flex-row items-center md:items-start gap-6 mb-6">
-                    {/* Album Artwork - Optimized */}
-                    <div className="relative group">
-                      <div className="w-48 h-48 md:w-56 md:h-56 lg:w-64 lg:h-64 rounded-2xl overflow-hidden shadow-2xl bg-gradient-to-br from-slate-800 to-slate-900">
+                  {/* Classic Player Layout - Vertical Stack */}
+                  <div className="flex flex-col items-center gap-4">
+                    
+                    {/* LCD Display Section */}
+                    <LCDDisplay 
+                      title={currentTrack?.title}
+                      artist={currentTrack?.artist}
+                      album={currentTrack?.album}
+                      isPlaying={isPlaying}
+                    />
+                    
+                    {/* Album Artwork - Compact */}
+                    <div className="relative">
+                      <div className="w-40 h-40 sm:w-48 sm:h-48 md:w-56 md:h-56 rounded-xl overflow-hidden shadow-2xl bg-gradient-to-br from-slate-800 to-slate-900" style={{
+                        border: '3px solid #2a2a2a',
+                        boxShadow: '0 10px 30px rgba(0,0,0,0.5), inset 0 1px 1px rgba(255,255,255,0.1)'
+                      }}>
                         {currentTrack?.title === "Greatest Hits Non-Stop" ? (
                           <div className="w-full h-full flex items-center justify-center p-8 bg-gradient-to-br from-copper-900/20 to-copper-800/20">
                             <OptimizedImage
