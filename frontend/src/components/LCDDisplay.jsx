@@ -53,9 +53,9 @@ const LCDDisplay = ({ title, artist, album, isPlaying }) => {
     }
   }, [artist]);
 
-  // Title scrolling animation - SEAMLESS CONTINUOUS LOOP
+  // Title scrolling animation - SEAMLESS CONTINUOUS LOOP (Mobile only)
   useEffect(() => {
-    if (!title || !isPlaying) {
+    if (!title || !isPlaying || isDesktop) {
       return;
     }
 
@@ -79,7 +79,7 @@ const LCDDisplay = ({ title, artist, album, isPlaying }) => {
     return () => {
       if (titleAnimRef.current) cancelAnimationFrame(titleAnimRef.current);
     };
-  }, [title, isPlaying]);
+  }, [title, isPlaying, isDesktop]);
 
   // Artist scrolling animation - SEAMLESS LOOP FOR LONG NAMES
   useEffect(() => {
