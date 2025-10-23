@@ -21,8 +21,8 @@ const LCDDisplay = ({ title, artist, album, isPlaying }) => {
 
   // Detect if title or artist needs scrolling based on container width
   useEffect(() => {
-    const titleLength = title?.length || 0;
-    const artistLength = artist?.length || 0;
+    const titleLength = displayTitle.length;
+    const artistLength = displayArtist.length;
     
     // Lower thresholds for more aggressive scrolling
     // LCD display is narrow, so scroll sooner
@@ -36,15 +36,15 @@ const LCDDisplay = ({ title, artist, album, isPlaying }) => {
     setArtistNeedsScroll(needsArtist);
     
     console.log('[LCD] Scroll check:', { 
-      title: title?.substring(0, 25), 
+      title: displayTitle.substring(0, 25), 
       titleLength, 
       needsTitle, 
-      artist: artist?.substring(0, 20),
+      artist: displayArtist.substring(0, 20),
       artistLength,
       needsArtist,
       isPlaying 
     });
-  }, [title, artist, isPlaying]);
+  }, [displayTitle, displayArtist, isPlaying]);
 
   // Simple left-to-right scrolling with 1 second pause between loops
   useEffect(() => {
