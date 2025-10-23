@@ -131,11 +131,12 @@ const LCDDisplay = ({ title, artist, album, isPlaying }) => {
   return (
     <div className="w-full px-4">
       <div 
-        className="relative rounded-md overflow-hidden border-2"
+        className="relative rounded-md overflow-hidden border-2 transition-all duration-500"
         style={{
           background: '#000000',
           borderColor: '#1a1a1a',
-          boxShadow: 'inset 0 1px 3px rgba(0,0,0,0.8), 0 2px 8px rgba(0,0,0,0.6)'
+          boxShadow: 'inset 0 1px 3px rgba(0,0,0,0.8), 0 2px 8px rgba(0,0,0,0.6)',
+          opacity: isPlaying ? 1 : 0.3
         }}
       >
         {/* LCD pixel grid texture */}
@@ -153,10 +154,11 @@ const LCDDisplay = ({ title, artist, album, isPlaying }) => {
             <div 
               className="whitespace-nowrap font-mono text-lg sm:text-xl md:text-2xl font-medium tracking-wide"
               style={{
-                color: '#E8E8E8',
-                textShadow: '0 0 8px rgba(232, 232, 232, 0.5), 0 0 4px rgba(232, 232, 232, 0.3)',
+                color: isPlaying ? '#E8E8E8' : '#333333',
+                textShadow: isPlaying ? '0 0 8px rgba(232, 232, 232, 0.5), 0 0 4px rgba(232, 232, 232, 0.3)' : 'none',
                 transform: `translateX(-${titleScroll}px)`,
-                willChange: 'transform'
+                willChange: 'transform',
+                transition: 'color 0.5s'
               }}
             >
               {title || '--- NO TITLE ---'}
@@ -166,7 +168,10 @@ const LCDDisplay = ({ title, artist, album, isPlaying }) => {
           {/* Artist Line - Static */}
           <div className="overflow-hidden">
             <div 
-              className="truncate font-mono text-sm sm:text-base text-white/70 tracking-wide"
+              className="truncate font-mono text-sm sm:text-base tracking-wide transition-colors duration-500"
+              style={{
+                color: isPlaying ? 'rgba(255,255,255,0.7)' : '#222222'
+              }}
             >
               {artist || 'Unknown Artist'}
             </div>
