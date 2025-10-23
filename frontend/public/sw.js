@@ -9,11 +9,13 @@ const urlsToCache = [
 ];
 
 // Music app specific configuration
+// Note: This is a fallback configuration for the service worker
+// The actual stream URL is managed by environment variables in the main application
 const MUSIC_APP_CONFIG = {
   name: 'Greatest Hits Non-Stop',
   type: 'music',
   category: 'audio',
-  streamUrl: 'https://s8.myradiostream.com/58238/listen.mp3'
+  streamUrl: 'https://s8.myradiostream.com/58238/listen.mp3' // Fallback - actual URL from REACT_APP_STREAM_URL
 };
 
 // Install event - cache resources
