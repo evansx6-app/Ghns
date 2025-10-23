@@ -598,8 +598,8 @@ const ModernAudioPlayer = () => {
                       />
                     </div>
                     
-                    {/* Album Artwork - Large Display Screen */}
-                    <div className="relative w-full max-w-2xl px-4">
+                    {/* Album Artwork - Reduced Size for Desktop */}
+                    <div className="relative w-full max-w-md md:max-w-lg px-4">
                       {/* Screen bezel/frame */}
                       <div 
                         className="relative rounded-xl overflow-hidden"
