@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react';
 
 const LCDDisplay = ({ title, artist, album, isPlaying }) => {
-  const [titleScroll, setTitleScroll] = useState(0);
-  const [artistScroll, setArtistScroll] = useState(0);
+  const [titleScroll, setTitleScroll] = useState(-700); // Start off-screen
+  const [artistScroll, setArtistScroll] = useState(-700); // Start off-screen
   const [titlePaused, setTitlePaused] = useState(false);
   const [artistPaused, setArtistPaused] = useState(false);
   const [titleScrollingIn, setTitleScrollingIn] = useState(true);
@@ -13,6 +13,7 @@ const LCDDisplay = ({ title, artist, album, isPlaying }) => {
   const artistPauseRef = useRef(null);
   const prevTitleRef = useRef(title);
   const prevArtistRef = useRef(artist);
+  const isMountedRef = useRef(false);
 
   // Reset when title changes - scroll in animation
   useEffect(() => {
