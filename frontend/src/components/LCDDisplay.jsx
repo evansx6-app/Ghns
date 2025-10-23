@@ -79,33 +79,49 @@ const LCDDisplay = ({ title, artist, album, isPlaying }) => {
     };
   }, [title, isPlaying, titleNeedsScroll, titlePaused]);
 
-  // Continuous scrolling for long artist names - seamless character-by-character loop
+  // Continuous scrolling for long artist names with 1 second pause between loops
   useEffect(() => {
     if (!isPlaying || !artistNeedsScroll) {
       setArtistScroll(0);
+      setArtistPaused(false);
+      if (artistPauseTimeoutRef.current) {
+        clearTimeout(artistPauseTimeoutRef.current);
+      }
       return;
     }
 
     const charWidth = 10;
     const textWidth = (artist?.length || 0) * charWidth;
-    const loopPoint = textWidth; // Loop exactly at text width for seamless wrapping
+    const loopPoint = textWidth;
 
     const scroll = () => {
+      if (artistPaused) {
+        artistAnimRef.current = requestAnimationFrame(scroll);
+        return;
+      }
+
       setArtistScroll((prev) => {
         if (prev >= loopPoint) {
-          return 0; // Reset immediately for continuous character loop
+          // Pause for 1 second before resetting
+          setArtistPaused(true);
+          artistPauseTimeoutRef.current = setTimeout(() => {
+            setArtistPaused(false);
+            setArtistScroll(0);
+          }, 1000);
+          return prev; // Keep at current position during pause
         }
-        return prev + 0.7; // Slightly slower than title
+        return prev + 0.7;
       });
       artistAnimRef.current = requestAnimationFrame(scroll);
     };
 
-    console.log('[LCD] Artist scrolling started (seamless loop)', { textWidth, loopPoint });
+    console.log('[LCD] Artist scrolling started (with 1s pause)', { textWidth, loopPoint });
     artistAnimRef.current = requestAnimationFrame(scroll);
     return () => {
       if (artistAnimRef.current) cancelAnimationFrame(artistAnimRef.current);
+      if (artistPauseTimeoutRef.current) clearTimeout(artistPauseTimeoutRef.current);
     };
-  }, [artist, isPlaying, artistNeedsScroll]);
+  }, [artist, isPlaying, artistNeedsScroll, artistPaused]);
 
   return (
     <div className="w-full">
