@@ -161,12 +161,12 @@ const ModernAudioPlayer = () => {
       
       // Show toast for new tracks
       if (isNewTrack && currentTrack) {
-        const trackId = `${track.title}-${track.artist}`;
+        const trackId = `${validatedTrack.title}-${validatedTrack.artist}`;
         
         if (!shownToastsRef.current.has(trackId)) {
           toast({
             title: "Now Playing:",
-            description: `♪ ${track.title} - ${track.artist}`,
+            description: `♪ ${validatedTrack.title} - ${validatedTrack.artist}`,
           });
           shownToastsRef.current.add(trackId);
         }
