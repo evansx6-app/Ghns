@@ -67,7 +67,7 @@ const LCDDisplay = ({ title, artist, album, isPlaying }) => {
     }
 
     const textWidth = (artist?.length || 0) * 10;
-    const spacing = 200; // Space between duplicated text (increased for better separation)
+    const spacing = 300; // Increased spacing for better text separation
     const loopPoint = textWidth + spacing;
 
     const scroll = () => {
