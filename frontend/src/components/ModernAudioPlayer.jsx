@@ -36,7 +36,7 @@ const ModernAudioPlayer = () => {
     artist: "Live Radio Stream",
     album: "Legendary Radio from Scotland",
     isLive: true,
-    streamUrl: "https://s8.myradiostream.com/58238/listen.mp3",
+    streamUrl: process.env.REACT_APP_STREAM_URL,
     artwork_url: "https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=500&h=500&fit=crop&crop=center",
     fallback: true
   });
