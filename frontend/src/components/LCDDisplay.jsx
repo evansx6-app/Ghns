@@ -113,7 +113,7 @@ const LCDDisplay = ({ title, artist, album, isPlaying }) => {
   }, [artist, isPlaying, isDesktop]);
 
   return (
-    <div className="w-full px-4">
+    <div className="w-full">
       <div 
         className="relative rounded-md overflow-hidden border-2 transition-all duration-500"
         style={{
