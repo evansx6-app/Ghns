@@ -668,7 +668,6 @@ const ModernAudioPlayer = () => {
                           carMode={false}
                         />
                       </div>
-                    </div>
                   </div>
 
                   {/* Classic Player Controls */}
