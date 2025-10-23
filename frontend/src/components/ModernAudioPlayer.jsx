@@ -47,6 +47,7 @@ const ModernAudioPlayer = () => {
   const [activeView, setActiveView] = useState('player'); // player, recent, lyrics
   const audioRef = useRef(null);
   const shownToastsRef = useRef(new Set());
+  const lastValidTrackRef = useRef(currentTrack); // Preserve last valid track
   const { toast } = useToast();
 
   // Determine artwork URL - use logo for station ID
