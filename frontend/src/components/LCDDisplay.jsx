@@ -16,9 +16,21 @@ const LCDDisplay = ({ title, artist, album, isPlaying }) => {
     const titleLength = title?.length || 0;
     const artistLength = artist?.length || 0;
     
-    // If more than 25 characters, enable scrolling (lowered threshold for better detection)
-    setTitleNeedsScroll(titleLength > 25);
-    setArtistNeedsScroll(artistLength > 25);
+    // If more than 20 characters, enable scrolling (lower threshold)
+    const needsTitle = titleLength > 20;
+    const needsArtist = artistLength > 20;
+    
+    setTitleNeedsScroll(needsTitle);
+    setArtistNeedsScroll(needsArtist);
+    
+    console.log('Scroll detection:', { 
+      title, 
+      titleLength, 
+      needsTitle, 
+      artist, 
+      artistLength, 
+      needsArtist 
+    });
   }, [title, artist]);
 
   // Continuous scrolling for long titles
