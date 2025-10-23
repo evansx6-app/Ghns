@@ -25,31 +25,51 @@ const TrackInfo = ({ track }) => {
     hasArtwork || isStationID
   );
 
-  // Reset image states when track changes
+  // Aggressive image preloading for faster display
   useEffect(() => {
     if (hasArtwork || isStationID) {
       setImageLoaded(false);
       setImageError(false);
       setForceVisible(false);
       
-      // Preload the current artwork
+      // Aggressive preload with Image object for faster loading
       if (track?.artwork_url) {
+        const img = new Image();
+        img.crossOrigin = 'anonymous';
+        img.referrerPolicy = 'no-referrer';
+        
+        // Start loading immediately
+        img.src = track.artwork_url;
+        
+        img.onload = () => {
+          console.log('Preload complete for:', track?.title);
+          // Image is now in browser cache, actual img tag will load instantly
+        };
+        
+        img.onerror = () => {
+          console.warn('Preload failed for:', track?.title);
+        };
+        
+        // Also add link preload for additional speed
         const preloadLink = document.createElement('link');
         preloadLink.rel = 'preload';
         preloadLink.as = 'image';
         preloadLink.href = track.artwork_url;
         preloadLink.crossOrigin = 'anonymous';
+        preloadLink.fetchPriority = 'high';
         document.head.appendChild(preloadLink);
         
         // Cleanup
         return () => {
+          img.onload = null;
+          img.onerror = null;
           if (document.head.contains(preloadLink)) {
             document.head.removeChild(preloadLink);
           }
         };
       }
     }
-  }, [track?.artwork_url, isStationID, isFallbackTrack]);
+  }, [track?.artwork_url, hasArtwork, isStationID]);
 
   // Track change handler with stability reinforcement
   useEffect(() => {
