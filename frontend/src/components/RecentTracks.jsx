@@ -142,19 +142,8 @@ const RecentTracks = ({ carMode = false }) => {
                       crossOrigin="anonymous"
                       referrerPolicy="no-referrer"
                       style={{
-                        transform: 'translateZ(0)',
-                        backfaceVisibility: 'hidden',
-                        WebkitBackfaceVisibility: 'hidden',
-                        imageRendering: '-webkit-optimize-contrast',
                         objectFit: 'cover',
-                        objectPosition: 'center',
-                        width: '100%',
-                        height: '100%',
-                        position: 'absolute',
-                        top: 0,
-                        left: 0,
-                        zIndex: 20,
-                        pointerEvents: 'none'
+                        objectPosition: 'center'
                       }}
                       onError={(e) => {
                         console.log(`Recent track artwork failed to load: ${track.title}`);
