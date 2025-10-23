@@ -5,8 +5,12 @@ const LCDDisplay = ({ title, artist, album, isPlaying }) => {
   const [artistScroll, setArtistScroll] = useState(0);
   const [titleNeedsScroll, setTitleNeedsScroll] = useState(false);
   const [artistNeedsScroll, setArtistNeedsScroll] = useState(false);
+  const [titlePaused, setTitlePaused] = useState(false);
+  const [artistPaused, setArtistPaused] = useState(false);
   const titleAnimRef = useRef(null);
   const artistAnimRef = useRef(null);
+  const titlePauseTimeoutRef = useRef(null);
+  const artistPauseTimeoutRef = useRef(null);
   const prevTitleRef = useRef(title);
   const prevArtistRef = useRef(artist);
   const isMountedRef = useRef(false);
