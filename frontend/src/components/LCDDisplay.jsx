@@ -1,32 +1,9 @@
 import React, { useState, useEffect, useRef } from 'react';
 
 const LCDDisplay = ({ title, artist, album, isPlaying }) => {
-  const [titleScroll, setTitleScroll] = useState(-700); // Start off-screen
-  const [artistScroll, setArtistScroll] = useState(-700); // Start off-screen
-  const [titlePaused, setTitlePaused] = useState(false);
-  const [artistPaused, setArtistPaused] = useState(false);
-  const [titleScrollingIn, setTitleScrollingIn] = useState(true);
-  const [artistScrollingIn, setArtistScrollingIn] = useState(true);
-  const [isDesktop, setIsDesktop] = useState(false);
-  const titleAnimRef = useRef(null);
-  const artistAnimRef = useRef(null);
-  const titlePauseRef = useRef(null);
-  const artistPauseRef = useRef(null);
   const prevTitleRef = useRef(title);
   const prevArtistRef = useRef(artist);
   const isMountedRef = useRef(false);
-
-  // Detect desktop screen size
-  useEffect(() => {
-    const checkScreenSize = () => {
-      setIsDesktop(window.innerWidth >= 768); // md breakpoint
-    };
-    
-    checkScreenSize();
-    window.addEventListener('resize', checkScreenSize);
-    
-    return () => window.removeEventListener('resize', checkScreenSize);
-  }, []);
 
   // Initial mount - trigger animation
   useEffect(() => {
