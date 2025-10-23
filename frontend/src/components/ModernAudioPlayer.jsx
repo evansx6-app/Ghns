@@ -588,8 +588,8 @@ const ModernAudioPlayer = () => {
                   {/* Classic Player Layout - Vertical Stack */}
                   <div className="flex flex-col items-center gap-6">
                     
-                    {/* LCD Display Section */}
-                    <div className="w-full max-w-2xl">
+                    {/* LCD Display Section - Match Album Art Width */}
+                    <div className="w-full max-w-md md:max-w-lg px-4">
                       <LCDDisplay 
                         title={currentTrack?.title}
                         artist={currentTrack?.artist}
