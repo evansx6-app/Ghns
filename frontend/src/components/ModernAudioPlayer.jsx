@@ -716,7 +716,7 @@ const ModernAudioPlayer = () => {
                   </div>
 
                   {/* Classic Player Controls */}
-                  <div className="space-y-4">
+                  <div className="space-y-4 mt-8">
                     {/* Play/Pause Button - Black with orange outline and shimmer when paused */}
                     <div className="flex justify-center">
                       <Button
