@@ -788,13 +788,7 @@ const ModernAudioPlayer = () => {
                   />
                 </>
               ) : (
-                <>
-                  <h3 className="text-xl font-bold text-white mb-4 flex items-center">
-                    <ListMusic className="w-6 h-6 mr-2 text-copper-400" />
-                    Recently Played
-                  </h3>
-                  <RecentTracks carMode={false} />
-                </>
+                <RecentTracks carMode={false} />
               )}
             </div>
 
