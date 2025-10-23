@@ -15,9 +15,14 @@ const LCDDisplay = ({ title, artist, album, isPlaying }) => {
   const prevArtistRef = useRef(artist);
   const isMountedRef = useRef(false);
 
+  // Initial mount - trigger animation
+  useEffect(() => {
+    isMountedRef.current = true;
+  }, []);
+
   // Reset when title changes - scroll in animation
   useEffect(() => {
-    if (prevTitleRef.current !== title) {
+    if (prevTitleRef.current !== title || !isMountedRef.current) {
       setTitleScroll(-700);
       setTitleScrollingIn(true);
       setTitlePaused(false);
@@ -27,7 +32,7 @@ const LCDDisplay = ({ title, artist, album, isPlaying }) => {
 
   // Reset when artist changes - scroll in animation
   useEffect(() => {
-    if (prevArtistRef.current !== artist) {
+    if (prevArtistRef.current !== artist || !isMountedRef.current) {
       setArtistScroll(-700);
       setArtistScrollingIn(true);
       setArtistPaused(false);
