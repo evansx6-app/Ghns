@@ -22,32 +22,37 @@ const SafariVisualiser = ({ audioRef, isPlaying, colors }) => {
     };
   }, []);
   
-  // Setup audio analyser if available
+  // Setup audio analyser if available (iOS-compatible)
   useEffect(() => {
     if (!audioContext || !source || !isReady) {
+      console.log('Visualiser: Using fallback mode (no audio context)');
       return;
     }
     
     try {
       if (!analyserRef.current) {
         analyserRef.current = audioContext.createAnalyser();
-        analyserRef.current.fftSize = 256; // Decent resolution for level detection
+        analyserRef.current.fftSize = 256;
         analyserRef.current.smoothingTimeConstant = 0.7;
         source.connect(analyserRef.current);
         
         const bufferLength = analyserRef.current.frequencyBinCount;
         dataArrayRef.current = new Uint8Array(bufferLength);
-        console.log('✅ Cassette deck level meters enabled');
+        console.log('✅ Cassette deck level meters enabled with audio analysis');
       }
     } catch (error) {
-      console.log('Using fallback animation (no audio analysis)');
+      console.log('Visualiser: Using fallback animation (no audio analysis)', error.message);
+      analyserRef.current = null;
+      dataArrayRef.current = null;
     }
     
     return () => {
-      if (analyserRef.current && source) {
+      if (analyserRef.current) {
         try {
           analyserRef.current.disconnect();
-        } catch (e) {}
+        } catch (e) {
+          console.log('Analyser disconnect error (safe to ignore)');
+        }
       }
     };
   }, [audioContext, source, isReady]);
