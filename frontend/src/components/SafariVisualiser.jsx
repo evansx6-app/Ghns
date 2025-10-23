@@ -27,6 +27,7 @@ const SafariVisualiser = ({ audioRef, isPlaying, colors }) => {
   useEffect(() => {
     if (!audioContext || !source || !isReady) {
       console.log('Visualiser: Using fallback mode (no audio context)');
+      setIsFallbackMode(true);
       return;
     }
     
@@ -39,12 +40,16 @@ const SafariVisualiser = ({ audioRef, isPlaying, colors }) => {
         
         const bufferLength = analyserRef.current.frequencyBinCount;
         dataArrayRef.current = new Uint8Array(bufferLength);
+        setIsFallbackMode(false);
         console.log('✅ Cassette deck level meters enabled with audio analysis');
+        console.log('✅ iPhone visualiser: Real-time audio analysis active');
       }
     } catch (error) {
       console.log('Visualiser: Using fallback animation (no audio analysis)', error.message);
+      console.log('ℹ️ iPhone visualiser: Showing animated fallback (audio will play normally)');
       analyserRef.current = null;
       dataArrayRef.current = null;
+      setIsFallbackMode(true);
     }
     
     return () => {
