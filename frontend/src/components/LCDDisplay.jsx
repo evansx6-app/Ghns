@@ -102,10 +102,10 @@ const LCDDisplay = ({ title, artist, album, isPlaying }) => {
         }
         
         // Continuous scrolling for long artist names
-        const maxScroll = artistWidth + containerWidth;
+        const maxScroll = artistWidth + 50; // Add small buffer
         if (prev >= maxScroll) {
-          // Immediately restart from right (no pause)
-          return 0;
+          // Restart from off-screen right (negative value positions it to the right)
+          return -containerWidth;
         }
         return prev + 1.5; // Scrolling speed
       });
