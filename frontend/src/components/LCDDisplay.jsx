@@ -96,18 +96,23 @@ const LCDDisplay = ({ title, artist, album, isPlaying }) => {
         />
         
         <div className="relative px-4 py-3">
-          {/* Title Line - Static text with truncation */}
+          {/* Title Line - Conditional scrolling */}
           <div className="overflow-hidden mb-2">
             <div 
-              className="text-base sm:text-lg md:text-xl font-semibold tracking-wider truncate"
+              className={`text-base sm:text-lg md:text-xl font-semibold tracking-wider ${titleNeedsScroll ? '' : 'truncate'}`}
               style={{
                 fontFamily: '"Orbitron", monospace',
                 color: isPlaying ? '#E8E8E8' : '#333333',
                 textShadow: isPlaying ? '0 0 8px rgba(232, 232, 232, 0.5), 0 0 4px rgba(232, 232, 232, 0.3)' : 'none',
-                transition: 'color 0.5s'
+                transition: 'color 0.5s',
+                transform: titleNeedsScroll && isPlaying ? `translateX(-${titleScroll}px)` : 'none',
+                whiteSpace: titleNeedsScroll ? 'nowrap' : 'normal'
               }}
             >
-              {title || '--- NO TITLE ---'}
+              {titleNeedsScroll && isPlaying ? 
+                `${title || '--- NO TITLE ---'}     ${title || '--- NO TITLE ---'}` : 
+                (title || '--- NO TITLE ---')
+              }
             </div>
           </div>
           
