@@ -144,7 +144,7 @@ const LCDDisplay = ({ title, artist, album, isPlaying }) => {
           background: '#000000',
           borderColor: '#1a1a1a',
           boxShadow: 'inset 0 1px 3px rgba(0,0,0,0.8), 0 2px 8px rgba(0,0,0,0.6)',
-          opacity: 1
+          opacity: isPlaying ? 1 : 0.6
         }}
       >
         {/* LCD pixel grid texture */}
