@@ -148,10 +148,10 @@ const LCDDisplay = ({ title, artist, album, isPlaying }) => {
             </div>
           </div>
           
-          {/* Artist Line - Scrolling for long names */}
+          {/* Artist Line - Scrolling for long names with duplicated text */}
           <div className="overflow-hidden">
             <div 
-              className="whitespace-nowrap text-sm sm:text-base tracking-wider transition-colors duration-500"
+              className="whitespace-nowrap text-sm sm:text-base tracking-wider transition-colors duration-500 inline-flex"
               style={{
                 fontFamily: '"Orbitron", monospace',
                 color: isPlaying ? 'rgba(255,255,255,0.7)' : '#222222',
@@ -159,7 +159,8 @@ const LCDDisplay = ({ title, artist, album, isPlaying }) => {
                 willChange: 'transform'
               }}
             >
-              {artist || 'Unknown Artist'}
+              <span className="mr-24">{artist || 'Unknown Artist'}</span>
+              <span>{artist || 'Unknown Artist'}</span>
             </div>
           </div>
         </div>
