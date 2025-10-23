@@ -64,6 +64,9 @@ class ArtworkService:
             
             return artwork_url
             
+        except asyncio.TimeoutError:
+            logger.warning(f"Artwork fetch timeout for {artist} - {title}, returning None")
+            return None
         except Exception as e:
             logger.error(f"Error getting artwork for {artist} - {title}: {e}")
             return None
