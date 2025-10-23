@@ -775,18 +775,12 @@ const ModernAudioPlayer = () => {
             {/* Recently Played / Lyrics - Below Player (Toggle) */}
             <div>
               {showLyrics ? (
-                <>
-                  <h3 className="text-xl font-bold text-white mb-4 flex items-center">
-                    <Music className="w-6 h-6 mr-2 text-copper-400" />
-                    Lyrics
-                  </h3>
-                  <LyricsDisplay 
-                    currentTrack={currentTrack}
-                    carMode={false}
-                    colors={colors}
-                    onClose={() => setShowLyrics(false)}
-                  />
-                </>
+                <LyricsDisplay 
+                  currentTrack={currentTrack}
+                  carMode={false}
+                  colors={colors}
+                  onClose={() => setShowLyrics(false)}
+                />
               ) : (
                 <RecentTracks carMode={false} />
               )}
