@@ -574,7 +574,7 @@ const ModernAudioPlayer = () => {
                   <div className="flex flex-col items-center gap-6">
                     
                     {/* LCD Display Section */}
-                    <div className="w-full max-w-md">
+                    <div className="w-full max-w-2xl">
                       <LCDDisplay 
                         title={currentTrack?.title}
                         artist={currentTrack?.artist}
@@ -584,7 +584,7 @@ const ModernAudioPlayer = () => {
                     </div>
                     
                     {/* Album Artwork - Large Display Screen */}
-                    <div className="relative w-full max-w-md px-4">
+                    <div className="relative w-full max-w-2xl px-4">
                       {/* Screen bezel/frame */}
                       <div 
                         className="relative rounded-xl overflow-hidden"
