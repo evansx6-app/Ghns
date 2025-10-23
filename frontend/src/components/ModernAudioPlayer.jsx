@@ -21,6 +21,7 @@ import InstallButton from './InstallButton';
 import ConnectionStatus from './ConnectionStatus';
 import TShirtShop from './TShirtShop';
 import ScrollingText from './ScrollingText';
+import LCDDisplay from './LCDDisplay';
 import OptimizedImage from './OptimizedImage';
 
 const ModernAudioPlayer = () => {
