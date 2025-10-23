@@ -64,8 +64,8 @@ const ModernAudioPlayer = () => {
 
   // Stream URLs with fallback
   const STREAM_URLS = [
-    "https://s8.myradiostream.com/58238/listen.mp3",
-    "https://icecast.omroep.nl/radio1-bb-mp3"
+    process.env.REACT_APP_STREAM_URL,
+    process.env.REACT_APP_FALLBACK_STREAM_URL
   ];
   
   const [currentStreamIndex, setCurrentStreamIndex] = useState(0);
