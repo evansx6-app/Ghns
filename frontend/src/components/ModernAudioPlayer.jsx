@@ -726,8 +726,8 @@ const ModernAudioPlayer = () => {
                         }`}
                         style={{
                           background: !isPlaying 
-                            ? `linear-gradient(90deg, ${colors.primary} 0%, ${colors.secondary} 25%, rgba(255,255,255,0.3) 50%, ${colors.secondary} 75%, ${colors.primary} 100%)`
-                            : `linear-gradient(135deg, ${colors.primary}, ${colors.secondary})`,
+                            ? `linear-gradient(90deg, ${colors.primary}cc 0%, ${colors.secondary}cc 25%, rgba(255,255,255,0.2) 50%, ${colors.secondary}cc 75%, ${colors.primary}cc 100%), linear-gradient(135deg, rgba(0,0,0,0.4), rgba(0,0,0,0.6))`
+                            : `linear-gradient(135deg, ${colors.primary}dd, ${colors.secondary}dd), linear-gradient(135deg, rgba(0,0,0,0.3), rgba(0,0,0,0.5))`,
                           border: `3px solid ${colors.accent}`,
                           boxShadow: !isPlaying 
                             ? `0 0 30px ${colors.primary}40, 0 0 60px ${colors.secondary}20, inset 0 0 20px ${colors.accent}30` 
