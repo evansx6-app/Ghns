@@ -61,10 +61,10 @@ const LCDDisplay = ({ title, artist, album, isPlaying }) => {
         }
         
         // ALWAYS scroll continuously - regardless of title length
-        const maxScroll = Math.max(titleWidth, containerWidth) + containerWidth;
+        const maxScroll = titleWidth + 50; // Add small buffer
         if (prev >= maxScroll) {
-          // Immediately restart from right (no pause)
-          return 0;
+          // Restart from off-screen right (negative value positions it to the right)
+          return -containerWidth;
         }
         return prev + 2; // Scrolling speed
       });
