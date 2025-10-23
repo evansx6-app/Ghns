@@ -623,40 +623,13 @@ const ModernAudioPlayer = () => {
                         <span className="text-[10px] sm:text-xs font-semibold text-copper-300 uppercase tracking-wide">Now Playing</span>
                       </div>
                       
-                      {/* Track Title - Centered, scrolls RTL only when too long */}
-                      <div className="w-full px-4 md:px-0 max-w-full">
-                        <ScrollingText 
-                          key={currentTrack?.title}
-                          text={currentTrack?.title || 'Loading...'}
-                          className="text-2xl sm:text-3xl lg:text-4xl xl:text-5xl font-bold text-white leading-tight tracking-tight"
-                          speed={40}
-                          pauseDuration={1500}
-                          direction="rtl"
-                          align="center"
-                          alwaysScroll={(currentTrack?.title || '').length > 25}
-                        />
-                      </div>
-                      
-                      {/* Artist Name - Centered, no scrolling */}
-                      <div className="w-full text-center">
-                        <p className="text-lg sm:text-xl lg:text-2xl text-white/70 font-medium truncate">
-                          {currentTrack?.artist || 'Loading...'}
-                        </p>
-                      </div>
-                      
-                      {currentTrack?.album && (
-                        <div className="w-full px-4 md:px-0">
-                          <ScrollingText 
-                            text={currentTrack.album}
-                            className="text-sm sm:text-base lg:text-lg text-white/50"
-                            speed={30}
-                            pauseDuration={1500}
-                            alwaysScroll={true}
-                            direction="rtl"
-                            align="center"
-                          />
-                        </div>
-                      )}
+                      {/* LCD Display for track information */}
+                      <LCDDisplay 
+                        title={currentTrack?.title}
+                        artist={currentTrack?.artist}
+                        album={currentTrack?.album}
+                        isPlaying={isPlaying}
+                      />
 
                       {/* Quick Actions */}
                       <div className="flex flex-wrap justify-center gap-2 pt-3">
