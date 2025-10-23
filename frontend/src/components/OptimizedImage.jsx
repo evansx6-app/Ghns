@@ -37,22 +37,21 @@ const OptimizedImage = ({
     setIsLoaded(false);
     setHasError(false);
 
-    // Priority images update immediately
+    // Priority images load immediately without any delay
     if (priority) {
       setImageSrc(proxiedSrc);
+      setIsLoaded(true); // Assume loaded for priority images
       return;
     }
 
-    // Optimized preloading with IntersectionObserver for lazy loading
+    // Fast loading for non-priority images (no IntersectionObserver delay)
     let img = null;
-    let observer = null;
 
     const loadImage = () => {
       img = new Image();
+      img.crossOrigin = 'anonymous';
+      img.referrerPolicy = 'no-referrer';
       img.src = proxiedSrc;
-      
-      // Add size hint for faster loading
-      img.sizes = '(max-width: 768px) 100vw, 800px';
       
       img.onload = () => {
         setImageSrc(proxiedSrc);
@@ -69,34 +68,16 @@ const OptimizedImage = ({
       };
     };
 
-    // Use IntersectionObserver for better lazy loading
-    if (imgRef.current && 'IntersectionObserver' in window) {
-      observer = new IntersectionObserver(
-        (entries) => {
-          entries.forEach((entry) => {
-            if (entry.isIntersecting) {
-              loadImage();
-              observer?.disconnect();
-            }
-          });
-        },
-        { rootMargin: '50px' } // Start loading 50px before image enters viewport
-      );
-      
-      observer.observe(imgRef.current);
-    } else {
-      // Fallback for browsers without IntersectionObserver
-      loadImage();
-    }
+    // Load immediately for faster display
+    loadImage();
 
     return () => {
       if (img) {
         img.onload = null;
         img.onerror = null;
       }
-      observer?.disconnect();
     };
-  }, [src, priority, fallbackSrc]);
+  }, [src, priority, fallbackSrc, isLoaded, imageSrc]);
 
   const handleLoad = (e) => {
     setIsLoaded(true);
