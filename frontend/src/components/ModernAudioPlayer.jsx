@@ -606,20 +606,13 @@ const ModernAudioPlayer = () => {
                           border: '2px solid #000',
                           boxShadow: 'inset 0 0 20px rgba(0,0,0,0.5)'
                         }}>
-                        {currentTrack?.title === "Greatest Hits Non-Stop" ? (
-                          <div className="w-full h-full flex items-center justify-center p-8 bg-gradient-to-br from-copper-900/20 to-copper-800/20">
-                            <OptimizedImage
-                              src="https://customer-assets.emergentagent.com/job_ghns-project/artifacts/5tmxnbvh_unnamed.png"
-                              alt="Greatest Hits Non-Stop Logo"
-                              className="w-full h-auto drop-shadow-2xl"
-                              priority={true}
-                            />
-                          </div>
-                        ) : currentTrack?.title === "Legendary Radio from Scotland" ? (
+                        {(currentTrack?.title === "Greatest Hits Non-Stop" || 
+                          currentTrack?.title === "Legendary Radio from Scotland" ||
+                          currentTrack?.title === "Legendary Radio from Scotland - Greatest Hits Non-Stop") ? (
                           <div className="w-full h-full flex items-center justify-center p-8 bg-gradient-to-br from-copper-900/20 to-copper-800/20">
                             <img 
                               src="https://customer-assets.emergentagent.com/job_sleep-timer-stream/artifacts/qcvmvlox_cropped-radio.png"
-                              alt="Greatest Hits Non-Stop Fallback"
+                              alt="Greatest Hits Non-Stop Logo"
                               className="w-full h-auto drop-shadow-2xl"
                             />
                           </div>
