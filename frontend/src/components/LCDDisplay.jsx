@@ -2,22 +2,46 @@ import React, { useState, useEffect, useRef } from 'react';
 
 const LCDDisplay = ({ title, artist, album, isPlaying }) => {
   const [titleScroll, setTitleScroll] = useState(0);
+  const [isPaused, setIsPaused] = useState(false);
   const titleAnimRef = useRef(null);
+  const pauseTimeoutRef = useRef(null);
 
-  // Prepare display text - only title scrolls
-  const titleText = title ? title + '          ' + title : '--- NO TITLE ---';
-
-  // Title scrolling animation - right to left only
+  // Title scrolling animation - single pass with pause
   useEffect(() => {
     if (!isPlaying || !title) {
+      setTitleScroll(0);
+      setIsPaused(false);
+      return;
+    }
+
+    const titleWidth = title.length * 10; // Approximate character width in pixels
+    const containerWidth = 600; // Approximate container width
+    
+    // Only scroll if title is longer than container
+    if (titleWidth <= containerWidth) {
       setTitleScroll(0);
       return;
     }
 
     const scroll = () => {
       setTitleScroll((prev) => {
-        const maxScroll = (title.length + 10) * 8; // Approximate character width
-        return prev >= maxScroll ? 0 : prev + 1.2; // Pixels per frame
+        const maxScroll = titleWidth;
+        
+        if (prev >= maxScroll && !isPaused) {
+          // Reached end, pause before resetting
+          setIsPaused(true);
+          pauseTimeoutRef.current = setTimeout(() => {
+            setTitleScroll(0);
+            setIsPaused(false);
+          }, 2000); // 2 second pause
+          return prev;
+        }
+        
+        if (isPaused) {
+          return prev;
+        }
+        
+        return prev + 1; // Scroll speed: 1px per frame
       });
       titleAnimRef.current = requestAnimationFrame(scroll);
     };
@@ -28,8 +52,11 @@ const LCDDisplay = ({ title, artist, album, isPlaying }) => {
       if (titleAnimRef.current) {
         cancelAnimationFrame(titleAnimRef.current);
       }
+      if (pauseTimeoutRef.current) {
+        clearTimeout(pauseTimeoutRef.current);
+      }
     };
-  }, [isPlaying, title]);
+  }, [isPlaying, title, isPaused]);
 
   return (
     <div className="w-full my-6 px-4">
