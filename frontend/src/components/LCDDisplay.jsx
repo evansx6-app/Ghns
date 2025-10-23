@@ -176,10 +176,7 @@ const LCDDisplay = ({ title, artist, album, isPlaying }) => {
                 textAlign: 'left'
               }}
             >
-              {artistNeedsScroll && isPlaying ? 
-                `${artist || 'Unknown Artist'}                    ${artist || 'Unknown Artist'}` : 
-                (artist || 'Unknown Artist')
-              }
+              {artist || 'Unknown Artist'}
             </div>
           </div>
         </div>
