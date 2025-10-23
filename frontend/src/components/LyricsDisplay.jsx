@@ -122,7 +122,7 @@ const LyricsDisplay = ({ currentTrack, carMode = false, colors, onClose }) => {
       <CardHeader className={`${carMode ? 'pb-3 sm:pb-4' : 'pb-2 sm:pb-3'} border-b border-white/10 px-4 sm:px-6 pt-4 sm:pt-6`}>
         <div className="flex items-center justify-between">
           <div className="flex items-center space-x-2 sm:space-x-3">
-            <Music className={`${carMode ? 'h-5 w-5 sm:h-6 sm:w-6' : 'h-4 w-4 sm:h-5 sm:w-5'} text-white/70`} />
+            <Music className={`${carMode ? 'h-5 w-5 sm:h-6 sm:w-6' : 'h-4 w-4 sm:h-5 sm:w-5'}`} style={{ color: '#ea580c' }} />
             <CardTitle className={`${carMode ? 'text-lg sm:text-xl' : 'text-base sm:text-lg'} font-semibold text-white`}>
               Lyrics
             </CardTitle>
