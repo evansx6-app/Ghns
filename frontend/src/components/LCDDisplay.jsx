@@ -72,8 +72,8 @@ const LCDDisplay = ({ title, artist, album, isPlaying }) => {
   useEffect(() => {
     if (!artist || !isPlaying) return;
 
-    const artistWidth = artist.length * 12; // Character width estimate
-    const containerWidth = 600;
+    const artistWidth = artist.length * 9; // Character width estimate (smaller font)
+    const containerWidth = 450; // Lower threshold to trigger scrolling earlier
     const isLong = artistWidth > containerWidth;
 
     // Only scroll if artist name is long
