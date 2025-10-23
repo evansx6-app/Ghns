@@ -106,11 +106,32 @@ const ModernAudioPlayer = () => {
         return;
       }
       
-      // Preload artwork for new tracks
+      // Aggressive artwork preloading for new tracks
       if (isNewTrack && track?.artwork_url && track.artwork_url !== 'vinyl-fallback-placeholder') {
+        // Method 1: Image object preload
         const img = new Image();
+        img.crossOrigin = 'anonymous';
+        img.referrerPolicy = 'no-referrer';
+        img.fetchPriority = 'high';
         img.src = track.artwork_url;
-        console.log('Preloading new track artwork:', track.title);
+        
+        // Method 2: Link preload in head
+        const link = document.createElement('link');
+        link.rel = 'preload';
+        link.as = 'image';
+        link.href = track.artwork_url;
+        link.crossOrigin = 'anonymous';
+        link.fetchPriority = 'high';
+        document.head.appendChild(link);
+        
+        // Cleanup after 5 seconds
+        setTimeout(() => {
+          if (document.head.contains(link)) {
+            document.head.removeChild(link);
+          }
+        }, 5000);
+        
+        console.log('Aggressively preloading new track artwork:', track.title);
       }
       
       // Update track data
