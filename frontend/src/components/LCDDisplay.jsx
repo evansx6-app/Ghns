@@ -81,9 +81,9 @@ const LCDDisplay = ({ title, artist, album, isPlaying }) => {
     };
   }, [title, isPlaying, isDesktop]);
 
-  // Artist scrolling animation - SEAMLESS LOOP FOR LONG NAMES
+  // Artist scrolling animation - SEAMLESS LOOP FOR LONG NAMES (Mobile only)
   useEffect(() => {
-    if (!artist || !isPlaying) return;
+    if (!artist || !isPlaying || isDesktop) return;
 
     const artistWidth = artist.length * 9; // Character width estimate (smaller font)
     const containerWidth = 450; // Lower threshold to trigger scrolling earlier
@@ -110,7 +110,7 @@ const LCDDisplay = ({ title, artist, album, isPlaying }) => {
     return () => {
       if (artistAnimRef.current) cancelAnimationFrame(artistAnimRef.current);
     };
-  }, [artist, isPlaying]);
+  }, [artist, isPlaying, isDesktop]);
 
   return (
     <div className="w-full px-4">
