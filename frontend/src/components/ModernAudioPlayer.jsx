@@ -29,7 +29,17 @@ const ModernAudioPlayer = () => {
   const [volume, setVolume] = useState([70]);
   const [showSleepTimer, setShowSleepTimer] = useState(false);
   const [showLyrics, setShowLyrics] = useState(false);
-  const [currentTrack, setCurrentTrack] = useState(null);
+  
+  // Initialize with a stable fallback to prevent null states
+  const [currentTrack, setCurrentTrack] = useState({
+    title: "Greatest Hits Non-Stop",
+    artist: "Live Radio Stream",
+    album: "Legendary Radio from Scotland",
+    isLive: true,
+    streamUrl: STREAM_URL,
+    artwork_url: "https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=500&h=500&fit=crop&crop=center",
+    fallback: true
+  });
   const [isLoading, setIsLoading] = useState(true);
   const [streamHealth, setStreamHealth] = useState(null);
   const [isCarMode, setIsCarMode] = useState(false);
