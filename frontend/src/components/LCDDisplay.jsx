@@ -171,7 +171,7 @@ const LCDDisplay = ({ title, artist, album, isPlaying }) => {
                 textAlign: 'left'
               }}
             >
-              {title || '--- NO TITLE ---'}
+              {displayTitle}
             </div>
           </div>
           
@@ -188,7 +188,7 @@ const LCDDisplay = ({ title, artist, album, isPlaying }) => {
                 textAlign: 'left'
               }}
             >
-              {artist || 'Unknown Artist'}
+              {displayArtist}
             </div>
           </div>
         </div>
