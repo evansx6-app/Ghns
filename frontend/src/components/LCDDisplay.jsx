@@ -77,7 +77,7 @@ const LCDDisplay = ({ title, artist, album, isPlaying }) => {
     };
   }, [title, isPlaying, titleScrollingIn]);
 
-  // Artist scrolling animation
+  // Artist scrolling animation - SEAMLESS LOOP FOR LONG NAMES
   useEffect(() => {
     if (!artist) return;
 
@@ -87,26 +87,20 @@ const LCDDisplay = ({ title, artist, album, isPlaying }) => {
 
     const scroll = () => {
       setArtistScroll((prev) => {
-        // Scroll in from right (with delay for staggered effect)
+        // Initial scroll in from right (with slight delay for staggered effect)
         if (artistScrollingIn) {
           if (prev < 0) return prev + 2.5;
           setArtistScrollingIn(false);
-          return isLong ? prev : 0;
+          return 0;
         }
         
-        // Continue scrolling if long
+        // Continuous scrolling for long artist names
         if (isLong && isPlaying) {
-          const maxScroll = artistWidth - containerWidth;
-          if (prev >= maxScroll && !artistPaused) {
-            setArtistPaused(true);
-            artistPauseRef.current = setTimeout(() => {
-              setArtistScroll(-700);
-              setArtistScrollingIn(true);
-              setArtistPaused(false);
-            }, 2000);
-            return prev;
+          const maxScroll = artistWidth + containerWidth; // Scroll completely off screen
+          if (prev >= maxScroll) {
+            // Immediately restart from right (no pause)
+            return 0;
           }
-          if (artistPaused) return prev;
           return prev + 0.9;
         }
         return prev;
@@ -119,7 +113,7 @@ const LCDDisplay = ({ title, artist, album, isPlaying }) => {
       if (artistAnimRef.current) cancelAnimationFrame(artistAnimRef.current);
       if (artistPauseRef.current) clearTimeout(artistPauseRef.current);
     };
-  }, [artist, isPlaying, artistPaused, artistScrollingIn]);
+  }, [artist, isPlaying, artistScrollingIn]);
 
   return (
     <div className="w-full px-4">
