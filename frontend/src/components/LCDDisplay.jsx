@@ -142,6 +142,15 @@ const LCDDisplay = ({ title, artist, album, isPlaying }) => {
                 whiteSpace: 'nowrap',
                 textAlign: 'left'
               }}
+              ref={(el) => {
+                if (el && titleNeedsScroll && isPlaying) {
+                  console.log('🎨 [LCD] Title transform applied:', {
+                    transform: `translateX(-${titleScroll}px)`,
+                    titleScroll,
+                    computedTransform: window.getComputedStyle(el).transform
+                  });
+                }
+              }}
             >
               {titleNeedsScroll && isPlaying ? 
                 `${title || '--- NO TITLE ---'}     ${title || '--- NO TITLE ---'}` : 
