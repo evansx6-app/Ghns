@@ -32,7 +32,7 @@ app = FastAPI()
 api_router = APIRouter(prefix="/api")
 
 # Stream configuration
-STREAM_URL = "https://s8.myradiostream.com/58238/listen.mp3"
+STREAM_URL = os.environ.get('STREAM_URL', 'https://s8.myradiostream.com/58238/listen.mp3')
 
 # Initialize services
 metadata_service = StreamMetadataService(STREAM_URL, db)
