@@ -43,8 +43,11 @@ class ArtworkService:
                     if datetime.now(timezone.utc) - cached_time < self.cache_duration:
                         return cached_artwork.get('artwork_url')
             
-            # Fetch new artwork
-            artwork_url = await self._fetch_artwork_from_musicbrainz(artist, title)
+            # Fetch new artwork with overall timeout of 15 seconds
+            artwork_url = await asyncio.wait_for(
+                self._fetch_artwork_from_musicbrainz(artist, title),
+                timeout=15.0
+            )
             
             # Cache the result (even if None, to avoid repeated failed requests)
             await self.db.artwork_cache.replace_one(
