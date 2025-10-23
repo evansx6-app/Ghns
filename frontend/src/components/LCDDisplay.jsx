@@ -68,36 +68,27 @@ const LCDDisplay = ({ title, artist, album, isPlaying }) => {
     };
   }, [title, isPlaying]);
 
-  // Artist scrolling animation - SCROLL WHEN LONG
+  // Artist scrolling animation - SEAMLESS LOOP FOR LONG NAMES
   useEffect(() => {
     if (!artist || !isPlaying) return;
 
-    const artistWidth = artist.length * 12; // Character width
+    const artistWidth = artist.length * 12; // Character width estimate
     const containerWidth = 600;
     const isLong = artistWidth > containerWidth;
 
-    // Only set up animation if artist name is long
+    // Only scroll if artist name is long
     if (!isLong) return;
 
-    let scrollingIn = artistScrollingIn;
+    const spacing = 96; // Space between duplicated text (mr-24 = 96px)
+    const loopPoint = artistWidth + spacing; // When first text is fully off screen
 
     const scroll = () => {
       setArtistScroll((prev) => {
-        // Initial scroll in from right (with slight delay for staggered effect)
-        if (scrollingIn) {
-          if (prev < 0) return prev + 2.5;
-          scrollingIn = false;
-          setArtistScrollingIn(false);
+        // Seamless loop: when first text is fully off screen, reset to 0
+        if (prev >= loopPoint) {
           return 0;
         }
-        
-        // Continuous scrolling for long artist names
-        const maxScroll = artistWidth + 50; // Add small buffer
-        if (prev >= maxScroll) {
-          // Restart from off-screen right (negative value positions it to the right)
-          return -containerWidth;
-        }
-        return prev + 1.5; // Scrolling speed
+        return prev + 1.5; // Continuous scrolling speed (slightly slower than title)
       });
       artistAnimRef.current = requestAnimationFrame(scroll);
     };
@@ -105,7 +96,6 @@ const LCDDisplay = ({ title, artist, album, isPlaying }) => {
     artistAnimRef.current = requestAnimationFrame(scroll);
     return () => {
       if (artistAnimRef.current) cancelAnimationFrame(artistAnimRef.current);
-      if (artistPauseRef.current) clearTimeout(artistPauseRef.current);
     };
   }, [artist, isPlaying]);
 
