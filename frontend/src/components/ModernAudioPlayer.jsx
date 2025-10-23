@@ -835,11 +835,11 @@ const ModernAudioPlayer = () => {
                   <h3 className="text-2xl font-bold text-white mb-2">
                     Greatest Hits Non-Stop
                   </h3>
-                  <p className="text-lg text-copper-400 font-medium mb-4">
+                  <p className="text-lg font-medium mb-4" style={{ color: '#ea580c' }}>
                     Legendary Radio from Scotland
                   </p>
                   {lastUpdate && (
-                    <p className="text-xs text-white/40">
+                    <p className="text-xs" style={{ color: '#ea580c', opacity: 0.6 }}>
                       Last updated: {lastUpdate.toLocaleTimeString()}
                     </p>
                   )}
