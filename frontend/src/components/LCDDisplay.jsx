@@ -44,7 +44,7 @@ const LCDDisplay = ({ title, artist, album, isPlaying }) => {
   useEffect(() => {
     if (!title || !isPlaying) return;
 
-    const titleWidth = title.length * 12; // Increased character width for better calculation
+    const titleWidth = title.length * 15; // Character width
     const containerWidth = 600;
 
     const scroll = () => {
@@ -56,13 +56,13 @@ const LCDDisplay = ({ title, artist, album, isPlaying }) => {
           return 0;
         }
         
-        // Continuous scrolling - always active
-        const maxScroll = titleWidth + containerWidth; // Scroll completely off screen
+        // ALWAYS scroll continuously - regardless of title length
+        const maxScroll = Math.max(titleWidth, containerWidth) + containerWidth;
         if (prev >= maxScroll) {
           // Immediately restart from right (no pause)
           return 0;
         }
-        return prev + 1.5; // Slightly faster scrolling
+        return prev + 2; // Scrolling speed
       });
       titleAnimRef.current = requestAnimationFrame(scroll);
     };
