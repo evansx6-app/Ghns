@@ -97,7 +97,7 @@ code {
   animation: shimmer 3s ease-in-out infinite;
 }
 
-/* Text Shine Animation for Top Bar */
+/* Text Shine Animation for Top Bar - Diagonal Sweep */
 @keyframes text-shine {
   0% {
     background-position: -200% center;
@@ -109,20 +109,20 @@ code {
 
 .text-shine {
   background: linear-gradient(
-    90deg,
+    110deg,
     #c0c0c0 0%,
-    #c0c0c0 25%,
-    #ffffff 40%,
+    #c0c0c0 35%,
+    #e8e8e8 45%,
     #ffffff 50%,
-    #ffffff 60%,
-    #c0c0c0 75%,
+    #e8e8e8 55%,
+    #c0c0c0 65%,
     #c0c0c0 100%
   );
   background-size: 200% auto;
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
-  animation: text-shine 8s linear infinite;
+  animation: text-shine 3s ease-in-out infinite;
 }
 
 /* Scrolling Text Animation */
