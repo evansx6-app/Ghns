@@ -40,11 +40,11 @@ const LCDDisplay = ({ title, artist, album, isPlaying }) => {
     }
   }, [artist]);
 
-  // Title scrolling animation - SEAMLESS CONTINUOUS LOOP
+  // Title scrolling animation - ALWAYS CONTINUOUS SCROLL
   useEffect(() => {
-    if (!title) return;
+    if (!title || !isPlaying) return;
 
-    const titleWidth = title.length * 10;
+    const titleWidth = title.length * 12; // Increased character width for better calculation
     const containerWidth = 600;
 
     const scroll = () => {
@@ -56,16 +56,13 @@ const LCDDisplay = ({ title, artist, album, isPlaying }) => {
           return 0;
         }
         
-        // Continuous scrolling - loop seamlessly when playing
-        if (isPlaying) {
-          const maxScroll = titleWidth + containerWidth; // Scroll completely off screen
-          if (prev >= maxScroll) {
-            // Immediately restart from right (no pause)
-            return 0;
-          }
-          return prev + 1;
+        // Continuous scrolling - always active
+        const maxScroll = titleWidth + containerWidth; // Scroll completely off screen
+        if (prev >= maxScroll) {
+          // Immediately restart from right (no pause)
+          return 0;
         }
-        return prev;
+        return prev + 1.5; // Slightly faster scrolling
       });
       titleAnimRef.current = requestAnimationFrame(scroll);
     };
