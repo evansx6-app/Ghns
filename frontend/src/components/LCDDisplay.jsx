@@ -151,10 +151,10 @@ const LCDDisplay = ({ title, artist, album, isPlaying }) => {
         />
         
         <div className="relative px-4 py-3">
-          {/* Title Line - Left justified, scrolls when long */}
+          {/* Title Line - Left justified, continuous scroll with duplicate */}
           <div className="overflow-hidden mb-2">
             <div 
-              className="text-base sm:text-lg md:text-xl font-semibold tracking-wider"
+              className="text-base sm:text-lg md:text-xl font-semibold tracking-wider inline-flex"
               style={{
                 fontFamily: '"Orbitron", monospace',
                 color: isPlaying ? '#E8E8E8' : '#999999',
@@ -165,14 +165,19 @@ const LCDDisplay = ({ title, artist, album, isPlaying }) => {
                 textAlign: 'left'
               }}
             >
-              {displayTitle}
+              <span>{displayTitle}</span>
+              {titleNeedsScroll && isPlaying && (
+                <>
+                  <span style={{ marginLeft: '120px' }}>{displayTitle}</span>
+                </>
+              )}
             </div>
           </div>
           
-          {/* Artist Line - Left justified, scrolls when long */}
+          {/* Artist Line - Left justified, continuous scroll with duplicate */}
           <div className="overflow-hidden">
             <div 
-              className="text-xs sm:text-sm md:text-base tracking-wider transition-colors duration-500"
+              className="text-xs sm:text-sm md:text-base tracking-wider transition-colors duration-500 inline-flex"
               style={{
                 fontFamily: '"Orbitron", monospace',
                 color: isPlaying ? 'rgba(255,255,255,0.7)' : 'rgba(153,153,153,0.8)',
@@ -182,7 +187,12 @@ const LCDDisplay = ({ title, artist, album, isPlaying }) => {
                 textAlign: 'left'
               }}
             >
-              {displayArtist}
+              <span>{displayArtist}</span>
+              {artistNeedsScroll && isPlaying && (
+                <>
+                  <span style={{ marginLeft: '120px' }}>{displayArtist}</span>
+                </>
+              )}
             </div>
           </div>
         </div>
