@@ -175,20 +175,12 @@ const ModernAudioPlayer = () => {
     } catch (error) {
       console.error('Error fetching track:', error.message);
       
-      // Only set fallback on first load if no track exists
-      if (!currentTrack) {
-        console.log('No track data available, setting fallback');
-        setCurrentTrack({
-          title: "Greatest Hits Non-Stop",
-          artist: "Live Radio Stream", 
-          album: "Legendary Radio from Scotland",
-          isLive: true,
-          streamUrl: STREAM_URL,
-          artwork_url: "https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=500&h=500&fit=crop&crop=center",
-          fallback: true
-        });
+      // Always preserve last valid track on error
+      if (lastValidTrackRef.current && !lastValidTrackRef.current.fallback) {
+        console.log('Fetch error, restoring last valid track:', lastValidTrackRef.current.title);
+        setCurrentTrack(lastValidTrackRef.current);
       } else {
-        console.log('Fetch error, preserving existing track data');
+        console.log('No valid track to restore, keeping current');
       }
     } finally {
       setIsLoading(false);
