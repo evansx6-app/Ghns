@@ -586,7 +586,7 @@ const ModernAudioPlayer = () => {
                   />
 
                   {/* Classic Player Layout - Vertical Stack */}
-                  <div className="flex flex-col items-center gap-6">
+                  <div className="flex flex-col items-center gap-4">
                     
                     {/* LCD Display Section - Match LED Meters Width */}
                     <div className="w-full max-w-md md:max-w-lg px-4">
