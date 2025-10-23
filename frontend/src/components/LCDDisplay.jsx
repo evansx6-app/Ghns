@@ -20,10 +20,10 @@ const LCDDisplay = ({ title, artist, album, isPlaying }) => {
     const titleLength = title?.length || 0;
     const artistLength = artist?.length || 0;
     
-    // Approximate characters that fit in container width
-    // Container is ~400px, title chars ~12px wide, artist ~10px wide
-    const titleFitsInContainer = 33; // 400/12 ≈ 33 characters
-    const artistFitsInContainer = 40; // 400/10 = 40 characters
+    // Lower thresholds for more aggressive scrolling
+    // LCD display is narrow, so scroll sooner
+    const titleFitsInContainer = 18; // Scroll if longer than 18 characters
+    const artistFitsInContainer = 20; // Scroll if longer than 20 characters
     
     const needsTitle = titleLength > titleFitsInContainer;
     const needsArtist = artistLength > artistFitsInContainer;
@@ -35,6 +35,9 @@ const LCDDisplay = ({ title, artist, album, isPlaying }) => {
       title: title?.substring(0, 25), 
       titleLength, 
       needsTitle, 
+      artist: artist?.substring(0, 20),
+      artistLength,
+      needsArtist,
       isPlaying 
     });
   }, [title, artist, isPlaying]);
