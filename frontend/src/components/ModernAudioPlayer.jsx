@@ -84,64 +84,67 @@ const ModernAudioPlayer = () => {
   // Fetch current track data
   const fetchCurrentTrack = async (showToast = false) => {
     try {
-      // Preload artwork for faster display
       const track = await streamAPI.getCurrentTrack();
       
-      // Only update if we have valid track data
+      // Skip fallback track data - keep current info
       if (!track || track.fallback) {
-        console.warn('Received fallback track data, keeping current track info');
-        // Don't override current track with fallback if we already have valid data
-        if (!currentTrack || currentTrack.fallback) {
-          setCurrentTrack(track);
+        console.log('Skipping fallback data, preserving current track');
+        if (!currentTrack) {
+          setCurrentTrack(track); // Only if we have nothing
         }
         return;
       }
       
-      // Preload the image for faster rendering
-      if (track?.artwork_url && track.artwork_url !== 'vinyl-fallback-placeholder') {
-        const img = new Image();
-        img.src = track.artwork_url;
-      }
-      
+      // Check if this is actually a new/different track
       const isNewTrack = !currentTrack || 
         currentTrack.title !== track.title || 
-        currentTrack.artist !== track.artist ||
-        currentTrack.album !== track.album;
+        currentTrack.artist !== track.artist;
       
-      const isNewerTrack = currentTrack && track.timestamp && 
-        new Date(track.timestamp) > new Date(currentTrack.timestamp);
+      // If same track, keep existing data (prevents unnecessary re-renders)
+      if (!isNewTrack && currentTrack && !showToast) {
+        console.log('Same track, keeping existing data');
+        return;
+      }
       
-      const hasActualChange = isNewTrack || isNewerTrack;
+      // Preload artwork for new tracks
+      if (isNewTrack && track?.artwork_url && track.artwork_url !== 'vinyl-fallback-placeholder') {
+        const img = new Image();
+        img.src = track.artwork_url;
+        console.log('Preloading new track artwork:', track.title);
+      }
       
+      // Update track data
       setCurrentTrack(track);
       setLastUpdate(new Date());
+      console.log(`Track updated: ${track.title} by ${track.artist}`);
       
-      if (showToast || (hasActualChange && currentTrack && !showToast)) {
+      // Show toast for new tracks
+      if (isNewTrack && currentTrack) {
         const trackId = `${track.title}-${track.artist}`;
-        const hasAlreadyShownToast = shownToastsRef.current.has(trackId);
         
-        const shouldShowToast = showToast || (hasActualChange && !hasAlreadyShownToast);
-        
-        if (shouldShowToast) {
-          const message = showToast ? "Track information refreshed" : 
-            `♪ ${track.title} - ${track.artist}`;
-          
+        if (!shownToastsRef.current.has(trackId)) {
           toast({
-            title: showToast ? "Refreshed" : "Now Playing:",
-            description: message,
+            title: "Now Playing:",
+            description: `♪ ${track.title} - ${track.artist}`,
           });
-          
-          if (!showToast) {
-            shownToastsRef.current.add(trackId);
-          }
-          
-          console.log(`Track changed: ${track.title} by ${track.artist}`);
+          shownToastsRef.current.add(trackId);
         }
       }
+      
+      // Show refresh toast if explicitly requested
+      if (showToast) {
+        toast({
+          title: "Refreshed",
+          description: "Track information refreshed",
+        });
+      }
+      
     } catch (error) {
-      console.error('Error fetching current track:', error);
-      // Only set fallback if we don't have any current track data
+      console.error('Error fetching track:', error.message);
+      
+      // Only set fallback on first load if no track exists
       if (!currentTrack) {
+        console.log('No track data available, setting fallback');
         setCurrentTrack({
           title: "Greatest Hits Non-Stop",
           artist: "Live Radio Stream", 
@@ -152,7 +155,7 @@ const ModernAudioPlayer = () => {
           fallback: true
         });
       } else {
-        console.log('Keeping existing track info due to fetch error');
+        console.log('Fetch error, preserving existing track data');
       }
     } finally {
       setIsLoading(false);
