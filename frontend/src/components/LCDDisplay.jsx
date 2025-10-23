@@ -3,45 +3,70 @@ import React, { useState, useEffect, useRef } from 'react';
 const LCDDisplay = ({ title, artist, album, isPlaying }) => {
   const [titleScroll, setTitleScroll] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
+  const [isScrollingIn, setIsScrollingIn] = useState(true);
   const titleAnimRef = useRef(null);
   const pauseTimeoutRef = useRef(null);
+  const prevTitleRef = useRef(title);
 
-  // Title scrolling animation - single pass with pause
+  // Reset when title changes - scroll in new title
   useEffect(() => {
-    if (!isPlaying || !title) {
-      setTitleScroll(0);
+    if (prevTitleRef.current !== title) {
+      setTitleScroll(-600); // Start from right (off-screen)
+      setIsScrollingIn(true);
       setIsPaused(false);
+      prevTitleRef.current = title;
+    }
+  }, [title]);
+
+  // Title scrolling animation
+  useEffect(() => {
+    if (!title) {
+      setTitleScroll(0);
       return;
     }
 
     const titleWidth = title.length * 10; // Approximate character width in pixels
     const containerWidth = 600; // Approximate container width
-    
-    // Only scroll if title is longer than container
-    if (titleWidth <= containerWidth) {
-      setTitleScroll(0);
-      return;
-    }
+    const isLongTitle = titleWidth > containerWidth;
 
     const scroll = () => {
       setTitleScroll((prev) => {
-        const maxScroll = titleWidth;
-        
-        if (prev >= maxScroll && !isPaused) {
-          // Reached end, pause before resetting
-          setIsPaused(true);
-          pauseTimeoutRef.current = setTimeout(() => {
-            setTitleScroll(0);
-            setIsPaused(false);
-          }, 2000); // 2 second pause
-          return prev;
+        // Scrolling in from right
+        if (isScrollingIn) {
+          if (prev < 0) {
+            return prev + 2; // Scroll in at 2px per frame
+          } else {
+            setIsScrollingIn(false);
+            if (!isLongTitle) {
+              return 0; // Stay at position 0 for short titles
+            }
+            return prev;
+          }
         }
         
-        if (isPaused) {
-          return prev;
+        // For long titles, continue scrolling after scroll-in
+        if (isLongTitle && isPlaying) {
+          const maxScroll = titleWidth - containerWidth;
+          
+          if (prev >= maxScroll && !isPaused) {
+            // Reached end, pause before resetting
+            setIsPaused(true);
+            pauseTimeoutRef.current = setTimeout(() => {
+              setTitleScroll(-600);
+              setIsScrollingIn(true);
+              setIsPaused(false);
+            }, 2000); // 2 second pause
+            return prev;
+          }
+          
+          if (isPaused) {
+            return prev;
+          }
+          
+          return prev + 0.8; // Scroll speed for long titles
         }
         
-        return prev + 1; // Scroll speed: 1px per frame
+        return prev;
       });
       titleAnimRef.current = requestAnimationFrame(scroll);
     };
@@ -56,7 +81,7 @@ const LCDDisplay = ({ title, artist, album, isPlaying }) => {
         clearTimeout(pauseTimeoutRef.current);
       }
     };
-  }, [isPlaying, title, isPaused]);
+  }, [title, isPlaying, isPaused, isScrollingIn]);
 
   return (
     <div className="w-full my-6 px-4">
