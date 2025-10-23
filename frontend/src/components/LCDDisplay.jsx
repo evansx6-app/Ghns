@@ -43,21 +43,20 @@ const LCDDisplay = ({ title, artist, album, isPlaying }) => {
   // Title scrolling animation - ALWAYS CONTINUOUS SCROLL
   useEffect(() => {
     if (!title || !isPlaying) {
-      console.log('Title scroll disabled:', { title, isPlaying });
       return;
     }
 
     const titleWidth = title.length * 15; // Character width
     const containerWidth = 600;
-    console.log('Starting title scroll:', { title, titleWidth, containerWidth, isPlaying });
+    let scrollingIn = titleScrollingIn;
 
     const scroll = () => {
       setTitleScroll((prev) => {
         // Initial scroll in from right
-        if (titleScrollingIn) {
+        if (scrollingIn) {
           if (prev < 0) return prev + 3;
+          scrollingIn = false;
           setTitleScrollingIn(false);
-          console.log('Title scroll-in complete, starting continuous scroll');
           return 0;
         }
         
@@ -65,7 +64,6 @@ const LCDDisplay = ({ title, artist, album, isPlaying }) => {
         const maxScroll = Math.max(titleWidth, containerWidth) + containerWidth;
         if (prev >= maxScroll) {
           // Immediately restart from right (no pause)
-          console.log('Title loop restart');
           return 0;
         }
         return prev + 2; // Scrolling speed
@@ -78,7 +76,7 @@ const LCDDisplay = ({ title, artist, album, isPlaying }) => {
       if (titleAnimRef.current) cancelAnimationFrame(titleAnimRef.current);
       if (titlePauseRef.current) clearTimeout(titlePauseRef.current);
     };
-  }, [title, isPlaying, titleScrollingIn]);
+  }, [title, isPlaying]);
 
   // Artist scrolling animation - SCROLL WHEN LONG
   useEffect(() => {
