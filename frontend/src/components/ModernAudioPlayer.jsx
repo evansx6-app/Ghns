@@ -677,9 +677,9 @@ const ModernAudioPlayer = () => {
                           variant="outline"
                           size="sm"
                           onClick={() => setShowSleepTimer(!showSleepTimer)}
-                          className="bg-white/10 border-white/20 text-white hover:bg-white/20"
+                          className="bg-white/10 border-white/20 text-white hover:bg-white/20 text-xs px-3 py-1.5"
                         >
-                          <Clock className="w-4 h-4 mr-2" />
+                          <Clock className="w-3.5 h-3.5 mr-1.5" />
                           Sleep Timer
                         </Button>
                         
@@ -690,9 +690,9 @@ const ModernAudioPlayer = () => {
                             setShowLyrics(!showLyrics);
                             setActiveView(showLyrics ? 'player' : 'lyrics');
                           }}
-                          className="bg-white/10 border-white/20 text-white hover:bg-white/20"
+                          className="bg-white/10 border-white/20 text-white hover:bg-white/20 text-xs px-3 py-1.5"
                         >
-                          <Music className="w-4 h-4 mr-2" />
+                          <Music className="w-3.5 h-3.5 mr-1.5" />
                           Lyrics
                         </Button>
 
