@@ -116,16 +116,21 @@ const LCDDisplay = ({ title, artist, album, isPlaying }) => {
             </div>
           </div>
           
-          {/* Artist Line - Static text with truncation */}
+          {/* Artist Line - Conditional scrolling */}
           <div className="overflow-hidden">
             <div 
-              className="text-xs sm:text-sm md:text-base tracking-wider transition-colors duration-500 truncate"
+              className={`text-xs sm:text-sm md:text-base tracking-wider transition-colors duration-500 ${artistNeedsScroll ? '' : 'truncate'}`}
               style={{
                 fontFamily: '"Orbitron", monospace',
-                color: isPlaying ? 'rgba(255,255,255,0.7)' : '#222222'
+                color: isPlaying ? 'rgba(255,255,255,0.7)' : '#222222',
+                transform: artistNeedsScroll && isPlaying ? `translateX(-${artistScroll}px)` : 'none',
+                whiteSpace: artistNeedsScroll ? 'nowrap' : 'normal'
               }}
             >
-              {artist || 'Unknown Artist'}
+              {artistNeedsScroll && isPlaying ? 
+                `${artist || 'Unknown Artist'}     ${artist || 'Unknown Artist'}` : 
+                (artist || 'Unknown Artist')
+              }
             </div>
           </div>
         </div>
