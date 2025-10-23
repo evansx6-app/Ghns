@@ -109,10 +109,12 @@ const OptimizedImage = ({
         WebkitBackfaceVisibility: 'hidden',
         backfaceVisibility: 'hidden',
         transform: 'translateZ(0)',
-        WebkitTransform: 'translateZ(0)'
+        WebkitTransform: 'translateZ(0)',
+        contentVisibility: 'auto' // CSS containment for better performance
       }}
       loading={priority ? 'eager' : 'lazy'}
       decoding="async"
+      fetchPriority={priority ? 'high' : 'auto'}
       onLoad={handleLoad}
       onError={handleError}
       crossOrigin="anonymous"
