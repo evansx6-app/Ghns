@@ -704,6 +704,15 @@ const ModernAudioPlayer = () => {
                           carMode={false}
                         />
                       </div>
+                    
+                    {/* Level Meters */}
+                    <div className="w-full max-w-md md:max-w-lg mt-4">
+                      <SafariVisualiser 
+                        audioRef={audioRef}
+                        isPlaying={isPlaying}
+                        colors={colors}
+                      />
+                    </div>
                   </div>
 
                   {/* Classic Player Controls */}
