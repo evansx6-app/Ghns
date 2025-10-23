@@ -310,11 +310,11 @@ const ModernAudioPlayer = () => {
     setTimeout(testAudioConnection, 2000);
   }, []);
 
-  // Base polling - always active
+  // Base polling - always active (reduced frequency)
   useEffect(() => {
     const baseTrackInterval = setInterval(() => {
       fetchCurrentTrack();
-    }, 5000);
+    }, 10000); // Check every 10 seconds (reduced from 5)
 
     const healthInterval = setInterval(() => {
       checkStreamHealth();
@@ -329,18 +329,18 @@ const ModernAudioPlayer = () => {
     };
   }, []);
 
-  // Aggressive polling when playing
+  // Enhanced polling when playing (smart frequency)
   useEffect(() => {
     if (isPlaying) {
       fetchCurrentTrack();
-      console.log('Playback started - enabling aggressive track polling');
+      console.log('Playback started - enabling enhanced track monitoring');
       
       const activePlayingInterval = setInterval(() => {
         fetchCurrentTrack();
-      }, 2000);
+      }, 5000); // Check every 5 seconds when playing (increased from 2)
 
       return () => {
-        console.log('Playback stopped - disabling aggressive polling');
+        console.log('Playback stopped - returning to base polling');
         clearInterval(activePlayingInterval);
       };
     }
