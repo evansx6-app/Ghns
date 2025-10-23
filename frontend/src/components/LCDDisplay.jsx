@@ -1,93 +1,145 @@
 import React, { useState, useEffect, useRef } from 'react';
 
 const LCDDisplay = ({ title, artist, album, isPlaying }) => {
-  const [displayText, setDisplayText] = useState('');
-  const [scrollPosition, setScrollPosition] = useState(0);
-  const animationRef = useRef(null);
+  const [titleScroll, setTitleScroll] = useState(0);
+  const [artistScroll, setArtistScroll] = useState(0);
+  const titleAnimRef = useRef(null);
+  const artistAnimRef = useRef(null);
 
-  // Combine track info into single scrolling text
-  useEffect(() => {
-    if (!title || !artist) {
-      setDisplayText('--- NO TRACK DATA ---');
-      return;
-    }
-    
-    // Format: TITLE • ARTIST • ALBUM
-    const separator = ' • ';
-    let text = title.toUpperCase();
-    if (artist) text += separator + artist.toUpperCase();
-    if (album) text += separator + album.toUpperCase();
-    
-    // Add padding for continuous scroll
-    text = text + '     ' + text;
-    
-    setDisplayText(text);
-    setScrollPosition(0);
-  }, [title, artist, album]);
+  // Prepare display text
+  const titleText = title ? title.toUpperCase() + '     ' + title.toUpperCase() : '--- NO TITLE ---';
+  const artistText = artist ? artist.toUpperCase() + '     ' + artist.toUpperCase() : '--- NO ARTIST ---';
 
-  // Scrolling animation
+  // Title scrolling animation
   useEffect(() => {
-    if (!isPlaying || !displayText) {
+    if (!isPlaying || !title) {
+      setTitleScroll(0);
       return;
     }
 
     const scroll = () => {
-      setScrollPosition((prev) => {
-        const maxScroll = displayText.length / 2;
-        return prev >= maxScroll ? 0 : prev + 0.5;
+      setTitleScroll((prev) => {
+        const maxScroll = (title.length + 5);
+        return prev >= maxScroll ? 0 : prev + 0.3;
       });
-      animationRef.current = requestAnimationFrame(scroll);
+      titleAnimRef.current = requestAnimationFrame(scroll);
     };
 
-    animationRef.current = requestAnimationFrame(scroll);
+    titleAnimRef.current = requestAnimationFrame(scroll);
 
     return () => {
-      if (animationRef.current) {
-        cancelAnimationFrame(animationRef.current);
+      if (titleAnimRef.current) {
+        cancelAnimationFrame(titleAnimRef.current);
       }
     };
-  }, [isPlaying, displayText]);
+  }, [isPlaying, title]);
+
+  // Artist scrolling animation
+  useEffect(() => {
+    if (!isPlaying || !artist) {
+      setArtistScroll(0);
+      return;
+    }
+
+    const scroll = () => {
+      setArtistScroll((prev) => {
+        const maxScroll = (artist.length + 5);
+        return prev >= maxScroll ? 0 : prev + 0.25;
+      });
+      artistAnimRef.current = requestAnimationFrame(scroll);
+    };
+
+    artistAnimRef.current = requestAnimationFrame(scroll);
+
+    return () => {
+      if (artistAnimRef.current) {
+        cancelAnimationFrame(artistAnimRef.current);
+      }
+    };
+  }, [isPlaying, artist]);
 
   return (
     <div className="w-full my-6 px-4">
       <div 
-        className="relative rounded-lg overflow-hidden border-4 border-black/80"
+        className="relative rounded-lg overflow-hidden border-4"
         style={{
-          background: 'linear-gradient(180deg, #2a3a2a 0%, #1a2a1a 100%)',
-          boxShadow: 'inset 0 2px 8px rgba(0,0,0,0.6), 0 4px 12px rgba(0,0,0,0.4)'
+          background: '#000000',
+          borderColor: '#333333',
+          boxShadow: 'inset 0 2px 8px rgba(0,0,0,0.9), 0 4px 12px rgba(0,0,0,0.6)'
         }}
       >
-        {/* LCD screen effect overlay */}
+        {/* LCD pixel grid overlay */}
         <div 
           className="absolute inset-0 pointer-events-none"
           style={{
-            background: 'repeating-linear-gradient(0deg, rgba(0,0,0,0.1) 0px, transparent 1px, transparent 2px, rgba(0,0,0,0.1) 3px)',
-            opacity: 0.3
+            backgroundImage: 'repeating-linear-gradient(0deg, rgba(255,255,255,0.03) 0px, transparent 1px, transparent 2px, rgba(255,255,255,0.03) 3px)',
+            opacity: 0.4
           }}
         />
         
-        {/* Scrolling text */}
-        <div className="relative px-4 py-3 overflow-hidden">
-          <div 
-            className="whitespace-nowrap font-mono text-lg sm:text-xl md:text-2xl font-bold tracking-wider"
-            style={{
-              color: '#7CFC00',
-              textShadow: '0 0 10px rgba(124, 252, 0, 0.8), 0 0 20px rgba(124, 252, 0, 0.4)',
-              transform: `translateX(-${scrollPosition}ch)`,
-              transition: 'transform 0.1s linear'
-            }}
-          >
-            {displayText || '--- LOADING ---'}
+        <div className="relative px-4 py-4 space-y-3">
+          {/* Title Line */}
+          <div className="overflow-hidden">
+            <div className="flex items-center gap-2 mb-1">
+              <span className="text-[10px] text-white/40 font-mono">TITLE:</span>
+            </div>
+            <div 
+              className="whitespace-nowrap font-mono text-base sm:text-lg md:text-xl font-semibold tracking-wider"
+              style={{
+                color: '#E0E0E0',
+                textShadow: '0 0 8px rgba(224, 224, 224, 0.6), 0 0 4px rgba(224, 224, 224, 0.3)',
+                transform: `translateX(-${titleScroll}ch)`,
+                transition: 'transform 0.1s linear'
+              }}
+            >
+              {titleText}
+            </div>
           </div>
+          
+          {/* Artist Line */}
+          <div className="overflow-hidden">
+            <div className="flex items-center gap-2 mb-1">
+              <span className="text-[10px] text-white/40 font-mono">ARTIST:</span>
+            </div>
+            <div 
+              className="whitespace-nowrap font-mono text-base sm:text-lg md:text-xl font-semibold tracking-wider"
+              style={{
+                color: '#E0E0E0',
+                textShadow: '0 0 8px rgba(224, 224, 224, 0.6), 0 0 4px rgba(224, 224, 224, 0.3)',
+                transform: `translateX(-${artistScroll}ch)`,
+                transition: 'transform 0.1s linear'
+              }}
+            >
+              {artistText}
+            </div>
+          </div>
+          
+          {/* Album Line (static, truncated) */}
+          {album && (
+            <div className="overflow-hidden">
+              <div className="flex items-center gap-2 mb-1">
+                <span className="text-[10px] text-white/40 font-mono">ALBUM:</span>
+              </div>
+              <div 
+                className="truncate font-mono text-sm sm:text-base text-white/60 tracking-wide"
+              >
+                {album.toUpperCase()}
+              </div>
+            </div>
+          )}
         </div>
         
-        {/* Bottom reflection effect */}
-        <div 
-          className="absolute bottom-0 left-0 right-0 h-8 pointer-events-none"
-          style={{
-            background: 'linear-gradient(to top, rgba(124, 252, 0, 0.1), transparent)'
-          }}
-        />
+        {/* Status indicator */}
+        <div className="absolute top-2 right-2 flex items-center gap-1">
+          {isPlaying && (
+            <>
+              <div className="w-1.5 h-1.5 rounded-full bg-white animate-pulse" style={{
+                boxShadow: '0 0 6px rgba(255,255,255,0.8)'
+              }} />
+              <span className="text-[8px] text-white/50 font-mono">PLAY</span>
+            </>
+          )}
+        </div>
       </div>
     </div>
   );
