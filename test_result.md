@@ -142,7 +142,7 @@ frontend:
   - task: "Fallback Artwork Display"
     implemented: true
     working: true
-    file: "/app/frontend/src/components/ModernAudioPlayer.jsx"
+    file: "/app/frontend/src/components/ModernAudioPlayer.jsx, /app/frontend/src/components/OptimizedImage.jsx"
     stuck_count: 0
     priority: "high"
     needs_retesting: false
@@ -150,6 +150,9 @@ frontend:
       - working: true
         agent: "main"
         comment: "Fixed fallback artwork not appearing. Replaced broken CORS-blocked image URL with working logo URL (job_ghns-project/artifacts/5tmxnbvh_unnamed.png). Fallback now displays when album artwork is missing."
+      - working: true
+        agent: "main"
+        comment: "Enhanced fallback logic: Explicitly set fallbackSrc prop on OptimizedImage component to ensure logo displays when artwork fails to load. Fallback artwork now uses radio station logo (qcvmvlox_cropped-radio.png) consistently across all artwork display scenarios."
   
   - task: "Text Scrolling on Mobile"
     implemented: true
