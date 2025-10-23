@@ -135,6 +135,9 @@ frontend:
       - working: true
         agent: "main"
         comment: "Retro styling complete: Changed title font to 'Righteous' (bold retro/vintage style) with 3D lettering effect and increased letter spacing (0.05em) for authentic retro appearance. Logo has subtle shadowing. Subtitle uses clean sans-serif."
+      - working: true
+        agent: "main"
+        comment: "Updated top bar text color to dark grey (#4a4a4a) for better visibility against metallic background. Text is now clearly readable while maintaining the metallic logo appearance."
   
   - task: "Fallback Artwork Display"
     implemented: true
