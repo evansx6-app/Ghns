@@ -640,6 +640,7 @@ const ModernAudioPlayer = () => {
                             />
                           </div>
                         )}
+                        </div>
                       </div>
                     </div>
                     
