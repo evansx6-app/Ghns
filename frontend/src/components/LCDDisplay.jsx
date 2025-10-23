@@ -47,8 +47,10 @@ const LCDDisplay = ({ title, artist, album, isPlaying }) => {
     }
 
     const charWidth = 12;
+    const numSpaces = 8; // Spacing between duplicates
     const textWidth = (title?.length || 0) * charWidth;
-    const loopPoint = textWidth;
+    const spacingWidth = numSpaces * charWidth;
+    const loopPoint = textWidth + spacingWidth;
 
     const scroll = () => {
       if (titlePaused) {
@@ -71,7 +73,7 @@ const LCDDisplay = ({ title, artist, album, isPlaying }) => {
       titleAnimRef.current = requestAnimationFrame(scroll);
     };
 
-    console.log('[LCD] Title scrolling started (with 1s pause)', { textWidth, loopPoint });
+    console.log('[LCD] Title scrolling started (with 1s pause)', { textWidth, spacingWidth, loopPoint });
     titleAnimRef.current = requestAnimationFrame(scroll);
     return () => {
       if (titleAnimRef.current) cancelAnimationFrame(titleAnimRef.current);
