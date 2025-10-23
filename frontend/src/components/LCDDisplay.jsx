@@ -89,11 +89,14 @@ const LCDDisplay = ({ title, artist, album, isPlaying }) => {
     // Only set up animation if artist name is long
     if (!isLong) return;
 
+    let scrollingIn = artistScrollingIn;
+
     const scroll = () => {
       setArtistScroll((prev) => {
         // Initial scroll in from right (with slight delay for staggered effect)
-        if (artistScrollingIn) {
+        if (scrollingIn) {
           if (prev < 0) return prev + 2.5;
+          scrollingIn = false;
           setArtistScrollingIn(false);
           return 0;
         }
@@ -114,7 +117,7 @@ const LCDDisplay = ({ title, artist, album, isPlaying }) => {
       if (artistAnimRef.current) cancelAnimationFrame(artistAnimRef.current);
       if (artistPauseRef.current) clearTimeout(artistPauseRef.current);
     };
-  }, [artist, isPlaying, artistScrollingIn]);
+  }, [artist, isPlaying]);
 
   return (
     <div className="w-full px-4">
