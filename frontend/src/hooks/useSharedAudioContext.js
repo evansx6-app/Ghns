@@ -96,16 +96,34 @@ export const useSharedAudioContext = (audioRef, isPlaying) => {
 
         // Only resume context when playing
         if (isPlaying && globalAudioContext && globalAudioContext.state === 'suspended') {
+          console.log('iOS: Attempting to resume audio context during setup...');
           await globalAudioContext.resume();
-          console.log('Audio context resumed:', globalAudioContext.state);
+          console.log('iOS: Audio context resumed:', globalAudioContext.state);
         }
 
-        // iOS Safari: Double-check context state
+        // iOS Safari: Double-check context state and force resume if needed
         if (isSafari && globalAudioContext && isPlaying) {
+          // Give a moment for context to initialize
+          await new Promise(resolve => setTimeout(resolve, 100));
+          
           // Force resume for iOS
           if (globalAudioContext.state !== 'running') {
-            console.log('iOS: Forcing audio context resume...');
-            await globalAudioContext.resume();
+            console.log('iOS: Forcing audio context resume after delay...');
+            try {
+              await globalAudioContext.resume();
+              console.log('iOS: Audio context state after resume:', globalAudioContext.state);
+              
+              // Verify it worked
+              if (globalAudioContext.state === 'running') {
+                console.log('✅ iOS: Visualiser audio context is now running');
+              } else {
+                console.warn('⚠️ iOS: Audio context still not running, will retry on next play');
+              }
+            } catch (resumeError) {
+              console.warn('iOS: Resume failed:', resumeError.message);
+            }
+          } else {
+            console.log('✅ iOS: Audio context already running');
           }
         }
 
