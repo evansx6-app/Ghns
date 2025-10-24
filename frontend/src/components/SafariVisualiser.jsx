@@ -100,7 +100,9 @@ const SafariVisualiser = ({ audioRef, isPlaying, colors }) => {
           rightLevel = levelsRef.current.right * 0.85 + rightLevel * 0.15;
           
         } else {
-          // Enhanced fallback for iOS/Safari: Realistic phantom values that mimic music
+          // 🎵 iOS/Safari Phantom Values Mode 🎵
+          // Enhanced fallback that mimics real music analysis
+          // This ensures visualiser always works on iPhone/Safari
           // Multi-layered animation simulating bass, mids, and highs
           
           // Bass layer - slow, heavy movement (like kick drums)
