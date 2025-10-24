@@ -101,11 +101,35 @@ const SafariVisualiser = ({ audioRef, isPlaying, colors }) => {
           rightLevel = levelsRef.current.right * 0.85 + rightLevel * 0.15;
           
         } else {
-          // Fallback: wave animation - smooth without jitter
-          leftLevel = (Math.sin(time * 2) * 0.3 + 0.5) * 60;
-          rightLevel = (Math.cos(time * 2.3) * 0.3 + 0.5) * 60;
+          // Enhanced fallback for iOS/Safari: Realistic phantom values that mimic music
+          // Multi-layered animation simulating bass, mids, and highs
           
-          // Apply heavy smoothing
+          // Bass layer - slow, heavy movement (like kick drums)
+          const bass = Math.sin(time * 1.8) * 0.35 + 0.35; // 0-0.7 range
+          
+          // Mid layer - medium frequency (like vocals/guitars)
+          const mids = Math.sin(time * 3.2) * 0.25 + 0.25; // 0-0.5 range
+          
+          // High layer - fast, light movement (like hi-hats/cymbals)
+          const highs = Math.sin(time * 5.5) * 0.15 + 0.15; // 0-0.3 range
+          
+          // Random variations to simulate music dynamics
+          const randomVariation1 = Math.sin(time * 0.7) * 0.1;
+          const randomVariation2 = Math.cos(time * 0.9) * 0.1;
+          
+          // Occasional "peaks" to simulate loud moments in music
+          const peakTrigger = Math.sin(time * 0.5);
+          const peak = peakTrigger > 0.85 ? Math.random() * 0.3 : 0;
+          
+          // Combine layers for realistic music-like movement
+          leftLevel = (bass + mids + highs + randomVariation1 + peak) * 70;
+          rightLevel = (bass + mids + highs + randomVariation2 + peak) * 70;
+          
+          // Add slight channel variation for stereo effect
+          leftLevel += Math.sin(time * 1.1) * 5;
+          rightLevel += Math.cos(time * 1.3) * 5;
+          
+          // Apply heavy smoothing for natural movement
           leftLevel = levelsRef.current.left * 0.85 + leftLevel * 0.15;
           rightLevel = levelsRef.current.right * 0.85 + rightLevel * 0.15;
         }
