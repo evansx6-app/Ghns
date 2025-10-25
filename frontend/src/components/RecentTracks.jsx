@@ -121,7 +121,14 @@ const RecentTracks = ({ carMode = false }) => {
           </div>
         ) : (
           recentTracks.map((track, index) => (
-            <div key={`track-${track.title}-${index}`}>
+            <div 
+              key={`${track.title}-${track.artist}-${track.played_at_formatted}-${index}`}
+              style={{
+                willChange: 'auto',
+                backfaceVisibility: 'hidden',
+                WebkitBackfaceVisibility: 'hidden'
+              }}
+            >
               <div className="flex items-center space-x-2.5 sm:space-x-3 md:space-x-4 lg:space-x-5">
                 {/* Enhanced Scroll-Stable Artwork */}
                 <div 
