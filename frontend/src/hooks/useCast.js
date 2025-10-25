@@ -91,10 +91,19 @@ export const useCast = (track, streamUrl) => {
     mediaInfo.metadata.artist = track.artist || 'Live Radio';
     mediaInfo.metadata.albumName = track.album || 'Greatest Hits Non-Stop';
     
-    if (track.artwork_url) {
+    // Use fallback artwork if track artwork is not available
+    const fallbackLogoUrl = process.env.REACT_APP_LOGO_URL;
+    const artworkUrl = track.artwork_url && 
+                       track.artwork_url !== 'vinyl-fallback-placeholder' &&
+                       !track.artwork_url.includes('unsplash')
+      ? track.artwork_url 
+      : fallbackLogoUrl;
+    
+    if (artworkUrl) {
       mediaInfo.metadata.images = [
-        new window.chrome.cast.Image(track.artwork_url)
+        new window.chrome.cast.Image(artworkUrl)
       ];
+      console.log('Cast artwork:', artworkUrl.includes('unnamed.png') ? 'Station logo (fallback)' : 'Track artwork');
     }
 
     const request = new window.chrome.cast.media.LoadRequest(mediaInfo);
