@@ -131,24 +131,25 @@ const RecentTracks = ({ carMode = false }) => {
                     />
                   </div>
                   
-                  {/* Optimized artwork overlay */}
+                  {/* Optimized artwork overlay with stable rendering */}
                   {track.artwork_url && track.artwork_url !== 'vinyl-fallback-placeholder' && (
                     <OptimizedImage
+                      key={track.artwork_url}
                       src={track.artwork_url}
                       alt={`${track.artist} - ${track.title}`}
                       className="absolute inset-0 w-full h-full object-cover z-20"
-                      priority={false}
+                      priority={index < 3}
                       crossOrigin="anonymous"
                       referrerPolicy="no-referrer"
                       style={{
                         objectFit: 'cover',
-                        objectPosition: 'center'
+                        objectPosition: 'center',
+                        willChange: 'auto',
+                        backfaceVisibility: 'hidden',
+                        WebkitBackfaceVisibility: 'hidden'
                       }}
                       onError={(e) => {
                         console.log(`Recent track artwork failed to load: ${track.title}`);
-                      }}
-                      onLoad={(e) => {
-                        e.target.style.opacity = '1';
                       }}
                     />
                   )}
