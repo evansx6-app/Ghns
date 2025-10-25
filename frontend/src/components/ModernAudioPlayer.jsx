@@ -550,7 +550,11 @@ const ModernAudioPlayer = () => {
                   alt="Greatest Hits Non-Stop" 
                   className="h-10 sm:h-14 w-auto"
                   style={{ 
-                    filter: 'drop-shadow(0 2px 4px rgba(0,0,0,0.8)) drop-shadow(0 0 8px rgba(255,255,255,0.3))'
+                    filter: 'drop-shadow(0 2px 4px rgba(0,0,0,0.8)) drop-shadow(0 0 8px rgba(255,255,255,0.3))',
+                    willChange: 'transform',
+                    WebkitBackfaceVisibility: 'hidden',
+                    backfaceVisibility: 'hidden',
+                    transform: 'translateZ(0)'
                   }}
                 />
                 <div className="min-w-0 flex-1">
