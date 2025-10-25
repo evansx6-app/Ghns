@@ -137,13 +137,13 @@ export const useCast = (track, streamUrl) => {
     if (!castSession || !track) return;
 
     // Throttle metadata updates to prevent audio interruption
-    // Wait at least 10 seconds between updates
+    // Wait at least 3 seconds between updates (reduced from 10s)
     const now = Date.now();
     const timeSinceLastUpdate = now - lastMetadataUpdateRef.current;
-    const MIN_UPDATE_INTERVAL = 10000; // 10 seconds
+    const MIN_UPDATE_INTERVAL = 3000; // 3 seconds
 
     if (timeSinceLastUpdate < MIN_UPDATE_INTERVAL) {
-      console.log(`[Cast] Throttling metadata update (last update ${Math.round(timeSinceLastUpdate/1000)}s ago)`);
+      console.log(`[Cast] Throttling metadata update (last update ${Math.round(timeSinceLastUpdate/1000)}s ago, waiting ${Math.round((MIN_UPDATE_INTERVAL - timeSinceLastUpdate)/1000)}s)`);
       
       // Schedule update for later
       if (metadataUpdateTimeoutRef.current) {
