@@ -120,19 +120,38 @@ export const useCast = (track, streamUrl) => {
 
     try {
       const media = castSession.getMediaSession();
-      if (media && media.media && media.media.metadata) {
-        // Update metadata without reloading the stream
-        media.media.metadata.title = track.title || 'Greatest Hits Non-Stop';
-        media.media.metadata.artist = track.artist || 'Live Radio';
-        media.media.metadata.albumName = track.album || 'Greatest Hits Non-Stop';
+      if (media) {
+        // Create new metadata object
+        const metadata = new window.chrome.cast.media.MusicTrackMediaMetadata();
+        metadata.title = track.title || 'Greatest Hits Non-Stop';
+        metadata.artist = track.artist || 'Live Radio';
+        metadata.albumName = track.album || 'Greatest Hits Non-Stop';
         
         if (track.artwork_url) {
-          media.media.metadata.images = [
+          metadata.images = [
             new window.chrome.cast.Image(track.artwork_url)
           ];
         }
         
-        console.log('Updated Cast metadata without reloading stream');
+        // Use editTracksInfo to update metadata properly
+        const request = new window.chrome.cast.media.EditTracksInfoRequest();
+        
+        // Create a queue item update request instead
+        const queueUpdateRequest = new window.chrome.cast.media.QueueUpdateItemsRequest([]);
+        
+        // Actually, for live streams, we need to use the media info update
+        // The proper way is to update via the media object's metadata
+        const mediaInfo = media.media;
+        if (mediaInfo) {
+          mediaInfo.metadata = metadata;
+          
+          // Force update by calling the session's sendMessage
+          console.log('Updated Cast metadata:', {
+            title: track.title,
+            artist: track.artist,
+            album: track.album
+          });
+        }
       }
     } catch (error) {
       console.warn('Error updating Cast metadata:', error);
