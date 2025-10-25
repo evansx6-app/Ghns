@@ -77,6 +77,8 @@ export const useCast = (track, streamUrl) => {
   // Track if media has been loaded for this session
   const [mediaLoadedForSession, setMediaLoadedForSession] = useState(false);
   const lastTrackRef = useRef(null);
+  const lastMetadataUpdateRef = useRef(0);
+  const metadataUpdateTimeoutRef = useRef(null);
 
   const loadMedia = useCallback(() => {
     if (!castSession || !track) return;
