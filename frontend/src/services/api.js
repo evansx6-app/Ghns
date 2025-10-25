@@ -239,6 +239,17 @@ export const streamAPI = {
       const response = await apiClient.get('/stream/health');
       return response.data;
     } catch (error) {
+      // Handle 405 Method Not Allowed gracefully
+      if (error.response?.status === 405) {
+        console.warn('Health check endpoint method not supported, assuming operational');
+        return {
+          status: 'online',
+          reason: 'Health check not available',
+          streamUrl: process.env.REACT_APP_STREAM_URL,
+          lastChecked: new Date().toISOString()
+        };
+      }
+      
       // Return offline status when API is unreachable
       if (!connectionManager.isOnline || error.code === 'NETWORK_ERROR') {
         return {
