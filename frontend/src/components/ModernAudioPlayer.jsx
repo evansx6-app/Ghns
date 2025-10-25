@@ -366,9 +366,10 @@ const ModernAudioPlayer = () => {
       fetchCurrentTrack();
     }, 10000); // Check every 10 seconds (reduced from 5)
 
+    // Reduce health check frequency - it's not critical
     const healthInterval = setInterval(() => {
       checkStreamHealth();
-    }, 30000);
+    }, 60000); // Check every 60 seconds (reduced from 30)
 
     const audioTestInterval = setInterval(testAudioConnection, 10000);
 
