@@ -266,6 +266,13 @@ export const useCast = (track, streamUrl) => {
     if (!isCasting) {
       setMediaLoadedForSession(false);
       lastTrackRef.current = null;
+      lastMetadataUpdateRef.current = 0;
+      
+      // Clear any pending metadata update
+      if (metadataUpdateTimeoutRef.current) {
+        clearTimeout(metadataUpdateTimeoutRef.current);
+        metadataUpdateTimeoutRef.current = null;
+      }
     }
   }, [isCasting]);
 
