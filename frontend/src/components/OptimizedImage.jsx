@@ -28,14 +28,21 @@ const OptimizedImage = ({
     // Use proxy for Safari to avoid CORS issues
     const proxiedSrc = getImageUrl(src);
     
-    // Don't reload if it's the same source
-    if (imageSrc === proxiedSrc && isLoaded) {
+    // Force reload if src changes (even to same URL) to handle artwork updates
+    // This ensures fresh artwork is always loaded
+    const srcChanged = imageSrc !== proxiedSrc;
+    
+    if (!srcChanged && isLoaded && !hasError) {
+      // Same source and already loaded successfully - no need to reload
       return;
     }
 
     // Reset states when src changes to a different valid source
-    setIsLoaded(false);
-    setHasError(false);
+    if (srcChanged) {
+      setIsLoaded(false);
+      setHasError(false);
+      console.log('[OptimizedImage] Loading new artwork:', src);
+    }
 
     // Priority images load immediately without any delay
     if (priority) {
@@ -56,10 +63,11 @@ const OptimizedImage = ({
       img.onload = () => {
         setImageSrc(proxiedSrc);
         setIsLoaded(true);
+        console.log('[OptimizedImage] Artwork loaded successfully');
       };
       
       img.onerror = () => {
-        console.warn('Image failed to load:', src);
+        console.warn('[OptimizedImage] Image failed to load:', src);
         setHasError(true);
         // Only set fallback if we don't already have a valid image
         if (!isLoaded) {
@@ -77,7 +85,7 @@ const OptimizedImage = ({
         img.onerror = null;
       }
     };
-  }, [src, priority, fallbackSrc, isLoaded, imageSrc]);
+  }, [src, priority, fallbackSrc]);
 
   const handleLoad = (e) => {
     setIsLoaded(true);
