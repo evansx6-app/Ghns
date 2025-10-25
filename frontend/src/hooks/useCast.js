@@ -147,14 +147,22 @@ export const useCast = (track, streamUrl) => {
         metadata.artist = track.artist || 'Live Radio';
         metadata.albumName = track.album || 'Greatest Hits Non-Stop';
         
-        // Use fallback artwork if track artwork is not available
-        const fallbackLogoUrl = process.env.REACT_APP_LOGO_URL;
-        const artworkUrl = track.artwork_url && 
-                           track.artwork_url !== 'vinyl-fallback-placeholder' &&
-                           !track.artwork_url.includes('unsplash')
-          ? track.artwork_url 
-          : fallbackLogoUrl;
+        // Determine artwork URL - always provide artwork for Cast
+        let artworkUrl = null;
         
+        // Use track artwork if available and valid
+        if (track.artwork_url && 
+            track.artwork_url !== 'vinyl-fallback-placeholder' &&
+            track.artwork_url.startsWith('http')) {
+          artworkUrl = track.artwork_url;
+          console.log('[Cast] Using track artwork:', artworkUrl);
+        } else {
+          // Fallback to Unsplash vinyl image (reliable, CORS-friendly)
+          artworkUrl = 'https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=500&h=500&fit=crop';
+          console.log('[Cast] Using fallback artwork (no valid track artwork)');
+        }
+        
+        // Always set artwork for Cast receiver
         if (artworkUrl) {
           metadata.images = [
             new window.chrome.cast.Image(artworkUrl)
@@ -173,18 +181,18 @@ export const useCast = (track, streamUrl) => {
         
         // Load will seamlessly reconnect for live streams
         castSession.loadMedia(request).then(() => {
-          console.log('Cast metadata updated:', {
+          console.log('[Cast] Metadata updated:', {
             title: track.title,
             artist: track.artist,
             album: track.album,
-            artwork: artworkUrl ? (artworkUrl.includes('unnamed.png') ? 'fallback logo' : 'track artwork') : 'none'
+            artwork: artworkUrl ? 'YES' : 'NO'
           });
         }).catch((error) => {
-          console.warn('Error updating Cast metadata:', error);
+          console.warn('[Cast] Error updating metadata:', error);
         });
       }
     } catch (error) {
-      console.warn('Error updating Cast metadata:', error);
+      console.warn('[Cast] Error in updateMetadata:', error);
     }
   }, [castSession, track, streamUrl]);
 
