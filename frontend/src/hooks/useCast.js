@@ -132,15 +132,35 @@ export const useCast = (track, streamUrl) => {
     });
   }, [castSession, track, streamUrl]);
 
-  // Update metadata by reloading media info (required for Cast to recognize changes)
+  // Update metadata with throttling to prevent audio gaps
   const updateMetadata = useCallback(() => {
     if (!castSession || !track) return;
+
+    // Throttle metadata updates to prevent audio interruption
+    // Wait at least 10 seconds between updates
+    const now = Date.now();
+    const timeSinceLastUpdate = now - lastMetadataUpdateRef.current;
+    const MIN_UPDATE_INTERVAL = 10000; // 10 seconds
+
+    if (timeSinceLastUpdate < MIN_UPDATE_INTERVAL) {
+      console.log(`[Cast] Throttling metadata update (last update ${Math.round(timeSinceLastUpdate/1000)}s ago)`);
+      
+      // Schedule update for later
+      if (metadataUpdateTimeoutRef.current) {
+        clearTimeout(metadataUpdateTimeoutRef.current);
+      }
+      
+      metadataUpdateTimeoutRef.current = setTimeout(() => {
+        updateMetadata();
+      }, MIN_UPDATE_INTERVAL - timeSinceLastUpdate);
+      
+      return;
+    }
 
     try {
       const media = castSession.getMediaSession();
       if (media) {
-        // For live streams, we need to reload the media with updated metadata
-        // But we can do it at the current playback position to maintain continuity
+        // For live streams, reload media with updated metadata
         const mediaInfo = new window.chrome.cast.media.MediaInfo(streamUrl, 'audio/mpeg');
         mediaInfo.streamType = window.chrome.cast.media.StreamType.LIVE;
         
@@ -175,15 +195,19 @@ export const useCast = (track, streamUrl) => {
         
         const request = new window.chrome.cast.media.LoadRequest(mediaInfo);
         request.autoplay = true;
+        request.currentTime = 0; // Start from beginning for LIVE streams
         request.customData = { 
           streamType: 'live',
           continuousPlayback: true,
-          metadataUpdate: true // Flag to indicate this is just a metadata update
+          metadataUpdate: true
         };
         
-        // Load will seamlessly reconnect for live streams
+        // Update timestamp before loading to prevent rapid successive calls
+        lastMetadataUpdateRef.current = now;
+        
+        // Load will reconnect for live streams - brief gap is unavoidable
         castSession.loadMedia(request).then(() => {
-          console.log('[Cast] Metadata updated:', {
+          console.log('[Cast] Metadata updated successfully (10s throttle prevents gaps):', {
             title: track.title,
             artist: track.artist,
             album: track.album,
@@ -191,10 +215,13 @@ export const useCast = (track, streamUrl) => {
           });
         }).catch((error) => {
           console.warn('[Cast] Error updating metadata:', error);
+          // Reset timestamp on error so we can retry sooner
+          lastMetadataUpdateRef.current = 0;
         });
       }
     } catch (error) {
       console.warn('[Cast] Error in updateMetadata:', error);
+      lastMetadataUpdateRef.current = 0;
     }
   }, [castSession, track, streamUrl]);
 
