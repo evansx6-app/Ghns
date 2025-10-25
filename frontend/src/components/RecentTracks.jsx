@@ -49,8 +49,8 @@ const RecentTracks = ({ carMode = false }) => {
 
   useEffect(() => {
     fetchRecentTracks();
-    // Refresh every 30 seconds to stay in sync with track changes
-    const interval = setInterval(fetchRecentTracks, 30000);
+    // Refresh every 60 seconds to reduce flickering (increased from 30)
+    const interval = setInterval(fetchRecentTracks, 60000);
     return () => clearInterval(interval);
   }, []);
 
