@@ -91,19 +91,26 @@ export const useCast = (track, streamUrl) => {
     mediaInfo.metadata.artist = track.artist || 'Live Radio';
     mediaInfo.metadata.albumName = track.album || 'Greatest Hits Non-Stop';
     
-    // Use fallback artwork if track artwork is not available
-    const fallbackLogoUrl = process.env.REACT_APP_LOGO_URL;
-    const artworkUrl = track.artwork_url && 
-                       track.artwork_url !== 'vinyl-fallback-placeholder' &&
-                       !track.artwork_url.includes('unsplash')
-      ? track.artwork_url 
-      : fallbackLogoUrl;
+    // Determine artwork URL - always provide artwork for Cast
+    let artworkUrl = null;
     
+    // Use track artwork if available and valid
+    if (track.artwork_url && 
+        track.artwork_url !== 'vinyl-fallback-placeholder' &&
+        track.artwork_url.startsWith('http')) {
+      artworkUrl = track.artwork_url;
+      console.log('[Cast] Using track artwork:', artworkUrl);
+    } else {
+      // Fallback to Unsplash vinyl image (reliable, CORS-friendly)
+      artworkUrl = 'https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=500&h=500&fit=crop';
+      console.log('[Cast] Using fallback artwork (no valid track artwork)');
+    }
+    
+    // Always set artwork for Cast receiver
     if (artworkUrl) {
       mediaInfo.metadata.images = [
         new window.chrome.cast.Image(artworkUrl)
       ];
-      console.log('Cast artwork:', artworkUrl.includes('unnamed.png') ? 'Station logo (fallback)' : 'Track artwork');
     }
 
     const request = new window.chrome.cast.media.LoadRequest(mediaInfo);
@@ -115,11 +122,11 @@ export const useCast = (track, streamUrl) => {
     };
 
     castSession.loadMedia(request).then(() => {
-      console.log('Media loaded successfully to Cast');
+      console.log('[Cast] Media loaded successfully with artwork:', artworkUrl ? 'YES' : 'NO');
       setMediaLoadedForSession(true);
       lastTrackRef.current = track;
     }).catch((error) => {
-      console.error('Error loading media to Cast:', error);
+      console.error('[Cast] Error loading media:', error);
     });
   }, [castSession, track, streamUrl]);
 
