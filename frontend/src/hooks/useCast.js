@@ -9,43 +9,38 @@ export const useCast = (track, streamUrl) => {
   useEffect(() => {
     const initializeCastApi = () => {
       if (window.cast && window.cast.framework) {
-        try {
-          const context = window.cast.framework.CastContext.getInstance();
-          
-          const options = new window.cast.framework.CastOptions();
-          options.receiverApplicationId = window.chrome.cast.media.DEFAULT_MEDIA_RECEIVER_APP_ID;
-          options.autoJoinPolicy = window.chrome.cast.AutoJoinPolicy.ORIGIN_SCOPED;
+        const context = window.cast.framework.CastContext.getInstance();
+        
+        const options = new window.cast.framework.CastOptions();
+        options.receiverApplicationId = window.chrome.cast.media.DEFAULT_MEDIA_RECEIVER_APP_ID;
+        options.autoJoinPolicy = window.chrome.cast.AutoJoinPolicy.ORIGIN_SCOPED;
 
-          context.setOptions(options);
+        context.setOptions(options);
 
-          // Listen for Cast availability
-          context.addEventListener(
-            window.cast.framework.CastContextEventType.CAST_STATE_CHANGED,
-            (event) => {
-              setIsCastAvailable(event.castState !== window.cast.framework.CastState.NO_DEVICES_AVAILABLE);
+        // Listen for Cast availability
+        context.addEventListener(
+          window.cast.framework.CastContextEventType.CAST_STATE_CHANGED,
+          (event) => {
+            setIsCastAvailable(event.castState !== window.cast.framework.CastState.NO_DEVICES_AVAILABLE);
+          }
+        );
+
+        // Listen for session changes
+        context.addEventListener(
+          window.cast.framework.CastContextEventType.SESSION_STATE_CHANGED,
+          (event) => {
+            const session = event.session;
+            if (session && session.getSessionState() === window.cast.framework.SessionState.SESSION_STARTED) {
+              setIsCasting(true);
+              setCastSession(session);
+            } else {
+              setIsCasting(false);
+              setCastSession(null);
             }
-          );
+          }
+        );
 
-          // Listen for session changes
-          context.addEventListener(
-            window.cast.framework.CastContextEventType.SESSION_STATE_CHANGED,
-            (event) => {
-              const session = event.session;
-              if (session && session.getSessionState() === window.cast.framework.SessionState.SESSION_STARTED) {
-                setIsCasting(true);
-                setCastSession(session);
-              } else {
-                setIsCasting(false);
-                setCastSession(null);
-              }
-            }
-          );
-
-          setIsCastAvailable(context.getCastState() !== window.cast.framework.CastState.NO_DEVICES_AVAILABLE);
-          console.log('Cast API initialized successfully');
-        } catch (error) {
-          console.error('Error initializing Cast API:', error);
-        }
+        setIsCastAvailable(context.getCastState() !== window.cast.framework.CastState.NO_DEVICES_AVAILABLE);
       }
     };
 
