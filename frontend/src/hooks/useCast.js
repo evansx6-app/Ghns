@@ -207,7 +207,7 @@ export const useCast = (track, streamUrl) => {
         
         // Load will reconnect for live streams - brief gap is unavoidable
         castSession.loadMedia(request).then(() => {
-          console.log('[Cast] Metadata updated successfully (10s throttle prevents gaps):', {
+          console.log('[Cast] Metadata updated successfully (3s throttle prevents gaps):', {
             title: track.title,
             artist: track.artist,
             album: track.album,
