@@ -119,10 +119,18 @@ const ModernAudioPlayer = () => {
         currentTrack.title !== validatedTrack.title || 
         currentTrack.artist !== validatedTrack.artist;
       
-      // If same track, keep existing data (prevents unnecessary re-renders)
-      if (!isNewTrack && currentTrack && !showToast) {
-        console.log('Same track, keeping existing data');
+      // Check if artwork has changed (even for same track)
+      const artworkChanged = currentTrack?.artwork_url !== validatedTrack.artwork_url;
+      
+      // If same track AND same artwork, keep existing data (prevents unnecessary re-renders)
+      if (!isNewTrack && !artworkChanged && currentTrack && !showToast) {
+        console.log('Same track and artwork, keeping existing data');
         return;
+      }
+      
+      // If artwork changed but same track, log it
+      if (!isNewTrack && artworkChanged) {
+        console.log('Same track but artwork updated:', validatedTrack.artwork_url);
       }
       
       // Aggressive artwork preloading for new tracks
