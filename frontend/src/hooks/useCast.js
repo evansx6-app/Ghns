@@ -228,38 +228,30 @@ export const useCast = (track, streamUrl) => {
   // Load media on initial cast or update metadata on track change
   useEffect(() => {
     if (!isCasting || !castSession || !track) {
-      console.log('[Cast] Skipping update:', { isCasting, hasCastSession: !!castSession, hasTrack: !!track });
       return;
     }
-
-    console.log('[Cast] Effect triggered:', { 
-      mediaLoadedForSession, 
-      trackTitle: track.title,
-      trackArtist: track.artist 
-    });
 
     // First time casting - load media
     if (!mediaLoadedForSession) {
       console.log('[Cast] Loading media for first time');
       loadMedia();
-    } else {
-      // Track changed - just update metadata, don't reload stream
-      const trackChanged = !lastTrackRef.current || 
-        lastTrackRef.current.title !== track.title ||
-        lastTrackRef.current.artist !== track.artist;
-      
-      if (trackChanged) {
-        console.log('[Cast] Track changed, updating metadata:', {
-          from: lastTrackRef.current,
-          to: { title: track.title, artist: track.artist }
-        });
-        updateMetadata();
-        lastTrackRef.current = track;
-      } else {
-        console.log('[Cast] Track unchanged, skipping update');
-      }
+      return;
     }
-  }, [isCasting, castSession, track, mediaLoadedForSession, loadMedia, updateMetadata]);
+
+    // Track changed - update metadata
+    const trackChanged = !lastTrackRef.current || 
+      lastTrackRef.current.title !== track.title ||
+      lastTrackRef.current.artist !== track.artist;
+    
+    if (trackChanged) {
+      console.log('[Cast] Track changed, updating metadata:', {
+        from: lastTrackRef.current ? `${lastTrackRef.current.title} - ${lastTrackRef.current.artist}` : 'none',
+        to: `${track.title} - ${track.artist}`
+      });
+      updateMetadata();
+      lastTrackRef.current = track;
+    }
+  }, [isCasting, castSession, track?.title, track?.artist, mediaLoadedForSession]);
 
   // Reset when cast session ends
   useEffect(() => {
