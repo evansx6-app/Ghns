@@ -209,11 +209,20 @@ const ModernAudioPlayer = () => {
       setStreamHealth(health);
       setConnectionState(prev => ({ ...prev, retryCount: 0 }));
     } catch (error) {
-      console.error('Error checking stream health:', error);
+      // Silently handle health check errors - they're not critical
+      // Health check is optional and shouldn't disrupt playback
+      console.warn('Stream health check unavailable (non-critical):', error.message);
+      
       if (!connectionManager.isOnline) {
         setStreamHealth({
           status: 'offline',
           reason: 'No internet connection'
+        });
+      } else {
+        // If online but health check fails, assume streaming is fine
+        setStreamHealth({
+          status: 'online',
+          reason: 'Health check unavailable, assuming operational'
         });
       }
     }
