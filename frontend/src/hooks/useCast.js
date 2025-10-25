@@ -114,14 +114,18 @@ export const useCast = (track, streamUrl) => {
     });
   }, [castSession, track, streamUrl]);
 
-  // Update metadata without reloading media
+  // Update metadata by reloading media info (required for Cast to recognize changes)
   const updateMetadata = useCallback(() => {
     if (!castSession || !track) return;
 
     try {
       const media = castSession.getMediaSession();
       if (media) {
-        // Create new metadata object
+        // For live streams, we need to reload the media with updated metadata
+        // But we can do it at the current playback position to maintain continuity
+        const mediaInfo = new window.chrome.cast.media.MediaInfo(streamUrl, 'audio/mpeg');
+        mediaInfo.streamType = window.chrome.cast.media.StreamType.LIVE;
+        
         const metadata = new window.chrome.cast.media.MusicTrackMediaMetadata();
         metadata.title = track.title || 'Greatest Hits Non-Stop';
         metadata.artist = track.artist || 'Live Radio';
@@ -133,30 +137,31 @@ export const useCast = (track, streamUrl) => {
           ];
         }
         
-        // Use editTracksInfo to update metadata properly
-        const request = new window.chrome.cast.media.EditTracksInfoRequest();
+        mediaInfo.metadata = metadata;
         
-        // Create a queue item update request instead
-        const queueUpdateRequest = new window.chrome.cast.media.QueueUpdateItemsRequest([]);
+        const request = new window.chrome.cast.media.LoadRequest(mediaInfo);
+        request.autoplay = true;
+        request.customData = { 
+          streamType: 'live',
+          continuousPlayback: true,
+          metadataUpdate: true // Flag to indicate this is just a metadata update
+        };
         
-        // Actually, for live streams, we need to use the media info update
-        // The proper way is to update via the media object's metadata
-        const mediaInfo = media.media;
-        if (mediaInfo) {
-          mediaInfo.metadata = metadata;
-          
-          // Force update by calling the session's sendMessage
-          console.log('Updated Cast metadata:', {
+        // Load will seamlessly reconnect for live streams
+        castSession.loadMedia(request).then(() => {
+          console.log('Cast metadata updated:', {
             title: track.title,
             artist: track.artist,
             album: track.album
           });
-        }
+        }).catch((error) => {
+          console.warn('Error updating Cast metadata:', error);
+        });
       }
     } catch (error) {
       console.warn('Error updating Cast metadata:', error);
     }
-  }, [castSession, track]);
+  }, [castSession, track, streamUrl]);
 
   // Load media on initial cast or update metadata on track change
   useEffect(() => {
