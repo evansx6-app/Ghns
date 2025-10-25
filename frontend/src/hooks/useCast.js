@@ -140,9 +140,17 @@ export const useCast = (track, streamUrl) => {
         metadata.artist = track.artist || 'Live Radio';
         metadata.albumName = track.album || 'Greatest Hits Non-Stop';
         
-        if (track.artwork_url) {
+        // Use fallback artwork if track artwork is not available
+        const fallbackLogoUrl = process.env.REACT_APP_LOGO_URL;
+        const artworkUrl = track.artwork_url && 
+                           track.artwork_url !== 'vinyl-fallback-placeholder' &&
+                           !track.artwork_url.includes('unsplash')
+          ? track.artwork_url 
+          : fallbackLogoUrl;
+        
+        if (artworkUrl) {
           metadata.images = [
-            new window.chrome.cast.Image(track.artwork_url)
+            new window.chrome.cast.Image(artworkUrl)
           ];
         }
         
@@ -161,7 +169,8 @@ export const useCast = (track, streamUrl) => {
           console.log('Cast metadata updated:', {
             title: track.title,
             artist: track.artist,
-            album: track.album
+            album: track.album,
+            artwork: artworkUrl ? (artworkUrl.includes('unnamed.png') ? 'fallback logo' : 'track artwork') : 'none'
           });
         }).catch((error) => {
           console.warn('Error updating Cast metadata:', error);
