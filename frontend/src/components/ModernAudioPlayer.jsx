@@ -379,14 +379,18 @@ const ModernAudioPlayer = () => {
 
   // Base polling - always active (reduced frequency)
   useEffect(() => {
+    // Adaptive polling based on device capabilities
+    const trackPollInterval = isSlowDevice ? 15000 : 10000; // 15s for slow devices, 10s for normal
+    const healthCheckInterval = isSlowDevice ? 90000 : 60000; // 90s for slow devices, 60s for normal
+    
     const baseTrackInterval = setInterval(() => {
       fetchCurrentTrack();
-    }, 10000); // Check every 10 seconds (reduced from 5)
+    }, trackPollInterval);
 
     // Reduce health check frequency - it's not critical
     const healthInterval = setInterval(() => {
       checkStreamHealth();
-    }, 60000); // Check every 60 seconds (reduced from 30)
+    }, healthCheckInterval);
 
     const audioTestInterval = setInterval(testAudioConnection, 10000);
 
@@ -395,7 +399,7 @@ const ModernAudioPlayer = () => {
       clearInterval(healthInterval);
       clearInterval(audioTestInterval);
     };
-  }, []);
+  }, [isSlowDevice]);
 
   // Enhanced polling when playing (smart frequency)
   useEffect(() => {
