@@ -163,11 +163,11 @@ const RecentTracks = ({ carMode = false }) => {
   // Ref for the scrollable container
   const scrollContainerRef = useRef(null);
   
-  // Enhanced artwork stability for scroll container
-  const { enforceArtworkVisibility, isMonitoring } = useScrollContainerArtworkStability(
-    scrollContainerRef, 
-    !isLoading && recentTracks.length > 0
-  );
+  // Disabled artwork stability hook - causing flickering
+  // const { enforceArtworkVisibility, isMonitoring } = useScrollContainerArtworkStability(
+  //   scrollContainerRef, 
+  //   !isLoading && recentTracks.length > 0
+  // );
 
   const fetchRecentTracks = useCallback(async () => {
     try {
