@@ -201,10 +201,10 @@ const RecentTracks = ({ carMode = false }) => {
 
   useEffect(() => {
     fetchRecentTracks();
-    // Refresh every 60 seconds to reduce flickering (increased from 30)
-    const interval = setInterval(fetchRecentTracks, 60000);
+    // Refresh every 120 seconds to minimize flickering (increased from 60)
+    const interval = setInterval(fetchRecentTracks, 120000);
     return () => clearInterval(interval);
-  }, []);
+  }, [fetchRecentTracks]);
 
   // Enhanced effect to enforce artwork visibility when tracks change
   useEffect(() => {
