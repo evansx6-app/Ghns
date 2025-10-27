@@ -94,6 +94,67 @@ const LazyArtwork = memo(({ track, index, carMode }) => {
   );
 });
 
+// Memoized track item to prevent unnecessary re-renders
+const TrackItem = memo(({ track, index, carMode, isLast }) => {
+  return (
+    <div 
+      style={{
+        willChange: 'auto',
+        backfaceVisibility: 'hidden',
+        WebkitBackfaceVisibility: 'hidden',
+        transform: 'translateZ(0)',
+        WebkitTransform: 'translateZ(0)',
+        contain: 'layout style paint'
+      }}
+    >
+      <div className="flex items-center space-x-2.5 sm:space-x-3 md:space-x-4 lg:space-x-5">
+        {/* Enhanced Scroll-Stable Artwork with Lazy Loading */}
+        <LazyArtwork track={track} index={index} carMode={carMode} />
+
+        {/* Track Info with Scrolling Text - Left Justified */}
+        <div className="flex-1 min-w-0">
+          <ScrollingText
+            text={track.title}
+            className={`text-white font-medium ${carMode ? 'text-base sm:text-lg md:text-xl' : 'text-xs sm:text-sm md:text-base lg:text-lg'}`}
+            speed={25}
+            pauseDuration={1000}
+            align="left"
+          />
+          <ScrollingText
+            text={track.artist}
+            className={`text-white/70 ${carMode ? 'text-sm sm:text-base md:text-lg' : 'text-[10px] sm:text-xs md:text-sm lg:text-base'}`}
+            speed={25}
+            pauseDuration={1000}
+            align="left"
+          />
+        </div>
+
+        {/* Play Time */}
+        <div className="text-right flex-shrink-0">
+          <p className={`text-white/50 ${carMode ? 'text-xs sm:text-sm md:text-base' : 'text-[10px] sm:text-xs md:text-sm lg:text-base'} whitespace-nowrap`}>
+            {track.played_at_formatted}
+          </p>
+        </div>
+      </div>
+      
+      {!isLast && (
+        <Separator className="mt-2.5 sm:mt-3 bg-white/10" />
+      )}
+    </div>
+  );
+}, (prevProps, nextProps) => {
+  // Custom comparison to prevent re-renders
+  return (
+    prevProps.track.title === nextProps.track.title &&
+    prevProps.track.artist === nextProps.track.artist &&
+    prevProps.track.artwork_url === nextProps.track.artwork_url &&
+    prevProps.track.played_at_formatted === nextProps.track.played_at_formatted &&
+    prevProps.index === nextProps.index &&
+    prevProps.carMode === nextProps.carMode &&
+    prevProps.isLast === nextProps.isLast
+  );
+});
+
 const RecentTracks = ({ carMode = false }) => {
   const [recentTracks, setRecentTracks] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
