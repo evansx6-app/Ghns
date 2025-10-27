@@ -15,6 +15,16 @@ const OptimizedImage = ({
   const [isLoaded, setIsLoaded] = useState(false);
   const [hasError, setHasError] = useState(false);
   const imgRef = useRef(null);
+  
+  // Detect slow device for optimized loading
+  const [isSlowDevice, setIsSlowDevice] = useState(false);
+  
+  useEffect(() => {
+    const cores = navigator.hardwareConcurrency || 2;
+    const connection = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
+    const slowConnection = connection && (connection.effectiveType === 'slow-2g' || connection.effectiveType === '2g' || connection.effectiveType === '3g');
+    setIsSlowDevice(cores < 4 || slowConnection);
+  }, []);
 
   useEffect(() => {
     if (!src || src === 'vinyl-fallback-placeholder') {
