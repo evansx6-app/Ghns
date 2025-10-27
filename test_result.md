@@ -154,6 +154,18 @@ frontend:
         agent: "main"
         comment: "Enhanced fallback logic: Explicitly set fallbackSrc prop on OptimizedImage component to ensure logo displays when artwork fails to load. Fallback artwork now uses radio station logo (qcvmvlox_cropped-radio.png) consistently across all artwork display scenarios."
   
+  - task: "Performance Optimization for Slow Devices"
+    implemented: true
+    working: true
+    file: "/app/frontend/src/components/OptimizedImage.jsx"
+    stuck_count: 0
+    priority: "medium"
+    needs_retesting: false
+    status_history:
+      - working: true
+        agent: "main"
+        comment: "Implemented adaptive image loading for older/slower devices. Features: Enhanced device detection (CPU cores, memory, connection speed), load timeouts (5-8s based on connection), progressive loading for 2G connections (show fallback immediately, upgrade when loaded), adaptive fetchPriority and transition timing, proper timeout cleanup to prevent memory leaks. Works seamlessly on modern devices while optimizing experience for slower ones."
+  
   - task: "Text Scrolling on Mobile"
     implemented: true
     working: true
