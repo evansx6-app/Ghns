@@ -43,6 +43,13 @@ const LazyArtwork = memo(({ track, index, carMode }) => {
     <div 
       ref={artworkRef}
       className={`premium-container-subtle ${carMode ? 'w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16' : 'w-11 h-11 sm:w-12 sm:h-12 md:w-14 md:h-14 lg:w-16 lg:h-16'} rounded-md sm:rounded-lg overflow-hidden flex-shrink-0 relative`}
+      style={{
+        transform: 'translateZ(0)',
+        WebkitTransform: 'translateZ(0)',
+        backfaceVisibility: 'hidden',
+        WebkitBackfaceVisibility: 'hidden',
+        contain: 'layout style paint'
+      }}
     >
       {/* Always visible static fallback */}
       <div className="absolute inset-0 w-full h-full bg-gradient-to-br from-slate-800 to-slate-900 flex items-center justify-center z-10 p-1">
@@ -76,6 +83,14 @@ const LazyArtwork = memo(({ track, index, carMode }) => {
         />
       )}
     </div>
+  );
+}, (prevProps, nextProps) => {
+  // Custom comparison to prevent re-renders
+  return (
+    prevProps.track.artwork_url === nextProps.track.artwork_url &&
+    prevProps.track.title === nextProps.track.title &&
+    prevProps.index === nextProps.index &&
+    prevProps.carMode === nextProps.carMode
   );
 });
 
