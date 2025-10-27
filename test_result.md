@@ -225,6 +225,7 @@ test_plan:
     - "API Connection and Data Fetching"
     - "Top Banner Text Shadows and Styling"
     - "Page Loading and Rendering"
+    - "Performance Optimization for Slow Devices"
   stuck_tasks: []
   test_all: false
   test_priority: "high_first"
