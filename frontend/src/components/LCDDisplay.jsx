@@ -184,14 +184,17 @@ const LCDDisplay = ({ title, artist, album, isPlaying }) => {
           {/* Artist Line - Left justified, continuous scroll with duplicate */}
           <div className="overflow-hidden">
             <div 
-              className="text-xs sm:text-sm md:text-base tracking-wider transition-colors duration-500 inline-flex"
+              className="text-xs sm:text-sm md:text-base tracking-wider inline-flex"
               style={{
                 fontFamily: '"Orbitron", monospace',
                 color: isPlaying ? 'rgba(255,255,255,0.7)' : 'rgba(153,153,153,0.8)',
                 textShadow: isPlaying ? 'none' : '0 0 3px rgba(153, 153, 153, 0.2)',
                 transform: artistNeedsScroll && isPlaying ? `translateX(-${artistScroll}px)` : 'none',
                 whiteSpace: 'nowrap',
-                textAlign: 'left'
+                textAlign: 'left',
+                willChange: 'auto',
+                backfaceVisibility: 'hidden',
+                WebkitBackfaceVisibility: 'hidden'
               }}
             >
               <span>{displayArtist}</span>
