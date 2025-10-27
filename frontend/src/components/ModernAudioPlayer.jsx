@@ -672,94 +672,99 @@ const ModernAudioPlayer = () => {
                     crossOrigin="anonymous"
                   />
 
-                  {/* Classic Player Layout - Vertical Stack */}
-                  <div className="flex flex-col items-center gap-4">
+                  {/* Landscape-Friendly Desktop Layout - Two Columns */}
+                  <div className="flex flex-col lg:flex-row items-start lg:items-stretch gap-6 lg:gap-8">
                     
-                    {/* LCD Display Section - Match LED Meters Width */}
-                    <div className="w-full max-w-md md:max-w-lg px-4">
-                      <LCDDisplay 
-                        title={currentTrack?.title}
-                        artist={currentTrack?.artist}
-                        album={currentTrack?.album}
-                        isPlaying={isPlaying}
-                      />
-                    </div>
-                    
-                    {/* Album Artwork - Reduced Size for Desktop */}
-                    <div className="relative w-full max-w-md md:max-w-lg px-4">
-                      {/* Screen bezel/frame */}
-                      <div 
-                        className="relative rounded-xl overflow-hidden"
-                        style={{
-                          background: 'linear-gradient(135deg, #1a1a1a 0%, #0a0a0a 100%)',
-                          padding: '16px',
-                          boxShadow: 'inset 0 2px 10px rgba(0,0,0,0.8), 0 10px 40px rgba(0,0,0,0.6)',
-                          border: '3px solid #2a2a2a'
-                        }}
-                      >
-                        {/* Screen glass effect */}
-                        <div className="absolute inset-0 pointer-events-none" style={{
-                          background: 'linear-gradient(165deg, rgba(255,255,255,0.08) 0%, transparent 50%)',
-                          zIndex: 10
-                        }} />
-                        
-                        {/* Scanline effect for screen */}
-                        <div className="absolute inset-0 pointer-events-none" style={{
-                          backgroundImage: 'repeating-linear-gradient(0deg, transparent 0px, rgba(0,0,0,0.03) 1px, rgba(0,0,0,0.03) 2px, transparent 3px)',
-                          zIndex: 9
-                        }} />
-                        
-                        {/* Screen vignette */}
-                        <div className="absolute inset-0 pointer-events-none rounded-lg" style={{
-                          boxShadow: 'inset 0 0 60px rgba(0,0,0,0.4), inset 0 0 100px rgba(0,0,0,0.2)',
-                          zIndex: 8
-                        }} />
-                        
-                        {/* Actual display area */}
-                        <div className="relative w-full aspect-square rounded-lg overflow-hidden shadow-2xl bg-gradient-to-br from-slate-800 to-slate-900 transition-all duration-700" style={{
-                          border: '2px solid #000',
-                          boxShadow: 'inset 0 0 30px rgba(0,0,0,0.6)',
-                          filter: isPlaying ? 'none' : 'grayscale(100%) brightness(0.4)',
-                          opacity: isPlaying ? 1 : 0.6
-                        }}>
-                        {(currentTrack?.title === "Greatest Hits Non-Stop" || 
-                          currentTrack?.title === "Legendary Radio from Scotland" ||
-                          currentTrack?.title === "Legendary Radio from Scotland - Greatest Hits Non-Stop") ? (
-                          <div className="w-full h-full flex items-center justify-center p-8 bg-gradient-to-br from-copper-900/20 to-copper-800/20">
-                            <img 
-                              src="https://customer-assets.emergentagent.com/job_sleep-timer-stream/artifacts/qcvmvlox_cropped-radio.png"
-                              alt="Greatest Hits Non-Stop Logo"
-                              className="w-full h-auto drop-shadow-2xl"
+                    {/* LEFT COLUMN: Album Artwork */}
+                    <div className="w-full lg:w-1/2 flex justify-center lg:justify-end">
+                      <div className="relative w-full max-w-md lg:max-w-lg px-4">
+                        {/* Screen bezel/frame */}
+                        <div 
+                          className="relative rounded-xl overflow-hidden"
+                          style={{
+                            background: 'linear-gradient(135deg, #1a1a1a 0%, #0a0a0a 100%)',
+                            padding: '16px',
+                            boxShadow: 'inset 0 2px 10px rgba(0,0,0,0.8), 0 10px 40px rgba(0,0,0,0.6)',
+                            border: '3px solid #2a2a2a'
+                          }}
+                        >
+                          {/* Screen glass effect */}
+                          <div className="absolute inset-0 pointer-events-none" style={{
+                            background: 'linear-gradient(165deg, rgba(255,255,255,0.08) 0%, transparent 50%)',
+                            zIndex: 10
+                          }} />
+                          
+                          {/* Scanline effect for screen */}
+                          <div className="absolute inset-0 pointer-events-none" style={{
+                            backgroundImage: 'repeating-linear-gradient(0deg, transparent 0px, rgba(0,0,0,0.03) 1px, rgba(0,0,0,0.03) 2px, transparent 3px)',
+                            zIndex: 9
+                          }} />
+                          
+                          {/* Screen vignette */}
+                          <div className="absolute inset-0 pointer-events-none rounded-lg" style={{
+                            boxShadow: 'inset 0 0 60px rgba(0,0,0,0.4), inset 0 0 100px rgba(0,0,0,0.2)',
+                            zIndex: 8
+                          }} />
+                          
+                          {/* Actual display area */}
+                          <div className="relative w-full aspect-square rounded-lg overflow-hidden shadow-2xl bg-gradient-to-br from-slate-800 to-slate-900 transition-all duration-700" style={{
+                            border: '2px solid #000',
+                            boxShadow: 'inset 0 0 30px rgba(0,0,0,0.6)',
+                            filter: isPlaying ? 'none' : 'grayscale(100%) brightness(0.4)',
+                            opacity: isPlaying ? 1 : 0.6
+                          }}>
+                          {(currentTrack?.title === "Greatest Hits Non-Stop" || 
+                            currentTrack?.title === "Legendary Radio from Scotland" ||
+                            currentTrack?.title === "Legendary Radio from Scotland - Greatest Hits Non-Stop") ? (
+                            <div className="w-full h-full flex items-center justify-center p-8 bg-gradient-to-br from-copper-900/20 to-copper-800/20">
+                              <img 
+                                src="https://customer-assets.emergentagent.com/job_sleep-timer-stream/artifacts/qcvmvlox_cropped-radio.png"
+                                alt="Greatest Hits Non-Stop Logo"
+                                className="w-full h-auto drop-shadow-2xl"
+                              />
+                            </div>
+                          ) : currentTrack?.artwork_url && 
+                             currentTrack.artwork_url !== 'vinyl-fallback-placeholder' && 
+                             !currentTrack.artwork_url.includes('unsplash.com') ? (
+                            <OptimizedImage
+                              key={currentTrack.artwork_url}
+                              src={currentTrack.artwork_url}
+                              alt={`${currentTrack.artist} - ${currentTrack.title}`}
+                              className="w-full h-full object-cover transform transition-transform duration-500"
+                              priority={true}
+                              fallbackSrc="https://customer-assets.emergentagent.com/job_sleep-timer-stream/artifacts/qcvmvlox_cropped-radio.png"
+                              crossOrigin="anonymous"
+                              referrerPolicy="no-referrer"
                             />
+                          ) : (
+                            <div className="w-full h-full flex items-center justify-center p-8 bg-gradient-to-br from-slate-800 to-slate-900">
+                              <img 
+                                src="https://customer-assets.emergentagent.com/job_sleep-timer-stream/artifacts/qcvmvlox_cropped-radio.png"
+                                alt="Greatest Hits Non-Stop"
+                                className="w-full h-auto drop-shadow-2xl"
+                              />
+                            </div>
+                          )}
                           </div>
-                        ) : currentTrack?.artwork_url && 
-                           currentTrack.artwork_url !== 'vinyl-fallback-placeholder' && 
-                           !currentTrack.artwork_url.includes('unsplash.com') ? (
-                          <OptimizedImage
-                            key={currentTrack.artwork_url}
-                            src={currentTrack.artwork_url}
-                            alt={`${currentTrack.artist} - ${currentTrack.title}`}
-                            className="w-full h-full object-cover transform transition-transform duration-500"
-                            priority={true}
-                            fallbackSrc="https://customer-assets.emergentagent.com/job_sleep-timer-stream/artifacts/qcvmvlox_cropped-radio.png"
-                            crossOrigin="anonymous"
-                            referrerPolicy="no-referrer"
-                          />
-                        ) : (
-                          <div className="w-full h-full flex items-center justify-center p-8 bg-gradient-to-br from-slate-800 to-slate-900">
-                            <img 
-                              src="https://customer-assets.emergentagent.com/job_sleep-timer-stream/artifacts/qcvmvlox_cropped-radio.png"
-                              alt="Greatest Hits Non-Stop"
-                              className="w-full h-auto drop-shadow-2xl"
-                            />
-                          </div>
-                        )}
                         </div>
                       </div>
                     </div>
 
-                    {/* Quick Actions - Below Album Art on Desktop */}
-                    <div className="flex flex-wrap justify-center gap-2 w-full max-w-md md:max-w-lg">
+                    {/* RIGHT COLUMN: Controls and Display */}
+                    <div className="w-full lg:w-1/2 flex flex-col items-center lg:items-start gap-4">
+                      
+                      {/* LCD Display Section */}
+                      <div className="w-full max-w-md lg:max-w-full px-4">
+                        <LCDDisplay 
+                          title={currentTrack?.title}
+                          artist={currentTrack?.artist}
+                          album={currentTrack?.album}
+                          isPlaying={isPlaying}
+                        />
+                      </div>
+
+                      {/* Quick Actions - Below LCD */}
+                      <div className="flex flex-wrap justify-center lg:justify-start gap-2 w-full max-w-md lg:max-w-full px-4">
                         <Button
                           variant="outline"
                           size="sm"
@@ -791,56 +796,56 @@ const ModernAudioPlayer = () => {
                           carMode={false}
                         />
                       </div>
-                    
-                    {/* Level Meters */}
-                    <div className="w-full max-w-md md:max-w-lg">
-                      <SafariVisualiser 
-                        audioRef={audioRef}
-                        isPlaying={isPlaying}
-                        colors={colors}
-                      />
-                    </div>
-                  </div>
-
-                  {/* Classic Player Controls */}
-                  <div className="space-y-4 mt-8">
-                    {/* Play/Pause Button - Black with orange outline and shimmer when paused */}
-                    <div className="flex justify-center">
-                      <Button
-                        onClick={togglePlayPause}
-                        className={`px-12 py-6 md:px-16 md:py-8 rounded-xl shadow-2xl transform hover:scale-105 active:scale-95 transition-all duration-300 ${
-                          !isPlaying ? 'animate-shimmer' : ''
-                        }`}
-                        style={{
-                          background: !isPlaying 
-                            ? `linear-gradient(90deg, #1a1a1a 0%, #0a0a0a 25%, rgba(255,255,255,0.15) 50%, #0a0a0a 75%, #1a1a1a 100%)`
-                            : `linear-gradient(135deg, #1a1a1a, #0a0a0a)`,
-                          border: `3px solid #ea580c`,
-                          boxShadow: !isPlaying 
-                            ? `0 0 30px #ea580c40, 0 0 60px #ea580c20, inset 0 0 20px #ea580c30` 
-                            : '0 20px 40px rgba(0,0,0,0.3)'
-                        }}
-                      >
-                        {isPlaying ? (
-                          <Pause className="w-10 h-10 md:w-12 md:h-12" />
-                        ) : (
-                          <Play className="w-10 h-10 md:w-12 md:h-12 ml-1" />
-                        )}
-                      </Button>
-                    </div>
-
-                    {/* Volume Control */}
-                    <div className="max-w-md mx-auto">
-                      <div className="flex items-center space-x-4">
-                        <Volume2 className="w-5 h-5 text-white/70 flex-shrink-0" />
-                        <Slider
-                          value={volume}
-                          onValueChange={handleVolumeChange}
-                          max={100}
-                          step={1}
-                          className="flex-1"
+                      
+                      {/* Level Meters */}
+                      <div className="w-full max-w-md lg:max-w-full px-4">
+                        <SafariVisualiser 
+                          audioRef={audioRef}
+                          isPlaying={isPlaying}
+                          colors={colors}
                         />
-                        <span className="text-sm font-medium text-white/70 w-12 text-right">{volume[0]}%</span>
+                      </div>
+
+                      {/* Play/Pause Button */}
+                      <div className="w-full max-w-md lg:max-w-full px-4">
+                        <div className="flex justify-center lg:justify-start">
+                          <Button
+                            onClick={togglePlayPause}
+                            className={`px-12 py-6 md:px-16 md:py-8 rounded-xl shadow-2xl transform hover:scale-105 active:scale-95 transition-all duration-300 ${
+                              !isPlaying ? 'animate-shimmer' : ''
+                            }`}
+                            style={{
+                              background: !isPlaying 
+                                ? `linear-gradient(90deg, #1a1a1a 0%, #0a0a0a 25%, rgba(255,255,255,0.15) 50%, #0a0a0a 75%, #1a1a1a 100%)`
+                                : `linear-gradient(135deg, #1a1a1a, #0a0a0a)`,
+                              border: `3px solid #ea580c`,
+                              boxShadow: !isPlaying 
+                                ? `0 0 30px #ea580c40, 0 0 60px #ea580c20, inset 0 0 20px #ea580c30` 
+                                : '0 20px 40px rgba(0,0,0,0.3)'
+                            }}
+                          >
+                            {isPlaying ? (
+                              <Pause className="w-10 h-10 md:w-12 md:h-12" />
+                            ) : (
+                              <Play className="w-10 h-10 md:w-12 md:h-12 ml-1" />
+                            )}
+                          </Button>
+                        </div>
+                      </div>
+
+                      {/* Volume Control */}
+                      <div className="w-full max-w-md lg:max-w-full px-4">
+                        <div className="flex items-center space-x-4">
+                          <Volume2 className="w-5 h-5 text-white/70 flex-shrink-0" />
+                          <Slider
+                            value={volume}
+                            onValueChange={handleVolumeChange}
+                            max={100}
+                            step={1}
+                            className="flex-1"
+                          />
+                          <span className="text-sm font-medium text-white/70 w-12 text-right">{volume[0]}%</span>
+                        </div>
                       </div>
                     </div>
                   </div>
