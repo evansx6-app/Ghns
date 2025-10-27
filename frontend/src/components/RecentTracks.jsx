@@ -201,42 +201,8 @@ const RecentTracks = ({ carMode = false }) => {
               }}
             >
               <div className="flex items-center space-x-2.5 sm:space-x-3 md:space-x-4 lg:space-x-5">
-                {/* Enhanced Scroll-Stable Artwork */}
-                <div 
-                  className={`premium-container-subtle ${carMode ? 'w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16' : 'w-11 h-11 sm:w-12 sm:h-12 md:w-14 md:h-14 lg:w-16 lg:h-16'} rounded-md sm:rounded-lg overflow-hidden flex-shrink-0 relative`}
-                >
-                  {/* Always visible static fallback */}
-                  <div className="absolute inset-0 w-full h-full bg-gradient-to-br from-slate-800 to-slate-900 flex items-center justify-center z-10 p-1">
-                    <img
-                      src="https://customer-assets.emergentagent.com/job_ghns-tracker/artifacts/gkqz48mn_unnamed.png"
-                      alt="Greatest Hits Non-Stop"
-                      className="w-full h-full object-contain"
-                    />
-                  </div>
-                  
-                  {/* Optimized artwork overlay with stable rendering */}
-                  {track.artwork_url && track.artwork_url !== 'vinyl-fallback-placeholder' && (
-                    <OptimizedImage
-                      key={track.artwork_url}
-                      src={track.artwork_url}
-                      alt={`${track.artist} - ${track.title}`}
-                      className="absolute inset-0 w-full h-full object-cover z-20"
-                      priority={index < 3}
-                      crossOrigin="anonymous"
-                      referrerPolicy="no-referrer"
-                      style={{
-                        objectFit: 'cover',
-                        objectPosition: 'center',
-                        willChange: 'auto',
-                        backfaceVisibility: 'hidden',
-                        WebkitBackfaceVisibility: 'hidden'
-                      }}
-                      onError={(e) => {
-                        console.log(`Recent track artwork failed to load: ${track.title}`);
-                      }}
-                    />
-                  )}
-                </div>
+                {/* Enhanced Scroll-Stable Artwork with Lazy Loading */}
+                <LazyArtwork track={track} index={index} carMode={carMode} />
 
                 {/* Track Info with Scrolling Text - Left Justified */}
                 <div className="flex-1 min-w-0">
