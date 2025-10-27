@@ -907,13 +907,15 @@ const ModernAudioPlayer = () => {
               </Suspense>
             </div>
 
-            {/* Stream Recorder - Lazy loaded */}
-            <Suspense fallback={<div className="h-16"></div>}>
-              <StreamRecorder 
-                audioRef={audioRef} 
-                isPlaying={isPlaying}
-              />
-            </Suspense>
+            {/* Stream Recorder - Lazy loaded, moved up slightly */}
+            <div className="-mt-4">
+              <Suspense fallback={<div className="h-16"></div>}>
+                <StreamRecorder 
+                  audioRef={audioRef} 
+                  isPlaying={isPlaying}
+                />
+              </Suspense>
+            </div>
 
             {/* Additional Content - Lazy loaded */}
             <div className="space-y-6">
