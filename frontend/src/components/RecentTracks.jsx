@@ -273,51 +273,13 @@ const RecentTracks = ({ carMode = false }) => {
           </div>
         ) : (
           recentTracks.map((track, index) => (
-            <div 
+            <TrackItem
               key={`${track.title}-${track.artist}-${track.played_at_formatted}-${index}`}
-              style={{
-                willChange: 'auto',
-                backfaceVisibility: 'hidden',
-                WebkitBackfaceVisibility: 'hidden',
-                transform: 'translateZ(0)',
-                WebkitTransform: 'translateZ(0)',
-                contain: 'layout style paint'
-              }}
-            >
-              <div className="flex items-center space-x-2.5 sm:space-x-3 md:space-x-4 lg:space-x-5">
-                {/* Enhanced Scroll-Stable Artwork with Lazy Loading */}
-                <LazyArtwork track={track} index={index} carMode={carMode} />
-
-                {/* Track Info with Scrolling Text - Left Justified */}
-                <div className="flex-1 min-w-0">
-                  <ScrollingText
-                    text={track.title}
-                    className={`text-white font-medium ${carMode ? 'text-base sm:text-lg md:text-xl' : 'text-xs sm:text-sm md:text-base lg:text-lg'}`}
-                    speed={25}
-                    pauseDuration={1000}
-                    align="left"
-                  />
-                  <ScrollingText
-                    text={track.artist}
-                    className={`text-white/70 ${carMode ? 'text-sm sm:text-base md:text-lg' : 'text-[10px] sm:text-xs md:text-sm lg:text-base'}`}
-                    speed={25}
-                    pauseDuration={1000}
-                    align="left"
-                  />
-                </div>
-
-                {/* Play Time */}
-                <div className="text-right flex-shrink-0">
-                  <p className={`text-white/50 ${carMode ? 'text-xs sm:text-sm md:text-base' : 'text-[10px] sm:text-xs md:text-sm lg:text-base'} whitespace-nowrap`}>
-                    {track.played_at_formatted}
-                  </p>
-                </div>
-              </div>
-              
-              {index < recentTracks.length - 1 && (
-                <Separator className="mt-2.5 sm:mt-3 bg-white/10" />
-              )}
-            </div>
+              track={track}
+              index={index}
+              carMode={carMode}
+              isLast={index === recentTracks.length - 1}
+            />
           ))
         )}
       </CardContent>
