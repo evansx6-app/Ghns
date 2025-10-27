@@ -217,7 +217,10 @@ const RecentTracks = ({ carMode = false }) => {
               style={{
                 willChange: 'auto',
                 backfaceVisibility: 'hidden',
-                WebkitBackfaceVisibility: 'hidden'
+                WebkitBackfaceVisibility: 'hidden',
+                transform: 'translateZ(0)',
+                WebkitTransform: 'translateZ(0)',
+                contain: 'layout style paint'
               }}
             >
               <div className="flex items-center space-x-2.5 sm:space-x-3 md:space-x-4 lg:space-x-5">
