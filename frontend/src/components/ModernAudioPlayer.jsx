@@ -867,7 +867,7 @@ const ModernAudioPlayer = () => {
                       </div>
 
                       {/* Volume Control */}
-                      <div className="w-full max-w-md lg:max-w-full px-4 lg:px-6">
+                      <div className="w-full max-w-md lg:max-w-full px-4 lg:px-0">
                         <div className="flex items-center space-x-4">
                           <Volume2 className="w-5 h-5 text-white/70 flex-shrink-0" />
                           <Slider
