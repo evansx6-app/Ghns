@@ -1,27 +1,26 @@
 <analysis>
-The AI engineer's trajectory details the iterative development of a radio streaming application, focusing heavily on UI/UX and bug resolution. Initial work addressed branding removal and API connection issues through cache invalidation. Significant effort was dedicated to evolving the audio visualiser, which transitioned through various styles (equalizer, retro, LED meters), and enhancing track information display into a sophisticated, customizable LCD component. The overall player design was refined to mimic classic audio devices. The top bar, play button, and record button underwent multiple stylistic iterations, involving dynamic color changes, shimmer effects, and fixed color schemes. Recurring issues with text scrolling, particularly for long titles and artist names, were a persistent challenge, alongside artwork fallback and API connectivity. The engineer consistently used screenshots and console logs for debugging, adapting to user feedback for continuous improvement, and engaging a troubleshoot agent for infrastructure-related problems.
+The trajectory details an extensive, iterative development process for a radio streaming application. The AI engineer systematically addressed numerous UI/UX enhancements, bug fixes, and performance optimizations. Key efforts included refactoring the  for consistent track data and artwork display, refining the 's scrolling logic and visual states, and ensuring robust  and  functionality across devices, especially iOS. Critical deployment blockers related to hardcoded URLs were resolved early on. Significant work also went into improving casting functionality () for reliable track info and artwork updates without audio interruption, optimizing performance for older devices, and meticulously adjusting desktop/mobile layouts for aesthetic and functional improvements. Each change involved code edits, service restarts, and screenshot verifications, demonstrating a thorough, user-feedback-driven workflow.
 </analysis>
 
 <product_requirements>
-The user initiated development of a radio streaming application based on a GitHub repository, requesting extensive UI/UX enhancements and bug fixes. The application displays track metadata, artwork, and recent tracks.
+The user envisioned a radio streaming application with rich UI/UX, built from a GitHub repository. The application needed to display track metadata, album artwork, and recent tracks with an aesthetic cassette deck feel.
 
 **Current Product State & Key Features:**
-*   **Audio Player Visuals:** Features a cassette deck LED level meter (horizontal, L/R channels, always visible). Album artwork is displayed on a screen with bezel, glass, scanline, and vignette effects, greyscaling/dimming on standby.
-*   **Text Scrolling:** Initially, titles scrolled, then forced scrolling was implemented. Later, continuous seamless looping was requested for titles and long artist names. This feature has been a recurrent point of refinement.
-*   **Branding & Theming:** T-shirts merchandise removed, Made with emergent branding removed. Dynamic background gradients based on album art colors. Consistent orange accent color for various icons and footer text, play/record buttons. Top bar text is silver on a black chrome background.
-*   **Track Information Display:** An LCD style display () shows track info. It has evolved to two separate lines for title and artist, left-justified, with reduced font sizes. Conditional scrolling for long text was implemented, but its behavior has been inconsistent, leading to continuous debugging.
-*   **Play Button:** Rectangular, black with a bright orange outline, featuring a shimmer effect when paused.
-*   **Record Button:** Matches the play button style: black with an orange outline.
-*   **Layout:** Desktop view has smaller album art, with Sleep Timer, Lyrics, and Cast buttons placed beneath the artwork, followed by LED meters and the play button. Vertical spacing is consistent between elements.
-*   **Artwork Handling:** Fallback artwork uses the radio station's logo. Optimized image loading implemented.
+*   **Audio Player Visuals:** Features an LED level meter, album artwork with visual effects (bezel, scanline, vignette), greyscaling when paused. Robust visualiser on all devices, including iPhone, with fallback.
+*   **Text Scrolling:**  shows left-justified title/artist on separate lines. Conditional scrolling (for long text) with seamless right-to-left looping and 1-second pause. Paused state is dimmer (45% opacity).
+*   **Branding & Theming:** Merchandise and Made with emergent removed. Dynamic background gradients from album art. Consistent orange accent color for icons, footer, and play/record buttons. Top bar text is silver on black chrome.
+*   **Track Information:** Consistent display of track title/artist, preventing data loss.
+*   **Buttons:** Rectangular play/record buttons, black with bright orange outline, play button has shimmer when paused.
+*   **Layout:** Desktop has smaller album art on the left, with Sleep Timer, Lyrics, Cast buttons, LED meters, and play button on the right. Consistent vertical spacing. Mobile layout places LCD Display at the top, artwork below it, then controls.
+*   **Artwork Handling:** Radio station logo as fallback. Optimized loading with preloading; artwork persists reliably.
 </product_requirements>
 
 <key_technical_concepts>
 -   **Full-stack Development:** React (frontend), FastAPI (backend), MongoDB (database).
--   **Styling:** Tailwind CSS, custom CSS animations, Google Fonts (, , ).
--   **Web Audio API:** For the real-time music visualiser, with focus on iOS/Safari compatibility.
--   **Performance:**  for lazy loading, API caching.
--   **Image Handling:** Backend proxy for Safari CORS, image optimization, dynamic/static fallback.
+-   **Styling:** Tailwind CSS, custom CSS animations, Google Fonts.
+-   **Web Audio API:** For real-time music visualiser, with robust iOS/Safari compatibility.
+-   **Performance Optimization:** , image preloading, adaptive polling for device capabilities.
+-   **Chromecast Integration:** Handling live stream metadata updates and artwork display without audio interruption.
 </key_technical_concepts>
 
 <code_architecture>
@@ -29,71 +28,79 @@ The application uses a standard full-stack architecture with a FastAPI backend a
 
 
 
--   **/app/backend/services/artwork_service.py**:
-    -   **Importance:** Handles fetching album artwork from external APIs.
-    -   **Changes:** Added  timeout handling to prevent API hangs, ensuring responsiveness.
+-   **/app/backend/server.py**:
+    -   **Importance:** FastAPI backend entry point, defines API routes.
+    -   **Changes:** Updated to read  from environment variables, ensuring proper configuration for different environments.
+-   **/app/frontend/.env**:
+    -   **Importance:** Stores environment-specific variables for the frontend.
+    -   **Changes:** Added , , and  to prevent hardcoding.
 -   **/app/frontend/public/index.html**:
-    -   **Importance:** Global HTML structure, Google Font imports.
-    -   **Changes:** Imports for , ,  fonts.
--   **/app/frontend/src/index.css**:
-    -   **Importance:** Global styles and animations.
-    -   **Changes:** Added custom keyframe animations for shimmer and pulse effects, iOS-specific CSS.
+    -   **Importance:** Global HTML structure, Google Font imports, Cast SDK inclusion, Open Graph metadata.
+    -   **Changes:** Added comments to clarify hardcoded stream URLs in meta tags are for SEO/external platforms and not functional configuration.
+-   **/app/frontend/public/sw.js**:
+    -   **Importance:** Service worker for offline capabilities and background sync.
+    -   **Changes:** Added a comment to clarify a hardcoded stream URL is a fallback configuration, noting service workers cannot directly access .
+-   **/app/frontend/src/services/api.js**:
+    -   **Importance:** Frontend service for API calls.
+    -   **Changes:** Modified to use  from environment variables. Added better error handling for stream health checks.
 -   **/app/frontend/src/components/ModernAudioPlayer.jsx**:
     -   **Importance:** The central audio player component, containing the main layout and state.
     -   **Changes:**
-        *   Top banner styling: Metallic look, , , 3D effects, later changed to black chrome with silver text. Sweep animation added then removed.
-        *   Layout: Transformed to a compact, vertical, classic player design with adjusted widths and consistent vertical spacing. Album art size reduced for desktop, and buttons (, , ) repositioned below it.
-        *   Artwork fallback: Logic to use a local logo as fallback when external artwork is missing or placeholder.
-        *   Removed external Recently Played and Lyrics headers.
-        *   Play button: Rectangular shape, pulse effect (slowed), then shimmer effect, fixed black with orange outline.
-        *   Bottom text: Legendary Radio from Scotland and last updated text color changed to orange.
+        *   Refactored track fetching and updating logic, using  and  for consistency.
+        *   Optimized image preloading.
+        *   Resolved hardcoded stream URLs by using .
+        *   Implemented a landscape-friendly desktop layout (artwork left, controls right) with adjustable column widths (initially 50/50, then 60/40, then 55/45).
+        *   Adjusted mobile layout to place LCD display at top, then artwork, then controls.
+        *   Improved vertical spacing and centering of controls in desktop layout.
+        *   Moved StreamRecorder button next to Play button on desktop, then reverted.
+        *   Implemented performance optimizations for older devices (lazy loading components, adaptive polling).
+        *   Addressed top banner graphic glitches by refining CSS for sticky nav.
+        *   Improved API connection robustness by wrapping health checks in try-catch and increasing polling interval.
 -   **/app/frontend/src/components/LCDDisplay.jsx**:
     -   **Importance:** Displays track title and artist information.
     -   **Changes:**
-        *   Evolved from green scrolling text to white on black, MiniDisc style, then white on black with  font.
-        *   Scrolling logic was implemented for titles and artist names, refined for continuous, seamless looping from right to left, then made conditional on text length, then removed entirely, then re-added as conditional.
-        *   Layout: Changed to two separate lines for title and artist, left-justified, with reduced font sizes. Width now matches LED meters.
+        *   Refined scrolling logic for continuous seamless looping (re-appearing from right) and a 1-second pause.
+        *   Adjusted paused state opacity to  for better visibility.
 -   **/app/frontend/src/components/OptimizedImage.jsx**:
     -   **Importance:** Handles image display with lazy loading and optimization.
-    -   **Changes:** Enhanced fallback logic to explicitly handle  and unsplash URLs by using the local logo. Added , , , and size hints for performance.
+    -   **Changes:** Fixed a bug where  would not refresh if  changed to the same URL, causing artwork not to refresh. Added slow device detection and optimization.
 -   **/app/frontend/src/components/RecentTracks.jsx**:
     -   **Importance:** Displays recently played tracks.
-    -   **Changes:** Clock icon color changed to orange.
--   **/app/frontend/src/components/TShirtShop.jsx**:
-    -   **Importance:** Merchandise display.
-    -   **Changes:** Shopping bag icon and Greatest Hits Non-Stop text color changed to orange.
+    -   **Changes:** Reduced flickering during playback by optimizing , , reducing fetches, and adding CSS for GPU acceleration and layout stability.
 -   **/app/frontend/src/components/SafariVisualiser.jsx**:
     -   **Importance:** Displays the audio level meters.
-    -   **Changes:** Width adjusted to match the compact desktop layout.
--   **/app/frontend/src/components/StreamRecorder.jsx**:
-    -   **Importance:** Provides the MP3 recording functionality.
-    -   **Changes:** Record button styled to match the play button (black with orange outline).
--   **/app/frontend/src/components/CastButton.jsx**:
-    -   **Importance:** Handles casting to TV functionality.
-    -   **Changes:** Button size reduced to match new compact layout.
--   **/app/frontend/src/components/LyricsDisplay.jsx**:
-    -   **Importance:** Displays song lyrics.
-    -   **Changes:** Music icon color changed to orange.
--   **/app/frontend/src/components/DynamicBackground.jsx**:
-    -   **Importance:** Creates the gradient background.
-    -   **Changes:** Enhanced to use deeper, more prominent gradients based on album art colors.
+    -   **Changes:** Enhanced iOS fallback with more realistic phantom values mimicking music, added logging for phantom mode. Integrated with  for robust initialization.
+-   **/app/frontend/src/components/AudioPlayer.jsx**:
+    -   **Importance:** Contains audio playback logic (likely an older/backup component).
+    -   **Changes:** Resolved hardcoded stream URLs by using .
+-   **/app/frontend/src/components/TrackInfo.jsx**:
+    -   **Importance:** Displays track details.
+    -   **Changes:** Resolved hardcoded asset URLs by using .
+-   **/app/frontend/src/hooks/useSharedAudioContext.js**:
+    -   **Importance:** Manages Web Audio API context for the visualiser.
+    -   **Changes:** Added aggressive iOS handling to ensure audio context resumption, robustly initialized  once per audio element, and ensured fallback animation if audio analysis failed, preventing visualiser issues on iPhone.
+-   **/app/frontend/src/hooks/useMediaSession.js**:
+    -   **Importance:** Integrates with browser's Media Session API for rich notifications and controls.
+    -   **Changes:** Resolved hardcoded asset URLs by using .
+-   **/app/frontend/src/hooks/useCast.js**:
+    -   **Importance:** Manages Google Chromecast integration.
+    -   **Changes:**
+        *   Implemented proper Chromecast API methods for updating metadata on live streams without reloading audio, using a 3-second throttle for updates to prevent sound gaps.
+        *   Added fallback artwork handling, using  when no track artwork is available.
+        *   Removed aggressive Unsplash filtering to allow valid artwork URLs.
+        *   Addressed an issue where the Cast button was not appearing due to SDK initialization problems in the test environment (but confirmed it should work on real devices).
 </code_architecture>
 
 <pending_tasks>
--   Address persistent issues with long track information not scrolling continuously in the  component.
+- No explicit pending tasks were identified at the end of the provided trajectory, as the last user request was being addressed by the AI.
 </pending_tasks>
 
 <current_work>
-The AI engineer is currently debugging the continuous scrolling for long track titles and artist names within the  component. The user explicitly requested that Long track information is not scrolling (Chat Message 589).
+The AI engineer was most recently working on optimizing the application's loading performance for older devices, specifically including album artwork. The user's request was to Optimise loading for older devices, including album artwork (Chat Message 618).
 
-Previously, the agent had already implemented:
-*   A two-line display for title and artist, left-justified, with reduced font sizes (Chat Message 574-588).
-*   Conditional scrolling logic designed to activate when text is too long (Chat Message 558-563), then reverted to always-on scrolling, then reverted back to conditional and left-justified.
-*   The scrolling threshold was recently reduced from 30 to 25 characters (Chat Message 596) to make it more likely to trigger.
-
-However, despite these changes, the text Look What You Made Me Do (24 characters) and Taylor Swift (12 characters) were observed to be static in recent screenshots, indicating the scrolling mechanism is still not functioning as expected. The  state has been verified to be true. The agent's last action was to confirm that the text length for the current track was below the (newly lowered) threshold (Chat Message 595-596), and then observed the scrolling still not working in screenshots (Chat Message 600). The current focus is on adding console logging to further debug why the scrolling animation isn't visible or looping correctly.
+Immediately before this summary request, the AI had identified the  component as a key area for improvement. The AI started to add slow device detection and optimization logic directly into  (Chat Message 620, 621). This is part of a broader performance optimization effort that also included lazy loading, adaptive polling, and disabling heavy animations, as seen in earlier work on . The current focus is on making image loading more efficient, especially for devices with limited resources.
 </current_work>
 
 <optional_next_step>
-Add console logging to the  component to thoroughly debug why the continuous scrolling for long titles and artist names is not activating or rendering correctly.
+Complete the implementation of slow device detection and optimization within the  component.
 </optional_next_step>
