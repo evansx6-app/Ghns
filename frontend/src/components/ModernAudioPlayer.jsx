@@ -840,7 +840,7 @@ const ModernAudioPlayer = () => {
                       </div>
 
                       {/* Play/Pause Button */}
-                      <div className="w-full max-w-md lg:max-w-2xl px-4 lg:my-2">
+                      <div className="w-full max-w-md lg:max-w-full px-4 lg:px-6 lg:my-2">
                         <div className="flex justify-center lg:justify-start">
                           <Button
                             onClick={togglePlayPause}
