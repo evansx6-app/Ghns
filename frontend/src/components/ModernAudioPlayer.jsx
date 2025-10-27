@@ -693,11 +693,23 @@ const ModernAudioPlayer = () => {
                     crossOrigin="anonymous"
                   />
 
-                  {/* Landscape-Friendly Desktop Layout - Two Columns */}
+                  {/* Responsive Layout with Reordering */}
                   <div className="flex flex-col lg:flex-row items-start lg:items-stretch gap-6 lg:gap-8">
                     
-                    {/* LEFT COLUMN: Album Artwork - Order 2 on mobile (appears after LCD) */}
-                    <div className="w-full lg:w-1/2 flex justify-center lg:justify-end order-2 lg:order-none">
+                    {/* LCD Display - Order 1 on mobile, part of right column on desktop */}
+                    <div className="w-full lg:w-1/2 flex justify-center lg:justify-start order-1 lg:order-2">
+                      <div className="w-full max-w-md lg:max-w-full px-4">
+                        <LCDDisplay 
+                          title={currentTrack?.title}
+                          artist={currentTrack?.artist}
+                          album={currentTrack?.album}
+                          isPlaying={isPlaying}
+                        />
+                      </div>
+                    </div>
+                    
+                    {/* Album Artwork - Order 2 on mobile, left column on desktop */}
+                    <div className="w-full lg:w-1/2 flex justify-center lg:justify-end order-2 lg:order-1">
                       <div className="relative w-full max-w-md lg:max-w-lg px-4">
                         {/* Screen bezel/frame */}
                         <div 
