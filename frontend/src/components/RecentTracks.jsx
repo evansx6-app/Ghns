@@ -190,14 +190,8 @@ const RecentTracks = ({ carMode = false }) => {
   const handleRefresh = useCallback(async () => {
     setIsRefreshing(true);
     await fetchRecentTracks();
-    
-    // Enforce artwork visibility after refresh
-    setTimeout(() => {
-      enforceArtworkVisibility?.();
-    }, 300);
-    
     setIsRefreshing(false);
-  }, [fetchRecentTracks, enforceArtworkVisibility]);
+  }, [fetchRecentTracks]);
 
   useEffect(() => {
     fetchRecentTracks();
