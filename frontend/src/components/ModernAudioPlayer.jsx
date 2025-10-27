@@ -819,7 +819,7 @@ const ModernAudioPlayer = () => {
                       </div>
                       
                       {/* Level Meters */}
-                      <div className="w-full max-w-md lg:max-w-full px-4">
+                      <div className="w-full max-w-md lg:max-w-full px-4 lg:my-1">
                         <SafariVisualiser 
                           audioRef={audioRef}
                           isPlaying={isPlaying}
@@ -828,7 +828,7 @@ const ModernAudioPlayer = () => {
                       </div>
 
                       {/* Play/Pause Button */}
-                      <div className="w-full max-w-md lg:max-w-full px-4">
+                      <div className="w-full max-w-md lg:max-w-full px-4 lg:my-2">
                         <div className="flex justify-center lg:justify-start">
                           <Button
                             onClick={togglePlayPause}
