@@ -783,8 +783,8 @@ const ModernAudioPlayer = () => {
                       </div>
                     </div>
 
-                    {/* Controls Section - Order 3 on mobile, part of right column on desktop */}
-                    <div className="w-full lg:w-1/2 flex flex-col items-center lg:items-start gap-4 order-3 lg:order-2">
+                    {/* Controls Section - Order 3 on mobile, part of right column on desktop (narrowed to 40%) */}
+                    <div className="w-full lg:w-2/5 flex flex-col items-center lg:items-start gap-4 order-3 lg:order-2">
                       
                       {/* Quick Actions */}
                       <div className="flex flex-wrap justify-center lg:justify-start gap-2 w-full max-w-md lg:max-w-full px-4">
