@@ -14,16 +14,42 @@ const OptimizedImage = ({
   const [imageSrc, setImageSrc] = useState(priority ? src : fallbackSrc);
   const [isLoaded, setIsLoaded] = useState(false);
   const [hasError, setHasError] = useState(false);
+  const [isLowQuality, setIsLowQuality] = useState(false);
   const imgRef = useRef(null);
+  const loadTimeoutRef = useRef(null);
   
   // Detect slow device for optimized loading
-  const [isSlowDevice, setIsSlowDevice] = useState(false);
+  const [deviceCapability, setDeviceCapability] = useState({
+    isSlowDevice: false,
+    connectionSpeed: 'unknown',
+    cores: 2
+  });
   
   useEffect(() => {
     const cores = navigator.hardwareConcurrency || 2;
+    const memory = navigator.deviceMemory || 4; // GB
     const connection = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
-    const slowConnection = connection && (connection.effectiveType === 'slow-2g' || connection.effectiveType === '2g' || connection.effectiveType === '3g');
-    setIsSlowDevice(cores < 4 || slowConnection);
+    
+    let connectionSpeed = 'unknown';
+    let isSlowConnection = false;
+    
+    if (connection) {
+      connectionSpeed = connection.effectiveType || 'unknown';
+      isSlowConnection = connectionSpeed === 'slow-2g' || connectionSpeed === '2g' || connectionSpeed === '3g';
+    }
+    
+    // Consider device slow if: low cores OR low memory OR slow connection
+    const isSlowDevice = cores < 4 || memory < 4 || isSlowConnection;
+    
+    setDeviceCapability({
+      isSlowDevice,
+      connectionSpeed,
+      cores
+    });
+    
+    if (isSlowDevice) {
+      console.log('[OptimizedImage] Slow device detected:', { cores, memory, connectionSpeed });
+    }
   }, []);
 
   useEffect(() => {
@@ -51,6 +77,7 @@ const OptimizedImage = ({
     if (srcChanged) {
       setIsLoaded(false);
       setHasError(false);
+      setIsLowQuality(false);
       console.log('[OptimizedImage] Loading new artwork:', src);
     }
 
@@ -61,22 +88,59 @@ const OptimizedImage = ({
       return;
     }
 
-    // Fast loading for non-priority images (no IntersectionObserver delay)
+    // Clear any existing timeout
+    if (loadTimeoutRef.current) {
+      clearTimeout(loadTimeoutRef.current);
+    }
+
+    // Adaptive loading based on device capability
     let img = null;
+    let lowQualityImg = null;
 
     const loadImage = () => {
       img = new Image();
       img.crossOrigin = 'anonymous';
       img.referrerPolicy = 'no-referrer';
+      
+      // For slow devices, implement progressive loading with timeout fallback
+      if (deviceCapability.isSlowDevice) {
+        const loadTimeout = deviceCapability.connectionSpeed === 'slow-2g' || deviceCapability.connectionSpeed === '2g' ? 8000 : 5000;
+        
+        // Set a timeout for slow devices - show fallback if image takes too long
+        loadTimeoutRef.current = setTimeout(() => {
+          if (!isLoaded && !hasError) {
+            console.warn('[OptimizedImage] Image load timeout on slow device, using fallback');
+            setImageSrc(fallbackSrc);
+            setIsLoaded(true);
+            setHasError(true);
+          }
+        }, loadTimeout);
+        
+        // Try to load a lower quality version first for very slow connections
+        if (deviceCapability.connectionSpeed === 'slow-2g' || deviceCapability.connectionSpeed === '2g') {
+          // Show fallback immediately, then upgrade when full image loads
+          setImageSrc(fallbackSrc);
+          setIsLowQuality(true);
+          console.log('[OptimizedImage] Very slow connection: showing fallback while loading full image');
+        }
+      }
+      
       img.src = proxiedSrc;
       
       img.onload = () => {
+        if (loadTimeoutRef.current) {
+          clearTimeout(loadTimeoutRef.current);
+        }
         setImageSrc(proxiedSrc);
         setIsLoaded(true);
+        setIsLowQuality(false);
         console.log('[OptimizedImage] Artwork loaded successfully');
       };
       
       img.onerror = () => {
+        if (loadTimeoutRef.current) {
+          clearTimeout(loadTimeoutRef.current);
+        }
         console.warn('[OptimizedImage] Image failed to load:', src);
         setHasError(true);
         // Only set fallback if we don't already have a valid image
@@ -86,16 +150,23 @@ const OptimizedImage = ({
       };
     };
 
-    // Load immediately for faster display
-    loadImage();
+    // For slow devices, add a small delay to prioritize critical resources
+    if (deviceCapability.isSlowDevice && !priority) {
+      setTimeout(loadImage, 100);
+    } else {
+      loadImage();
+    }
 
     return () => {
+      if (loadTimeoutRef.current) {
+        clearTimeout(loadTimeoutRef.current);
+      }
       if (img) {
         img.onload = null;
         img.onerror = null;
       }
     };
-  }, [src, priority, fallbackSrc]);
+  }, [src, priority, fallbackSrc, deviceCapability.isSlowDevice, deviceCapability.connectionSpeed]);
 
   const handleLoad = (e) => {
     setIsLoaded(true);
