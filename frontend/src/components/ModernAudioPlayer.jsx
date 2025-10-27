@@ -694,7 +694,7 @@ const ModernAudioPlayer = () => {
                   />
 
                   {/* Two Column Desktop Layout with Mobile Reordering */}
-                  <div className="flex flex-col lg:flex-row items-start lg:items-stretch gap-3 lg:gap-4">
+                  <div className="flex flex-col lg:flex-row items-start lg:items-stretch gap-3 lg:gap-8">
                     
                     {/* LCD Display - Order 1 on mobile (appears first), hidden on desktop */}
                     <div className="w-full lg:hidden flex justify-center order-1">
