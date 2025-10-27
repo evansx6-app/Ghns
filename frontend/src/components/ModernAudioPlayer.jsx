@@ -797,7 +797,7 @@ const ModernAudioPlayer = () => {
                       </div>
                       
                       {/* Quick Actions - Center justified on all screen sizes */}
-                      <div className="flex flex-wrap justify-center gap-2 w-full max-w-md lg:max-w-full px-4 lg:px-6 lg:mb-1">
+                      <div className="flex flex-wrap justify-center gap-2 w-full max-w-md lg:max-w-full px-4 lg:px-0 lg:mb-1">
                         <Button
                           variant="outline"
                           size="sm"
