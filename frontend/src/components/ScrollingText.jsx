@@ -1,6 +1,6 @@
-import React, { useRef, useEffect, useState } from 'react';
+import React, { useRef, useEffect, useState, memo } from 'react';
 
-const ScrollingText = ({ 
+const ScrollingText = memo(({ 
   text, 
   className = '', 
   speed = 30, // pixels per second
@@ -14,6 +14,7 @@ const ScrollingText = ({
   const textRef = useRef(null);
   const [shouldScroll, setShouldScroll] = useState(false);
   const [animationDuration, setAnimationDuration] = useState(0);
+  const measureTimeoutRef = useRef(null);
 
   useEffect(() => {
     const checkOverflow = () => {
@@ -53,32 +54,18 @@ const ScrollingText = ({
       }
     };
 
-    // Multiple checks to ensure accurate measurement
-    checkOverflow(); // Immediate check
-    const timer1 = setTimeout(checkOverflow, 100);
-    const timer2 = setTimeout(checkOverflow, 300);
-    const timer3 = setTimeout(checkOverflow, 600);
-    const timer4 = setTimeout(checkOverflow, 1000); // Extra check for mobile
-    const timer5 = setTimeout(checkOverflow, 1500); // Additional mobile check
-    
-    // Recheck on window resize and orientation change
-    const handleResize = () => {
-      checkOverflow();
-      // Extra check after resize completes
-      setTimeout(checkOverflow, 100);
-    };
-    
-    window.addEventListener('resize', handleResize);
-    window.addEventListener('orientationchange', handleResize);
+    // Clear any existing timeout
+    if (measureTimeoutRef.current) {
+      clearTimeout(measureTimeoutRef.current);
+    }
+
+    // Single delayed check to reduce jank
+    measureTimeoutRef.current = setTimeout(checkOverflow, 100);
     
     return () => {
-      clearTimeout(timer1);
-      clearTimeout(timer2);
-      clearTimeout(timer3);
-      clearTimeout(timer4);
-      clearTimeout(timer5);
-      window.removeEventListener('resize', handleResize);
-      window.removeEventListener('orientationchange', handleResize);
+      if (measureTimeoutRef.current) {
+        clearTimeout(measureTimeoutRef.current);
+      }
     };
   }, [text, speed, pauseDuration, alwaysScroll, direction]);
 
@@ -102,7 +89,8 @@ const ScrollingText = ({
         position: 'relative', 
         display: 'flex',
         justifyContent: getJustifyContent(),
-        alignItems: 'center'
+        alignItems: 'center',
+        contain: 'layout style paint'
       }}
     >
       <div
@@ -111,13 +99,24 @@ const ScrollingText = ({
         style={shouldScroll ? {
           animation: `scroll-text-custom ${animationDuration}ms linear infinite`,
           animationDelay: `${pauseDuration}ms`,
-          willChange: 'transform'
+          willChange: 'auto'
         } : {}}
       >
         {children || text}
       </div>
     </div>
   );
-};
+}, (prevProps, nextProps) => {
+  // Custom comparison to prevent re-renders
+  return (
+    prevProps.text === nextProps.text &&
+    prevProps.className === nextProps.className &&
+    prevProps.speed === nextProps.speed &&
+    prevProps.pauseDuration === nextProps.pauseDuration &&
+    prevProps.alwaysScroll === nextProps.alwaysScroll &&
+    prevProps.direction === nextProps.direction &&
+    prevProps.align === nextProps.align
+  );
+});
 
 export default ScrollingText;
