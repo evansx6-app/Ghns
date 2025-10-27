@@ -133,12 +133,17 @@ const LCDDisplay = ({ title, artist, album, isPlaying }) => {
   return (
     <div className="w-full">
       <div 
-        className="relative rounded-md overflow-hidden border-2 transition-all duration-500"
+        className="relative rounded-md overflow-hidden border-2"
         style={{
           background: '#000000',
           borderColor: '#1a1a1a',
           boxShadow: 'inset 0 1px 3px rgba(0,0,0,0.8), 0 2px 8px rgba(0,0,0,0.6)',
-          opacity: isPlaying ? 1 : 0.45
+          opacity: isPlaying ? 1 : 0.45,
+          transform: 'translateZ(0)',
+          WebkitTransform: 'translateZ(0)',
+          backfaceVisibility: 'hidden',
+          WebkitBackfaceVisibility: 'hidden',
+          willChange: 'auto'
         }}
       >
         {/* LCD pixel grid texture */}
