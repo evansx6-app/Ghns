@@ -696,9 +696,9 @@ const ModernAudioPlayer = () => {
                   {/* Two Column Desktop Layout */}
                   <div className="flex flex-col lg:flex-row items-start lg:items-stretch gap-6 lg:gap-8">
                     
-                    {/* Album Artwork - Order 2 on mobile, LEFT column on desktop (60%) */}
-                    <div className="w-full lg:w-3/5 flex justify-center lg:justify-end order-2 lg:order-1">
-                      <div className="relative w-full max-w-md lg:max-w-2xl px-4">
+                    {/* Album Artwork - Order 2 on mobile, LEFT column on desktop (55%) */}
+                    <div className="w-full lg:w-[55%] flex justify-center lg:justify-end order-2 lg:order-1">
+                      <div className="relative w-full max-w-md lg:max-w-xl px-4">
                         {/* Screen bezel/frame */}
                         <div 
                           className="relative rounded-xl overflow-hidden"
