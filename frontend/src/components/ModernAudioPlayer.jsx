@@ -694,7 +694,7 @@ const ModernAudioPlayer = () => {
                   />
 
                   {/* Two Column Desktop Layout with Mobile Reordering */}
-                  <div className="flex flex-col lg:flex-row items-start lg:items-stretch gap-6 lg:gap-4">
+                  <div className="flex flex-col lg:flex-row items-start lg:items-stretch gap-6 lg:gap-2">
                     
                     {/* LCD Display - Order 1 on mobile (appears first), hidden on desktop */}
                     <div className="w-full lg:hidden flex justify-center order-1">
@@ -709,8 +709,8 @@ const ModernAudioPlayer = () => {
                     </div>
                     
                     {/* Album Artwork - Order 2 on mobile (below LCD), LEFT column on desktop (55%) */}
-                    <div className="w-full lg:w-[55%] flex justify-center lg:justify-center order-2 lg:order-1">
-                      <div className="relative w-full max-w-md lg:max-w-xl px-4 lg:pr-12">
+                    <div className="w-full lg:w-[55%] flex justify-center lg:justify-start order-2 lg:order-1">
+                      <div className="relative w-full max-w-md lg:max-w-xl px-4 lg:pl-4 lg:pr-2">
                         {/* Screen bezel/frame */}
                         <div 
                           className="relative rounded-xl overflow-hidden"
