@@ -95,7 +95,8 @@ const RecentTracks = ({ carMode = false }) => {
 
   const fetchRecentTracks = async () => {
     try {
-      const response = await streamAPI.getRecentTracks(15);
+      // Fetch only 10 tracks for faster initial load (reduced from 15)
+      const response = await streamAPI.getRecentTracks(10);
       if (response.success) {
         setRecentTracks(response.tracks);
       }
