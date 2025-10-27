@@ -8,6 +8,77 @@ import ScrollingText from './ScrollingText';
 import OptimizedImage from './OptimizedImage';
 import useScrollContainerArtworkStability from '../hooks/useScrollContainerArtworkStability';
 
+// Lazy loading artwork component with Intersection Observer
+const LazyArtwork = memo(({ track, index, carMode }) => {
+  const [isVisible, setIsVisible] = useState(index < 5); // Load first 5 immediately
+  const artworkRef = useRef(null);
+
+  useEffect(() => {
+    if (isVisible || index < 5) return; // Skip if already visible or in first batch
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting) {
+          setIsVisible(true);
+        }
+      },
+      {
+        rootMargin: '100px', // Start loading 100px before visible
+        threshold: 0.01
+      }
+    );
+
+    if (artworkRef.current) {
+      observer.observe(artworkRef.current);
+    }
+
+    return () => {
+      if (artworkRef.current) {
+        observer.unobserve(artworkRef.current);
+      }
+    };
+  }, [index, isVisible]);
+
+  return (
+    <div 
+      ref={artworkRef}
+      className={`premium-container-subtle ${carMode ? 'w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16' : 'w-11 h-11 sm:w-12 sm:h-12 md:w-14 md:h-14 lg:w-16 lg:h-16'} rounded-md sm:rounded-lg overflow-hidden flex-shrink-0 relative`}
+    >
+      {/* Always visible static fallback */}
+      <div className="absolute inset-0 w-full h-full bg-gradient-to-br from-slate-800 to-slate-900 flex items-center justify-center z-10 p-1">
+        <img
+          src="https://customer-assets.emergentagent.com/job_ghns-tracker/artifacts/gkqz48mn_unnamed.png"
+          alt="Greatest Hits Non-Stop"
+          className="w-full h-full object-contain"
+        />
+      </div>
+      
+      {/* Optimized artwork overlay - only load when visible */}
+      {isVisible && track.artwork_url && track.artwork_url !== 'vinyl-fallback-placeholder' && (
+        <OptimizedImage
+          key={track.artwork_url}
+          src={track.artwork_url}
+          alt={`${track.artist} - ${track.title}`}
+          className="absolute inset-0 w-full h-full object-cover z-20"
+          priority={index < 2} // Only first 2 get high priority
+          crossOrigin="anonymous"
+          referrerPolicy="no-referrer"
+          style={{
+            objectFit: 'cover',
+            objectPosition: 'center',
+            willChange: 'auto',
+            backfaceVisibility: 'hidden',
+            WebkitBackfaceVisibility: 'hidden'
+          }}
+          onError={(e) => {
+            console.log(`Recent track artwork failed to load: ${track.title}`);
+          }}
+        />
+      )}
+    </div>
+  );
+});
+
 const RecentTracks = ({ carMode = false }) => {
   const [recentTracks, setRecentTracks] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
