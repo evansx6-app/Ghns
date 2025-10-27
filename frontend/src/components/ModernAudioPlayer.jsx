@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, lazy, Suspense } from 'react';
 import { Play, Pause, Volume2, Clock, Music, Maximize2, Cast, Radio, Disc3, ListMusic } from 'lucide-react';
 import { Button } from './ui/button';
 import { Slider } from './ui/slider';
@@ -12,17 +12,19 @@ import { useBeatDetection } from '../hooks/useBeatDetection';
 import SleepTimer from './SleepTimer';
 import TrackInfo from './TrackInfo';
 import CastButton from './CastButton';
-import RecentTracks from './RecentTracks';
 import SafariVisualiser from './SafariVisualiser';
 import DynamicBackground from './DynamicBackground';
-import LyricsDisplay from './LyricsDisplay';
-import StreamRecorder from './StreamRecorder';
 import InstallButton from './InstallButton';
 import ConnectionStatus from './ConnectionStatus';
-import TShirtShop from './TShirtShop';
-import ScrollingText from './ScrollingText';
 import LCDDisplay from './LCDDisplay';
 import OptimizedImage from './OptimizedImage';
+
+// Lazy load heavy/non-critical components for better initial load performance
+const RecentTracks = lazy(() => import('./RecentTracks'));
+const LyricsDisplay = lazy(() => import('./LyricsDisplay'));
+const StreamRecorder = lazy(() => import('./StreamRecorder'));
+const TShirtShop = lazy(() => import('./TShirtShop'));
+const ScrollingText = lazy(() => import('./ScrollingText'));
 
 const ModernAudioPlayer = () => {
   const [isPlaying, setIsPlaying] = useState(false);
