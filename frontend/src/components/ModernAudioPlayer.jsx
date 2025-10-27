@@ -768,7 +768,7 @@ const ModernAudioPlayer = () => {
                               key={currentTrack.artwork_url}
                               src={currentTrack.artwork_url}
                               alt={`${currentTrack.artist} - ${currentTrack.title}`}
-                              className="w-full h-full object-cover transform transition-transform duration-500"
+                              className="w-full h-full object-cover"
                               priority={true}
                               fallbackSrc="https://customer-assets.emergentagent.com/job_sleep-timer-stream/artifacts/qcvmvlox_cropped-radio.png"
                               crossOrigin="anonymous"
