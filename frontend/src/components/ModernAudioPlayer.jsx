@@ -887,27 +887,37 @@ const ModernAudioPlayer = () => {
 
             {/* Recently Played / Lyrics - Below Player (Toggle) */}
             <div>
-              {showLyrics ? (
-                <LyricsDisplay 
-                  currentTrack={currentTrack}
-                  carMode={false}
-                  colors={colors}
-                  onClose={() => setShowLyrics(false)}
-                />
-              ) : (
-                <RecentTracks carMode={false} />
-              )}
+              <Suspense fallback={
+                <div className="flex items-center justify-center p-8">
+                  <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-orange-500"></div>
+                </div>
+              }>
+                {showLyrics ? (
+                  <LyricsDisplay 
+                    currentTrack={currentTrack}
+                    carMode={false}
+                    colors={colors}
+                    onClose={() => setShowLyrics(false)}
+                  />
+                ) : (
+                  <RecentTracks carMode={false} />
+                )}
+              </Suspense>
             </div>
 
-            {/* Stream Recorder */}
-            <StreamRecorder 
-              audioRef={audioRef} 
-              isPlaying={isPlaying}
-            />
+            {/* Stream Recorder - Lazy loaded */}
+            <Suspense fallback={<div className="h-16"></div>}>
+              <StreamRecorder 
+                audioRef={audioRef} 
+                isPlaying={isPlaying}
+              />
+            </Suspense>
 
-            {/* Additional Content */}
+            {/* Additional Content - Lazy loaded */}
             <div className="space-y-6">
-              <TShirtShop isCarMode={false} />
+              <Suspense fallback={<div className="h-32"></div>}>
+                <TShirtShop isCarMode={false} />
+              </Suspense>
               
               <div className="flex justify-center">
                 <a
