@@ -772,10 +772,10 @@ const ModernAudioPlayer = () => {
                     </div>
 
                     {/* RIGHT Column - LCD Display + All Controls (40%) */}
-                    <div className="w-full lg:w-2/5 flex flex-col items-center lg:items-start gap-4 order-1 lg:order-2">
+                    <div className="w-full lg:w-2/5 flex flex-col items-center lg:items-start gap-4 lg:gap-6 order-1 lg:order-2 lg:justify-center">
                       
                       {/* LCD Display Section */}
-                      <div className="w-full max-w-md lg:max-w-full px-4">
+                      <div className="w-full max-w-md lg:max-w-full px-4 lg:mb-2">
                         <LCDDisplay 
                           title={currentTrack?.title}
                           artist={currentTrack?.artist}
@@ -785,7 +785,7 @@ const ModernAudioPlayer = () => {
                       </div>
                       
                       {/* Quick Actions */}
-                      <div className="flex flex-wrap justify-center lg:justify-start gap-2 w-full max-w-md lg:max-w-full px-4">
+                      <div className="flex flex-wrap justify-center lg:justify-start gap-2 w-full max-w-md lg:max-w-full px-4 lg:mb-1">
                         <Button
                           variant="outline"
                           size="sm"
