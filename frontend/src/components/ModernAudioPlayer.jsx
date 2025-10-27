@@ -771,8 +771,18 @@ const ModernAudioPlayer = () => {
                       </div>
                     </div>
 
-                    {/* Controls Section - Order 3 on mobile, part of right column on desktop (narrowed to 40%) */}
-                    <div className="w-full lg:w-2/5 flex flex-col items-center lg:items-start gap-4 order-3 lg:order-2">
+                    {/* RIGHT Column - LCD Display + All Controls (40%) */}
+                    <div className="w-full lg:w-2/5 flex flex-col items-center lg:items-start gap-4 order-1 lg:order-2">
+                      
+                      {/* LCD Display Section */}
+                      <div className="w-full max-w-md lg:max-w-full px-4">
+                        <LCDDisplay 
+                          title={currentTrack?.title}
+                          artist={currentTrack?.artist}
+                          album={currentTrack?.album}
+                          isPlaying={isPlaying}
+                        />
+                      </div>
                       
                       {/* Quick Actions */}
                       <div className="flex flex-wrap justify-center lg:justify-start gap-2 w-full max-w-md lg:max-w-full px-4">
