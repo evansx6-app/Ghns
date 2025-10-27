@@ -785,7 +785,7 @@ const ModernAudioPlayer = () => {
                       </div>
                       
                       {/* Quick Actions */}
-                      <div className="flex flex-wrap justify-center lg:justify-start gap-2 w-full max-w-md lg:max-w-full px-4 lg:mb-1">
+                      <div className="flex flex-wrap justify-center lg:justify-start gap-2 w-full max-w-md lg:max-w-2xl px-4 lg:mb-1">
                         <Button
                           variant="outline"
                           size="sm"
