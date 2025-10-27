@@ -108,21 +108,25 @@ const RecentTracks = ({ carMode = false }) => {
     !isLoading && recentTracks.length > 0
   );
 
-  const fetchRecentTracks = async () => {
+  const fetchRecentTracks = useCallback(async () => {
     try {
       // Fetch only 10 tracks for faster initial load (reduced from 15)
       const response = await streamAPI.getRecentTracks(10);
       if (response.success) {
-        setRecentTracks(response.tracks);
+        // Only update if tracks have actually changed to prevent unnecessary re-renders
+        setRecentTracks(prevTracks => {
+          const tracksChanged = JSON.stringify(prevTracks) !== JSON.stringify(response.tracks);
+          return tracksChanged ? response.tracks : prevTracks;
+        });
       }
     } catch (error) {
       console.error('Error fetching recent tracks:', error);
     } finally {
       setIsLoading(false);
     }
-  };
+  }, []);
 
-  const handleRefresh = async () => {
+  const handleRefresh = useCallback(async () => {
     setIsRefreshing(true);
     await fetchRecentTracks();
     
@@ -132,7 +136,7 @@ const RecentTracks = ({ carMode = false }) => {
     }, 300);
     
     setIsRefreshing(false);
-  };
+  }, [fetchRecentTracks, enforceArtworkVisibility]);
 
   useEffect(() => {
     fetchRecentTracks();
