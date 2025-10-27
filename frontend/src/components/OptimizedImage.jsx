@@ -169,14 +169,43 @@ const OptimizedImage = ({
   }, [src, priority, fallbackSrc, deviceCapability.isSlowDevice, deviceCapability.connectionSpeed]);
 
   const handleLoad = (e) => {
+    if (loadTimeoutRef.current) {
+      clearTimeout(loadTimeoutRef.current);
+    }
     setIsLoaded(true);
     onLoad?.(e);
   };
 
   const handleError = (e) => {
+    if (loadTimeoutRef.current) {
+      clearTimeout(loadTimeoutRef.current);
+    }
     setHasError(true);
     setImageSrc(fallbackSrc);
     onError?.(e);
+  };
+
+  // Calculate optimal image rendering based on device capability
+  const getImageStyles = () => {
+    const baseStyles = {
+      opacity: isLoaded || priority ? 1 : 0,
+      WebkitBackfaceVisibility: 'hidden',
+      backfaceVisibility: 'hidden',
+      transform: 'translateZ(0)',
+      WebkitTransform: 'translateZ(0)',
+      contentVisibility: 'auto'
+    };
+
+    // For slow devices, reduce image rendering quality to improve performance
+    if (deviceCapability.isSlowDevice) {
+      return {
+        ...baseStyles,
+        imageRendering: deviceCapability.connectionSpeed === 'slow-2g' || deviceCapability.connectionSpeed === '2g' ? 'auto' : 'auto',
+        willChange: 'auto' // Disable will-change on slow devices to save memory
+      };
+    }
+
+    return baseStyles;
   };
 
   return (
@@ -184,18 +213,11 @@ const OptimizedImage = ({
       ref={imgRef}
       src={imageSrc}
       alt={alt}
-      className={`${className} transition-opacity duration-300`}
-      style={{ 
-        opacity: isLoaded || priority ? 1 : 0,
-        WebkitBackfaceVisibility: 'hidden',
-        backfaceVisibility: 'hidden',
-        transform: 'translateZ(0)',
-        WebkitTransform: 'translateZ(0)',
-        contentVisibility: 'auto' // CSS containment for better performance
-      }}
-      loading={priority ? 'eager' : 'lazy'}
+      className={`${className} transition-opacity ${deviceCapability.isSlowDevice ? 'duration-500' : 'duration-300'}`}
+      style={getImageStyles()}
+      loading={priority ? 'eager' : (deviceCapability.isSlowDevice ? 'lazy' : 'lazy')}
       decoding="async"
-      fetchPriority={priority ? 'high' : 'auto'}
+      fetchPriority={priority ? 'high' : (deviceCapability.isSlowDevice ? 'low' : 'auto')}
       onLoad={handleLoad}
       onError={handleError}
       crossOrigin="anonymous"
