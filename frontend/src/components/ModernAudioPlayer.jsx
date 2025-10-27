@@ -50,6 +50,21 @@ const ModernAudioPlayer = () => {
   const audioRef = useRef(null);
   const shownToastsRef = useRef(new Set());
   const lastValidTrackRef = useRef(currentTrack); // Preserve last valid track
+  
+  // Performance optimization: Detect slow device and adjust features
+  const [isSlowDevice, setIsSlowDevice] = useState(false);
+  useEffect(() => {
+    // Detect slow device based on hardware concurrency and connection
+    const cores = navigator.hardwareConcurrency || 2;
+    const connection = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
+    const slowConnection = connection && (connection.effectiveType === 'slow-2g' || connection.effectiveType === '2g' || connection.effectiveType === '3g');
+    const isLowEnd = cores < 4 || slowConnection;
+    setIsSlowDevice(isLowEnd);
+    
+    if (isLowEnd) {
+      console.log('Slow device detected - optimizing performance');
+    }
+  }, []);
   const { toast } = useToast();
 
   // Determine artwork URL - use logo for station ID
