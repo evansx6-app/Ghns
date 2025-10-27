@@ -827,9 +827,9 @@ const ModernAudioPlayer = () => {
                         />
                       </div>
 
-                      {/* Play/Pause Button */}
+                      {/* Play/Pause Button & Record Button */}
                       <div className="w-full max-w-md lg:max-w-full px-4">
-                        <div className="flex justify-center lg:justify-start">
+                        <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4">
                           <Button
                             onClick={togglePlayPause}
                             className={`px-12 py-6 md:px-16 md:py-8 rounded-xl shadow-2xl transform hover:scale-105 active:scale-95 transition-all duration-300 ${
@@ -851,6 +851,14 @@ const ModernAudioPlayer = () => {
                               <Play className="w-10 h-10 md:w-12 md:h-12 ml-1" />
                             )}
                           </Button>
+                          
+                          {/* Stream Recorder - Next to Play Button */}
+                          <Suspense fallback={<div className="h-16 w-16"></div>}>
+                            <StreamRecorder 
+                              audioRef={audioRef} 
+                              isPlaying={isPlaying}
+                            />
+                          </Suspense>
                         </div>
                       </div>
 
