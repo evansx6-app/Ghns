@@ -200,17 +200,7 @@ const RecentTracks = ({ carMode = false }) => {
     return () => clearInterval(interval);
   }, [fetchRecentTracks]);
 
-  // Enhanced effect to enforce artwork visibility when tracks change
-  useEffect(() => {
-    if (!isLoading && recentTracks.length > 0 && enforceArtworkVisibility) {
-      // Delay to let DOM render
-      const timeout = setTimeout(() => {
-        enforceArtworkVisibility();
-      }, 200);
-      
-      return () => clearTimeout(timeout);
-    }
-  }, [recentTracks, isLoading, enforceArtworkVisibility]);
+  // Removed artwork visibility enforcement effect - was causing flickering
 
   if (isLoading) {
     return (
