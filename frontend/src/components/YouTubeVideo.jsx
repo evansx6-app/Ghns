@@ -1,9 +1,11 @@
-import React, { useState, useEffect, memo } from 'react';
+import React, { useState, useEffect, memo, useRef } from 'react';
 
-const YouTubeVideo = memo(({ track, onClose }) => {
+const YouTubeVideo = memo(({ track, onClose, onEnded }) => {
   const [videoId, setVideoId] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
+  const playerRef = useRef(null);
+  const iframeRef = useRef(null);
 
   useEffect(() => {
     const searchVideo = async () => {
