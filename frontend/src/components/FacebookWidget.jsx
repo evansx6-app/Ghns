@@ -38,9 +38,6 @@ const FacebookWidget = memo(({ pageName = 'greatesthitsnonstop' }) => {
             <h3 className="text-white font-bold text-lg md:text-xl mb-1">
               Greatest Hits Non-Stop
             </h3>
-            <p className="text-white/60 text-xs md:text-sm">
-              Stay updated with the latest hits and exclusive content
-            </p>
           </div>
 
           {/* Follow Button */}
