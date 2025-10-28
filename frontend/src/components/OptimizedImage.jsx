@@ -17,38 +17,47 @@ const OptimizedImage = ({
   const [isLowQuality, setIsLowQuality] = useState(false);
   const imgRef = useRef(null);
   const loadTimeoutRef = useRef(null);
+  const abortControllerRef = useRef(null);
   
-  // Detect slow device for optimized loading
-  const [deviceCapability, setDeviceCapability] = useState({
-    isSlowDevice: false,
+  // Detect slow network for optimized loading
+  const [networkCapability, setNetworkCapability] = useState({
+    isSlowNetwork: false,
     connectionSpeed: 'unknown',
-    cores: 2
+    downlink: null,
+    rtt: null
   });
   
   useEffect(() => {
-    const cores = navigator.hardwareConcurrency || 2;
-    const memory = navigator.deviceMemory || 4; // GB
     const connection = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
     
     let connectionSpeed = 'unknown';
-    let isSlowConnection = false;
+    let isSlowNetwork = false;
+    let downlink = null;
+    let rtt = null;
     
     if (connection) {
       connectionSpeed = connection.effectiveType || 'unknown';
-      isSlowConnection = connectionSpeed === 'slow-2g' || connectionSpeed === '2g' || connectionSpeed === '3g';
+      downlink = connection.downlink; // Mbps
+      rtt = connection.rtt; // milliseconds
+      
+      // More aggressive slow network detection
+      isSlowNetwork = 
+        connectionSpeed === 'slow-2g' || 
+        connectionSpeed === '2g' || 
+        connectionSpeed === '3g' ||
+        (downlink && downlink < 1.5) || // Less than 1.5 Mbps
+        (rtt && rtt > 300); // RTT over 300ms
     }
     
-    // Consider device slow if: low cores OR low memory OR slow connection
-    const isSlowDevice = cores < 4 || memory < 4 || isSlowConnection;
-    
-    setDeviceCapability({
-      isSlowDevice,
+    setNetworkCapability({
+      isSlowNetwork,
       connectionSpeed,
-      cores
+      downlink,
+      rtt
     });
     
-    if (isSlowDevice) {
-      console.log('[OptimizedImage] Slow device detected:', { cores, memory, connectionSpeed });
+    if (isSlowNetwork) {
+      console.log('[OptimizedImage] Slow network detected:', { connectionSpeed, downlink, rtt });
     }
   }, []);
 
