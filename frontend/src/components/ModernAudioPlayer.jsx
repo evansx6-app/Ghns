@@ -530,14 +530,6 @@ const ModernAudioPlayer = () => {
     }
   }, [volume]);
 
-  // Check video availability when track changes
-  useEffect(() => {
-    if (currentTrack && currentTrack.title && currentTrack.artist) {
-      // Run video check in background without blocking UI
-      checkVideoAvailability(currentTrack);
-    }
-  }, [currentTrack?.title, currentTrack?.artist]);
-
   const togglePlayPause = async () => {
     if (audioRef.current) {
       // If video is showing, close it when play is pressed
