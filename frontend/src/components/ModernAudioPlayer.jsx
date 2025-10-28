@@ -917,25 +917,27 @@ const ModernAudioPlayer = () => {
                           Lyrics
                         </Button>
 
-                        <Button
-                          variant="outline"
-                          size="sm"
-                          onClick={() => {
-                            const newShowVideo = !showVideo;
-                            setShowVideo(newShowVideo);
-                            setShowLyrics(false); // Close lyrics when showing video
-                            
-                            // Pause radio when opening video
-                            if (newShowVideo && isPlaying && audioRef.current) {
-                              audioRef.current.pause();
-                              setIsPlaying(false);
-                            }
-                          }}
-                          className="bg-white/10 border-white/20 text-white hover:bg-white/20 text-xs px-3 py-1.5"
-                        >
-                          <Video className="w-3.5 h-3.5 mr-1.5" />
-                          Video
-                        </Button>
+                        {videoAvailable && (
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            onClick={() => {
+                              const newShowVideo = !showVideo;
+                              setShowVideo(newShowVideo);
+                              setShowLyrics(false); // Close lyrics when showing video
+                              
+                              // Pause radio when opening video
+                              if (newShowVideo && isPlaying && audioRef.current) {
+                                audioRef.current.pause();
+                                setIsPlaying(false);
+                              }
+                            }}
+                            className="bg-white/10 border-white/20 text-white hover:bg-white/20 text-xs px-3 py-1.5"
+                          >
+                            <Video className="w-3.5 h-3.5 mr-1.5" />
+                            Video
+                          </Button>
+                        )}
 
                         <CastButton
                           isCastAvailable={isCastAvailable}
