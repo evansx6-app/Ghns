@@ -840,15 +840,50 @@ const ModernAudioPlayer = () => {
                             <YouTubeVideo 
                               track={currentTrack}
                               onClose={() => setShowVideo(false)}
-                              onEnded={() => {
-                                console.log('[Player] Video ended - returning to radio stream');
-                                setShowVideo(false);
-                                // Resume radio playback
-                                if (audioRef.current && !isPlaying) {
-                                  audioRef.current.play().catch(err => {
-                                    console.error('[Player] Failed to resume radio:', err);
-                                  });
-                                  setIsPlaying(true);
+                              onRequestNext={async () => {
+                                console.log('[Player] Video ended - checking for next video');
+                                
+                                // Fetch current track from radio
+                                try {
+                                  const response = await streamAPI.getCurrentTrack();
+                                  if (response.success && response.track) {
+                                    const nextTrack = response.track;
+                                    
+                                    // Check if video is available for the current radio track
+                                    const hasVideo = await checkVideoAvailability(nextTrack);
+                                    
+                                    if (hasVideo) {
+                                      console.log('[Player] Next video found - continuing playback');
+                                      // Update track to trigger new video load
+                                      setCurrentTrack(nextTrack);
+                                      // Keep video mode active
+                                    } else {
+                                      console.log('[Player] No video for current track - returning to radio');
+                                      setShowVideo(false);
+                                      // Resume radio playback
+                                      if (audioRef.current && !isPlaying) {
+                                        audioRef.current.play().catch(err => {
+                                          console.error('[Player] Failed to resume radio:', err);
+                                        });
+                                        setIsPlaying(true);
+                                      }
+                                    }
+                                  } else {
+                                    // If can't get track, return to radio
+                                    console.log('[Player] Could not fetch track - returning to radio');
+                                    setShowVideo(false);
+                                    if (audioRef.current && !isPlaying) {
+                                      audioRef.current.play();
+                                      setIsPlaying(true);
+                                    }
+                                  }
+                                } catch (err) {
+                                  console.error('[Player] Error fetching next track:', err);
+                                  setShowVideo(false);
+                                  if (audioRef.current && !isPlaying) {
+                                    audioRef.current.play();
+                                    setIsPlaying(true);
+                                  }
                                 }
                               }}
                             />
