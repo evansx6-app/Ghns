@@ -17,25 +17,21 @@ const YouTubeVideo = memo(({ track, onClose }) => {
         setIsLoading(true);
         setError(null);
 
-        // Construct search query
-        const searchQuery = `${track.artist} ${track.title} official music video`;
+        // Construct search query - explicitly search for official video
+        const searchQuery = `${track.artist} ${track.title} official video`;
         
         // YouTube Data API v3 endpoint
         const apiKey = process.env.REACT_APP_YOUTUBE_API_KEY;
         
         if (!apiKey) {
-          // Fallback: Use YouTube search embed with constructed query
-          // This will show YouTube's search results as a video
-          const encodedQuery = encodeURIComponent(searchQuery);
-          // Use a direct embed approach with search query
-          setVideoId(`search:${encodedQuery}`);
+          setError('YouTube API key not configured. Cannot search for official videos.');
           setIsLoading(false);
           return;
         }
 
         // Use YouTube Data API to search for video
         const response = await fetch(
-          `https://www.googleapis.com/youtube/v3/search?part=snippet&q=${encodeURIComponent(searchQuery)}&type=video&maxResults=1&key=${apiKey}`
+          `https://www.googleapis.com/youtube/v3/search?part=snippet&q=${encodeURIComponent(searchQuery)}&type=video&maxResults=5&key=${apiKey}`
         );
 
         if (!response.ok) {
@@ -45,16 +41,35 @@ const YouTubeVideo = memo(({ track, onClose }) => {
         const data = await response.json();
         
         if (data.items && data.items.length > 0) {
-          setVideoId(data.items[0].id.videoId);
+          // Filter for official videos only
+          const officialVideo = data.items.find(item => {
+            const title = item.snippet.title.toLowerCase();
+            const channelTitle = item.snippet.channelTitle.toLowerCase();
+            const description = item.snippet.description.toLowerCase();
+            
+            // Check if it's an official video based on:
+            // 1. Title contains "official" AND ("video" OR "music video")
+            // 2. Channel name contains artist name (likely official channel)
+            // 3. Channel name contains "VEVO" (official music videos)
+            const hasOfficialInTitle = title.includes('official');
+            const hasVideoInTitle = title.includes('video') || title.includes('music video');
+            const artistNameInChannel = channelTitle.includes(track.artist.toLowerCase());
+            const isVevoChannel = channelTitle.includes('vevo');
+            
+            return (hasOfficialInTitle && hasVideoInTitle) || isVevoChannel || artistNameInChannel;
+          });
+          
+          if (officialVideo) {
+            setVideoId(officialVideo.id.videoId);
+          } else {
+            setError('No official video found for this track');
+          }
         } else {
-          setError('No video found for this track');
+          setError('No official video found for this track');
         }
       } catch (err) {
         console.error('YouTube search error:', err);
-        // Fallback to search embed
-        const searchQuery = `${track.artist} ${track.title} official music video`;
-        const encodedQuery = encodeURIComponent(searchQuery);
-        setVideoId(`search:${encodedQuery}`);
+        setError('Failed to search for official video');
       } finally {
         setIsLoading(false);
       }
@@ -68,20 +83,27 @@ const YouTubeVideo = memo(({ track, onClose }) => {
       <div className="w-full h-full flex items-center justify-center bg-black">
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-white mx-auto mb-4"></div>
-          <p className="text-white text-sm">Loading video...</p>
+          <p className="text-white text-sm">Searching for official video...</p>
         </div>
       </div>
     );
   }
 
-  if (error && !videoId) {
+  if (error || !videoId) {
     return (
       <div className="w-full h-full flex items-center justify-center bg-black">
-        <div className="text-center p-4">
-          <p className="text-white mb-4">{error}</p>
+        <div className="text-center p-4 max-w-sm">
+          <div className="text-white/50 mb-4">
+            <svg className="w-16 h-16 mx-auto" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
+            </svg>
+          </div>
+          <p className="text-white text-sm mb-4">
+            {error || 'No official video available'}
+          </p>
           <button
             onClick={onClose}
-            className="px-4 py-2 bg-orange-600 text-white rounded-lg hover:bg-orange-700"
+            className="px-4 py-2 bg-orange-600 text-white rounded-lg hover:bg-orange-700 transition-colors"
           >
             Back to Artwork
           </button>
@@ -90,22 +112,14 @@ const YouTubeVideo = memo(({ track, onClose }) => {
     );
   }
 
-  // Determine embed URL
-  let embedUrl;
-  if (videoId?.startsWith('search:')) {
-    // Fallback: Use YouTube's search results page (not ideal but works without API key)
-    const query = videoId.replace('search:', '');
-    embedUrl = `https://www.youtube.com/embed?listType=search&list=${query}`;
-  } else {
-    // Direct video embed
-    embedUrl = `https://www.youtube.com/embed/${videoId}?autoplay=1&rel=0&modestbranding=1`;
-  }
+  // Direct official video embed
+  const embedUrl = `https://www.youtube.com/embed/${videoId}?autoplay=1&rel=0&modestbranding=1`;
 
   return (
     <div className="w-full h-full relative bg-black">
       <iframe
         src={embedUrl}
-        title={`${track.artist} - ${track.title}`}
+        title={`${track.artist} - ${track.title} (Official Video)`}
         className="w-full h-full"
         frameBorder="0"
         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
