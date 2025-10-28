@@ -90,11 +90,33 @@ const OptimizedImage = ({
       console.log('[OptimizedImage] Loading new artwork:', src);
     }
 
-    // Priority images load immediately without any delay
+    // Priority images load immediately with proper handling
     if (priority) {
+      const img = new Image();
+      img.crossOrigin = 'anonymous';
+      img.referrerPolicy = 'no-referrer';
+      img.src = proxiedSrc;
+      
+      img.onload = () => {
+        setImageSrc(proxiedSrc);
+        setIsLoaded(true);
+        console.log('[OptimizedImage] Priority artwork loaded:', src);
+      };
+      
+      img.onerror = () => {
+        console.warn('[OptimizedImage] Priority image failed, using fallback:', src);
+        setImageSrc(fallbackSrc);
+        setHasError(true);
+        setIsLoaded(true);
+      };
+      
+      // Set immediate visibility for priority images
       setImageSrc(proxiedSrc);
-      setIsLoaded(true); // Assume loaded for priority images
-      return;
+      
+      return () => {
+        img.onload = null;
+        img.onerror = null;
+      };
     }
 
     // Clear any existing timeout and abort controller
