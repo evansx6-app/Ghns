@@ -609,7 +609,11 @@ const ModernAudioPlayer = () => {
                       fontFamily: '"Russo One", sans-serif',
                       color: '#c0c0c0',
                       textShadow: '0 1px 2px rgba(255,255,255,0.2), 0 -1px 2px rgba(0,0,0,0.6)',
-                      letterSpacing: '0.5px'
+                      letterSpacing: '0.15em',
+                      display: 'inline-block',
+                      textAlign: 'justify',
+                      textAlignLast: 'justify',
+                      width: '100%'
                     }}>LEGENDARY RADIO FROM SCOTLAND</span>
                   </ScrollingText>
                 </div>
