@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect, lazy, Suspense } from 'react';
-import { Play, Pause, Volume2, Clock, Music, Maximize2, Cast, Radio, Disc3, ListMusic } from 'lucide-react';
+import { Play, Pause, Volume2, Clock, Music, Maximize2, Cast, Radio, Disc3, ListMusic, Video } from 'lucide-react';
 import { Button } from './ui/button';
 import { Slider } from './ui/slider';
 import { Card, CardContent } from './ui/card';
@@ -19,6 +19,7 @@ import ConnectionStatus from './ConnectionStatus';
 import LCDDisplay from './LCDDisplay';
 import OptimizedImage from './OptimizedImage';
 import FacebookWidget from './FacebookWidget';
+import YouTubeVideo from './YouTubeVideo';
 
 // Lazy load heavy/non-critical components for better initial load performance
 const RecentTracks = lazy(() => import('./RecentTracks'));
