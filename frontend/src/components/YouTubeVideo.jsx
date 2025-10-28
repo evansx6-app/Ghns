@@ -1,11 +1,12 @@
 import React, { useState, useEffect, memo, useRef } from 'react';
 
-const YouTubeVideo = memo(({ track, onClose, onEnded }) => {
+const YouTubeVideo = memo(({ track, onClose, onEnded, onRequestNext }) => {
   const [videoId, setVideoId] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
   const playerRef = useRef(null);
   const iframeRef = useRef(null);
+  const currentTrackRef = useRef(null);
 
   useEffect(() => {
     const searchVideo = async () => {
@@ -14,6 +15,13 @@ const YouTubeVideo = memo(({ track, onClose, onEnded }) => {
         setIsLoading(false);
         return;
       }
+
+      // Skip if same track (avoid reloading)
+      if (currentTrackRef.current === `${track.artist}-${track.title}`) {
+        return;
+      }
+
+      currentTrackRef.current = `${track.artist}-${track.title}`;
 
       try {
         setIsLoading(true);
