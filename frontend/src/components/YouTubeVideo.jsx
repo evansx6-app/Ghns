@@ -144,12 +144,13 @@ const YouTubeVideo = memo(({ track, onClose, onEnded }) => {
     );
   }
 
-  // Direct official video embed
-  const embedUrl = `https://www.youtube.com/embed/${videoId}?autoplay=1&rel=0&modestbranding=1`;
+  // Direct official video embed with enablejsapi for event listening
+  const embedUrl = `https://www.youtube.com/embed/${videoId}?autoplay=1&rel=0&modestbranding=1&enablejsapi=1`;
 
   return (
     <div className="w-full h-full relative bg-black">
       <iframe
+        ref={iframeRef}
         src={embedUrl}
         title={`${track.artist} - ${track.title} (Official Video)`}
         className="w-full h-full"
