@@ -840,6 +840,17 @@ const ModernAudioPlayer = () => {
                             <YouTubeVideo 
                               track={currentTrack}
                               onClose={() => setShowVideo(false)}
+                              onEnded={() => {
+                                console.log('[Player] Video ended - returning to radio stream');
+                                setShowVideo(false);
+                                // Resume radio playback
+                                if (audioRef.current && !isPlaying) {
+                                  audioRef.current.play().catch(err => {
+                                    console.error('[Player] Failed to resume radio:', err);
+                                  });
+                                  setIsPlaying(true);
+                                }
+                              }}
                             />
                           ) : (currentTrack?.title === "Greatest Hits Non-Stop" || 
                             currentTrack?.title === "Legendary Radio from Scotland" ||
