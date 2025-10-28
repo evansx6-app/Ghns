@@ -935,9 +935,6 @@ const ModernAudioPlayer = () => {
 
             {/* Additional Content - Lazy loaded */}
             <div className="space-y-6">
-              {/* Facebook Follow Widget */}
-              <FacebookWidget />
-
               <Suspense fallback={<div className="h-32"></div>}>
                 <TShirtShop isCarMode={false} />
               </Suspense>
@@ -957,6 +954,9 @@ const ModernAudioPlayer = () => {
                   />
                 </a>
               </div>
+
+              {/* Facebook Follow Widget */}
+              <FacebookWidget />
 
               {/* Bottom Info Card with Logo */}
               <Card className="premium-container rounded-2xl shadow-xl">
