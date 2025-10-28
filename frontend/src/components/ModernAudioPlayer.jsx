@@ -315,20 +315,20 @@ const ModernAudioPlayer = () => {
   const checkVideoAvailability = async (track) => {
     if (!track?.title || !track?.artist) {
       setVideoAvailable(false);
-      return;
+      return false;
     }
 
     // Don't check for station ID
     if (track.title === "Greatest Hits Non-Stop" || 
         track.title === "Legendary Radio from Scotland") {
       setVideoAvailable(false);
-      return;
+      return false;
     }
 
     const apiKey = process.env.REACT_APP_YOUTUBE_API_KEY;
     if (!apiKey) {
       setVideoAvailable(false);
-      return;
+      return false;
     }
 
     setIsCheckingVideo(true);
@@ -342,7 +342,7 @@ const ModernAudioPlayer = () => {
       if (!response.ok) {
         setVideoAvailable(false);
         setIsCheckingVideo(false);
-        return;
+        return false;
       }
 
       const data = await response.json();
@@ -361,14 +361,18 @@ const ModernAudioPlayer = () => {
           return (hasOfficialInTitle && hasVideoInTitle) || isVevoChannel || artistNameInChannel;
         });
         
-        setVideoAvailable(!!officialVideo);
+        const hasVideo = !!officialVideo;
+        setVideoAvailable(hasVideo);
         console.log(`[Video Check] ${track.title} by ${track.artist}: ${officialVideo ? 'Official video found' : 'No official video'}`);
+        return hasVideo;
       } else {
         setVideoAvailable(false);
+        return false;
       }
     } catch (err) {
       console.error('[Video Check] Error:', err);
       setVideoAvailable(false);
+      return false;
     } finally {
       setIsCheckingVideo(false);
     }
