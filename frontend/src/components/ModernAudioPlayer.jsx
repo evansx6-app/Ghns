@@ -825,12 +825,26 @@ const ModernAudioPlayer = () => {
                           size="sm"
                           onClick={() => {
                             setShowLyrics(!showLyrics);
+                            setShowVideo(false); // Close video when showing lyrics
                             setActiveView(showLyrics ? 'player' : 'lyrics');
                           }}
                           className="bg-white/10 border-white/20 text-white hover:bg-white/20 text-xs px-3 py-1.5"
                         >
                           <Music className="w-3.5 h-3.5 mr-1.5" />
                           Lyrics
+                        </Button>
+
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          onClick={() => {
+                            setShowVideo(!showVideo);
+                            setShowLyrics(false); // Close lyrics when showing video
+                          }}
+                          className="bg-white/10 border-white/20 text-white hover:bg-white/20 text-xs px-3 py-1.5"
+                        >
+                          <Video className="w-3.5 h-3.5 mr-1.5" />
+                          Video
                         </Button>
 
                         <CastButton
