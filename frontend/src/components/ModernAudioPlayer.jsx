@@ -758,7 +758,12 @@ const ModernAudioPlayer = () => {
                             WebkitBackfaceVisibility: 'hidden',
                             willChange: 'auto'
                           }}>
-                          {(currentTrack?.title === "Greatest Hits Non-Stop" || 
+                          {showVideo ? (
+                            <YouTubeVideo 
+                              track={currentTrack}
+                              onClose={() => setShowVideo(false)}
+                            />
+                          ) : (currentTrack?.title === "Greatest Hits Non-Stop" || 
                             currentTrack?.title === "Legendary Radio from Scotland" ||
                             currentTrack?.title === "Legendary Radio from Scotland - Greatest Hits Non-Stop") ? (
                             <div className="w-full h-full flex items-center justify-center p-8 bg-gradient-to-br from-copper-900/20 to-copper-800/20">
