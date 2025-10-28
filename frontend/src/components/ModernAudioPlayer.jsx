@@ -835,7 +835,7 @@ const ModernAudioPlayer = () => {
                           size="sm"
                           onClick={() => {
                             setShowLyrics(!showLyrics);
-                            setShowVideo(false); // Close video when showing lyrics
+                            // Don't close video when showing lyrics - allow both to be open
                             setActiveView(showLyrics ? 'player' : 'lyrics');
                           }}
                           className="bg-white/10 border-white/20 text-white hover:bg-white/20 text-xs px-3 py-1.5"
