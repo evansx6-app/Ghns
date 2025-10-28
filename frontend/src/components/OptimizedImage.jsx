@@ -97,41 +97,70 @@ const OptimizedImage = ({
       return;
     }
 
-    // Clear any existing timeout
+    // Clear any existing timeout and abort controller
     if (loadTimeoutRef.current) {
       clearTimeout(loadTimeoutRef.current);
     }
+    if (abortControllerRef.current) {
+      abortControllerRef.current.abort();
+    }
 
-    // Adaptive loading based on device capability
+    // Adaptive loading based on network capability
     let img = null;
-    let lowQualityImg = null;
 
     const loadImage = () => {
+      // Create new abort controller for this load
+      abortControllerRef.current = new AbortController();
+      
       img = new Image();
       img.crossOrigin = 'anonymous';
       img.referrerPolicy = 'no-referrer';
       
-      // For slow devices, implement progressive loading with timeout fallback
-      if (deviceCapability.isSlowDevice) {
-        const loadTimeout = deviceCapability.connectionSpeed === 'slow-2g' || deviceCapability.connectionSpeed === '2g' ? 8000 : 5000;
+      // For slow networks, implement aggressive timeout and progressive loading
+      if (networkCapability.isSlowNetwork) {
+        // Aggressive timeout based on connection speed
+        let loadTimeout;
+        if (networkCapability.connectionSpeed === 'slow-2g' || networkCapability.connectionSpeed === '2g') {
+          loadTimeout = 6000; // 6 seconds for 2G
+        } else if (networkCapability.connectionSpeed === '3g') {
+          loadTimeout = 4000; // 4 seconds for 3G
+        } else if (networkCapability.downlink && networkCapability.downlink < 1) {
+          loadTimeout = 5000; // 5 seconds for very slow connections
+        } else {
+          loadTimeout = 3000; // 3 seconds default for slow
+        }
         
-        // Set a timeout for slow devices - show fallback if image takes too long
+        // Set a timeout - show fallback if image takes too long
         loadTimeoutRef.current = setTimeout(() => {
           if (!isLoaded && !hasError) {
-            console.warn('[OptimizedImage] Image load timeout on slow device, using fallback');
+            console.warn(`[OptimizedImage] Image load timeout on slow network (${networkCapability.connectionSpeed}), using fallback`);
+            if (abortControllerRef.current) {
+              abortControllerRef.current.abort();
+            }
+            setImageSrc(fallbackSrc);
+            setIsLoaded(true);
+            setHasError(true);
+            setIsLowQuality(true);
+          }
+        }, loadTimeout);
+        
+        // For very slow connections, show fallback immediately while loading
+        if (networkCapability.connectionSpeed === 'slow-2g' || networkCapability.connectionSpeed === '2g' || 
+            (networkCapability.downlink && networkCapability.downlink < 0.5)) {
+          setImageSrc(fallbackSrc);
+          setIsLowQuality(true);
+          console.log('[OptimizedImage] Very slow network: showing fallback while loading');
+        }
+      } else {
+        // Normal network - still set a reasonable timeout
+        loadTimeoutRef.current = setTimeout(() => {
+          if (!isLoaded && !hasError) {
+            console.warn('[OptimizedImage] Image load timeout, using fallback');
             setImageSrc(fallbackSrc);
             setIsLoaded(true);
             setHasError(true);
           }
-        }, loadTimeout);
-        
-        // Try to load a lower quality version first for very slow connections
-        if (deviceCapability.connectionSpeed === 'slow-2g' || deviceCapability.connectionSpeed === '2g') {
-          // Show fallback immediately, then upgrade when full image loads
-          setImageSrc(fallbackSrc);
-          setIsLowQuality(true);
-          console.log('[OptimizedImage] Very slow connection: showing fallback while loading full image');
-        }
+        }, 10000); // 10 seconds for normal connections
       }
       
       img.src = proxiedSrc;
@@ -159,9 +188,9 @@ const OptimizedImage = ({
       };
     };
 
-    // For slow devices, add a small delay to prioritize critical resources
-    if (deviceCapability.isSlowDevice && !priority) {
-      setTimeout(loadImage, 100);
+    // For slow networks, add a tiny delay to prioritize critical resources
+    if (networkCapability.isSlowNetwork && !priority) {
+      setTimeout(loadImage, 50); // Reduced from 100ms
     } else {
       loadImage();
     }
@@ -170,12 +199,15 @@ const OptimizedImage = ({
       if (loadTimeoutRef.current) {
         clearTimeout(loadTimeoutRef.current);
       }
+      if (abortControllerRef.current) {
+        abortControllerRef.current.abort();
+      }
       if (img) {
         img.onload = null;
         img.onerror = null;
       }
     };
-  }, [src, priority, fallbackSrc, deviceCapability.isSlowDevice, deviceCapability.connectionSpeed]);
+  }, [src, priority, fallbackSrc, networkCapability.isSlowNetwork, networkCapability.connectionSpeed, networkCapability.downlink]);
 
   const handleLoad = (e) => {
     if (loadTimeoutRef.current) {
