@@ -18,6 +18,7 @@ import InstallButton from './InstallButton';
 import ConnectionStatus from './ConnectionStatus';
 import LCDDisplay from './LCDDisplay';
 import OptimizedImage from './OptimizedImage';
+import FacebookWidget from './FacebookWidget';
 
 // Lazy load heavy/non-critical components for better initial load performance
 const RecentTracks = lazy(() => import('./RecentTracks'));
