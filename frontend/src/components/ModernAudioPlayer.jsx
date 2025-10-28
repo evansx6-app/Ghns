@@ -311,14 +311,6 @@ const ModernAudioPlayer = () => {
     }
   };
 
-  const handleAudioError = async (error) => {
-    console.error('Audio playback error:', error);
-    
-    const audio = audioRef.current;
-    if (!audio) return;
-    
-    const errorCode = audio.error?.code;
-
   // Check for official video availability in background
   const checkVideoAvailability = async (track) => {
     if (!track?.title || !track?.artist) {
@@ -381,6 +373,14 @@ const ModernAudioPlayer = () => {
       setIsCheckingVideo(false);
     }
   };
+
+  const handleAudioError = async (error) => {
+    console.error('Audio playback error:', error);
+    
+    const audio = audioRef.current;
+    if (!audio) return;
+    
+    const errorCode = audio.error?.code;
     
     if (errorCode === MediaError.MEDIA_ERR_NETWORK || 
         errorCode === MediaError.MEDIA_ERR_SRC_NOT_SUPPORTED) {
