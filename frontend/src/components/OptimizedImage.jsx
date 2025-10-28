@@ -226,7 +226,7 @@ const OptimizedImage = ({
     onError?.(e);
   };
 
-  // Calculate optimal image rendering based on device capability
+  // Calculate optimal image rendering based on network capability
   const getImageStyles = () => {
     const baseStyles = {
       opacity: isLoaded || priority ? 1 : 0,
@@ -237,12 +237,12 @@ const OptimizedImage = ({
       contentVisibility: 'auto'
     };
 
-    // For slow devices, reduce image rendering quality to improve performance
-    if (deviceCapability.isSlowDevice) {
+    // For slow networks, optimize rendering
+    if (networkCapability.isSlowNetwork) {
       return {
         ...baseStyles,
-        imageRendering: deviceCapability.connectionSpeed === 'slow-2g' || deviceCapability.connectionSpeed === '2g' ? 'auto' : 'auto',
-        willChange: 'auto' // Disable will-change on slow devices to save memory
+        willChange: 'auto', // Disable will-change to save memory
+        imageRendering: networkCapability.connectionSpeed === 'slow-2g' || networkCapability.connectionSpeed === '2g' ? 'auto' : 'auto'
       };
     }
 
@@ -254,11 +254,11 @@ const OptimizedImage = ({
       ref={imgRef}
       src={imageSrc}
       alt={alt}
-      className={`${className} transition-opacity ${deviceCapability.isSlowDevice ? 'duration-500' : 'duration-300'}`}
+      className={`${className} ${networkCapability.isSlowNetwork ? 'transition-opacity duration-700' : 'transition-opacity duration-300'}`}
       style={getImageStyles()}
-      loading={priority ? 'eager' : (deviceCapability.isSlowDevice ? 'lazy' : 'lazy')}
+      loading={priority ? 'eager' : (networkCapability.isSlowNetwork ? 'lazy' : 'lazy')}
       decoding="async"
-      fetchPriority={priority ? 'high' : (deviceCapability.isSlowDevice ? 'low' : 'auto')}
+      fetchPriority={priority ? 'high' : (networkCapability.isSlowNetwork ? 'low' : 'auto')}
       onLoad={handleLoad}
       onError={handleError}
       crossOrigin="anonymous"
