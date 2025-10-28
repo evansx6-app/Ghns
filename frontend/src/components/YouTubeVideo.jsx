@@ -101,8 +101,12 @@ const YouTubeVideo = memo(({ track, onClose, onEnded, onRequestNext }) => {
         
         // YouTube player state: 0 = ended
         if (data.event === 'onStateChange' && data.info === 0) {
-          console.log('[YouTube] Video ended - returning to radio');
-          if (onEnded) {
+          console.log('[YouTube] Video ended - requesting next video');
+          if (onRequestNext) {
+            // Request the next video for the current radio track
+            onRequestNext();
+          } else if (onEnded) {
+            // Fallback to just closing if no next handler
             onEnded();
           }
         }
@@ -116,7 +120,7 @@ const YouTubeVideo = memo(({ track, onClose, onEnded, onRequestNext }) => {
     return () => {
       window.removeEventListener('message', handleMessage);
     };
-  }, [videoId, onEnded]);
+  }, [videoId, onEnded, onRequestNext]);
 
   if (isLoading) {
     return (
