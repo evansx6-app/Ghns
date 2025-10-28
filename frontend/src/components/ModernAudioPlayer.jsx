@@ -938,6 +938,9 @@ const ModernAudioPlayer = () => {
               <Suspense fallback={<div className="h-32"></div>}>
                 <TShirtShop isCarMode={false} />
               </Suspense>
+
+              {/* Facebook Follow Widget */}
+              <FacebookWidget />
               
               <div className="flex justify-center">
                 <a
