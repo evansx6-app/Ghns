@@ -750,8 +750,8 @@ const ModernAudioPlayer = () => {
                           <div className="relative w-full aspect-square rounded-lg overflow-hidden shadow-2xl bg-gradient-to-br from-slate-800 to-slate-900" style={{
                             border: '2px solid #000',
                             boxShadow: 'inset 0 0 30px rgba(0,0,0,0.6)',
-                            filter: isPlaying ? 'none' : 'grayscale(100%) brightness(0.4)',
-                            opacity: isPlaying ? 1 : 0.6,
+                            filter: showVideo ? 'none' : (isPlaying ? 'none' : 'grayscale(100%) brightness(0.4)'),
+                            opacity: showVideo ? 1 : (isPlaying ? 1 : 0.6),
                             transform: 'translateZ(0)',
                             WebkitTransform: 'translateZ(0)',
                             backfaceVisibility: 'hidden',
