@@ -80,6 +80,36 @@ const YouTubeVideo = memo(({ track, onClose, onEnded }) => {
     searchVideo();
   }, [track?.title, track?.artist]);
 
+  // Listen for YouTube player events via postMessage
+  useEffect(() => {
+    if (!videoId) return;
+
+    const handleMessage = (event) => {
+      // Only accept messages from YouTube
+      if (event.origin !== 'https://www.youtube.com') return;
+
+      try {
+        const data = JSON.parse(event.data);
+        
+        // YouTube player state: 0 = ended
+        if (data.event === 'onStateChange' && data.info === 0) {
+          console.log('[YouTube] Video ended - returning to radio');
+          if (onEnded) {
+            onEnded();
+          }
+        }
+      } catch (err) {
+        // Ignore parse errors from non-YouTube messages
+      }
+    };
+
+    window.addEventListener('message', handleMessage);
+
+    return () => {
+      window.removeEventListener('message', handleMessage);
+    };
+  }, [videoId, onEnded]);
+
   if (isLoading) {
     return (
       <div className="w-full h-full flex items-center justify-center bg-black">
