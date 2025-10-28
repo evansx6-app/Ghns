@@ -318,6 +318,69 @@ const ModernAudioPlayer = () => {
     if (!audio) return;
     
     const errorCode = audio.error?.code;
+
+  // Check for official video availability in background
+  const checkVideoAvailability = async (track) => {
+    if (!track?.title || !track?.artist) {
+      setVideoAvailable(false);
+      return;
+    }
+
+    // Don't check for station ID
+    if (track.title === "Greatest Hits Non-Stop" || 
+        track.title === "Legendary Radio from Scotland") {
+      setVideoAvailable(false);
+      return;
+    }
+
+    const apiKey = process.env.REACT_APP_YOUTUBE_API_KEY;
+    if (!apiKey) {
+      setVideoAvailable(false);
+      return;
+    }
+
+    setIsCheckingVideo(true);
+
+    try {
+      const searchQuery = `${track.artist} ${track.title} official video`;
+      const response = await fetch(
+        `https://www.googleapis.com/youtube/v3/search?part=snippet&q=${encodeURIComponent(searchQuery)}&type=video&maxResults=5&key=${apiKey}`
+      );
+
+      if (!response.ok) {
+        setVideoAvailable(false);
+        setIsCheckingVideo(false);
+        return;
+      }
+
+      const data = await response.json();
+      
+      if (data.items && data.items.length > 0) {
+        // Filter for official videos only
+        const officialVideo = data.items.find(item => {
+          const title = item.snippet.title.toLowerCase();
+          const channelTitle = item.snippet.channelTitle.toLowerCase();
+          
+          const hasOfficialInTitle = title.includes('official');
+          const hasVideoInTitle = title.includes('video') || title.includes('music video');
+          const artistNameInChannel = channelTitle.includes(track.artist.toLowerCase());
+          const isVevoChannel = channelTitle.includes('vevo');
+          
+          return (hasOfficialInTitle && hasVideoInTitle) || isVevoChannel || artistNameInChannel;
+        });
+        
+        setVideoAvailable(!!officialVideo);
+        console.log(`[Video Check] ${track.title} by ${track.artist}: ${officialVideo ? 'Official video found' : 'No official video'}`);
+      } else {
+        setVideoAvailable(false);
+      }
+    } catch (err) {
+      console.error('[Video Check] Error:', err);
+      setVideoAvailable(false);
+    } finally {
+      setIsCheckingVideo(false);
+    }
+  };
     
     if (errorCode === MediaError.MEDIA_ERR_NETWORK || 
         errorCode === MediaError.MEDIA_ERR_SRC_NOT_SUPPORTED) {
