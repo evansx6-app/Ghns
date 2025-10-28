@@ -34,6 +34,8 @@ const ModernAudioPlayer = () => {
   const [showSleepTimer, setShowSleepTimer] = useState(false);
   const [showLyrics, setShowLyrics] = useState(false);
   const [showVideo, setShowVideo] = useState(false);
+  const [videoAvailable, setVideoAvailable] = useState(false);
+  const [isCheckingVideo, setIsCheckingVideo] = useState(false);
   
   // Initialize with a stable fallback to prevent null states
   const [currentTrack, setCurrentTrack] = useState({
