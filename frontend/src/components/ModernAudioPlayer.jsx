@@ -935,12 +935,12 @@ const ModernAudioPlayer = () => {
 
             {/* Additional Content - Lazy loaded */}
             <div className="space-y-6">
+              {/* Facebook Follow Widget */}
+              <FacebookWidget />
+
               <Suspense fallback={<div className="h-32"></div>}>
                 <TShirtShop isCarMode={false} />
               </Suspense>
-
-              {/* Facebook Follow Widget */}
-              <FacebookWidget />
               
               <div className="flex justify-center">
                 <a
