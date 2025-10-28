@@ -463,6 +463,11 @@ const ModernAudioPlayer = () => {
 
   const togglePlayPause = async () => {
     if (audioRef.current) {
+      // If video is showing, close it when play is pressed
+      if (showVideo) {
+        setShowVideo(false);
+      }
+      
       if (isPlaying) {
         audioRef.current.pause();
       } else {
